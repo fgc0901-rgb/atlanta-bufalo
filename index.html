@@ -1317,47 +1317,131 @@ indicação x3"></textarea>
         if (l.match(/^\[\d{2}:\d{2}\]/) || l.match(/^\d{2}:\d{2}/)) continue;
         if (l.match(/^https?:\/\//) || l.match(/^www\./) || l.includes('.com') || l.includes('.br')) continue;
 
-        // FORMATO ESTRUTURADO COM BULLET POINTS (・)
-        // Padrão: ・1 Vídeo no TikTok: URL
-        let m = l.match(/^[・•\-\*]\s*(\d+)\s+(v[íi]deo|video|story|stories|reel|reels|short|shorts|post|postagem)\s+no?\s+(tiktok|tik\s*tok|instagram|youtube|kwai|kick|twitch)(?:\s*:.*)?$/);
+        // FORMATO ESTRUTURADO COM BULLET POINTS (・) - VERSÃO MAIS ESPECÍFICA
+        
+        // TikTok específico
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(v[íi]deo|video)\s+no\s+(tiktok|tik\s*tok)(?:\s*:.*)?$/);
         if (m) {
           const qtd = Number(m[1]);
-          let tipo = m[2].replace(/[íi]/g, 'i').toLowerCase();
-          let plataforma = m[3].replace(/\s+/g, '').toLowerCase();
-          
-          // Normalizar plataforma
-          if (plataforma.includes('tik')) plataforma = 'tiktok';
-          
-          // Normalizar tipo
-          if (tipo === 'video') tipo = 'video';
-          if (tipo === 'story') tipo = 'stories';
-          if (tipo === 'reel') tipo = 'reels';
-          if (tipo === 'short') tipo = 'shorts';
-          if (tipo === 'postagem' || tipo === 'post') {
-            tipo = (plataforma === 'instagram') ? 'feed' : 'post';
-          }
-          
           for (let i = 0; i < qtd; i++) {
             atividades.push({
               id: uuid(), data: dataISO, categoria: "conteudo",
-              plataforma, tipo
+              plataforma: "tiktok", tipo: "video"
             });
           }
           continue;
         }
 
-        // FORMATO ESTRUTURADO - Variação com "no feed"
-        // Padrão: ・1 Postagem no feed no Instagram: URL
-        m = l.match(/^[・•\-\*]\s*(\d+)\s+(postagem|post)\s+no\s+feed\s+no?\s+(instagram)(?:\s*:.*)?$/);
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(story|stories)\s+no\s+(tiktok|tik\s*tok)(?:\s*:.*)?$/);
         if (m) {
           const qtd = Number(m[1]);
-          const plataforma = 'instagram';
-          const tipo = 'feed';
-          
           for (let i = 0; i < qtd; i++) {
             atividades.push({
               id: uuid(), data: dataISO, categoria: "conteudo",
-              plataforma, tipo
+              plataforma: "tiktok", tipo: "stories"
+            });
+          }
+          continue;
+        }
+
+        // Kwai específico
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(v[íi]deo|video)\s+no\s+(kwai)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "kwai", tipo: "video"
+            });
+          }
+          continue;
+        }
+
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(story|stories)\s+no\s+(kwai)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "kwai", tipo: "stories"
+            });
+          }
+          continue;
+        }
+
+        // Instagram específico - Postagem no feed
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(postagem|post)\s+no\s+feed\s+no\s+(instagram)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "instagram", tipo: "feed"
+            });
+          }
+          continue;
+        }
+
+        // Instagram específico - Reels
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(reels?)\s+no\s+(instagram)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "instagram", tipo: "reels"
+            });
+          }
+          continue;
+        }
+
+        // Instagram específico - Story
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(story|stories)\s+no\s+(instagram)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "instagram", tipo: "stories"
+            });
+          }
+          continue;
+        }
+
+        // YouTube específico - Vídeo
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(v[íi]deo|video)\s+no\s+(youtube)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "youtube", tipo: "video"
+            });
+          }
+          continue;
+        }
+
+        // YouTube específico - Shorts
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(shorts?)\s+no\s+(youtube)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "youtube", tipo: "shorts"
+            });
+          }
+          continue;
+        }
+
+        // YouTube específico - Story (que vira Post)
+        m = l.match(/^[・•\-\*]\s*(\d+)\s+(story|stories)\s+no\s+(youtube)(?:\s*:.*)?$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "youtube", tipo: "post"
             });
           }
           continue;
