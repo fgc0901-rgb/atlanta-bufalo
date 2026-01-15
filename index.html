@@ -1267,13 +1267,7 @@ indicação x3"></textarea>
           continue;
         }
 
-        const chave = `${data}_${plataforma}_${tipo}`;
-        if (controleDiarioConteudo[chave]){
-          auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (limite diário)", pontos:0 });
-          continue;
-        }
-
-        controleDiarioConteudo[chave] = true;
+        // Removido limite diário - conta todas as publicações
         pontosConteudo += regra.pontos;
         conteudosPontuados += 1;
 
@@ -1594,11 +1588,8 @@ indicação x3"></textarea>
           } else {
             const regra = REGRAS_PONTOS[plataforma]?.[tipo];
             if (regra) {
-              const chave = `${a.data}_${plataforma}_${tipo}`;
-              if (!controleDiarioConteudo[chave]) {
-                controleDiarioConteudo[chave] = true;
-                pontosConteudo += regra.pontos;
-              }
+              // Removido limite diário - conta todas as publicações
+              pontosConteudo += regra.pontos;
             }
           }
         }
