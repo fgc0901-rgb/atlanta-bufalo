@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -37,7 +36,6 @@
       overflow-x: hidden;
     }
 
-    /* EPIC BUFFALO - HERO IMAGE WITH GPU ACCELERATION */
     .buffalo-hero {
       position: fixed;
       top: 0;
@@ -73,7 +71,6 @@
       z-index: 1;
     }
 
-    /* BUFFALO SKULL FLOATING */
     .buffalo-skull {
       position: fixed;
       top: 80px;
@@ -95,7 +92,6 @@
       animation: float 15s ease-in-out infinite;
     }
 
-    /* OPTIMIZED PARTICLE SYSTEM */
     .particles {
       position: fixed;
       top: 0;
@@ -119,7 +115,6 @@
       animation: particle-float 8s linear infinite;
     }
 
-    /* OPTIMIZED ANIMATIONS */
     @keyframes breathe {
       0%, 100% { transform: scale(1) translateX(0) translateZ(0); opacity: 0.25; }
       50% { transform: scale(1.08) translateX(-30px) translateZ(0); opacity: 0.35; }
@@ -149,7 +144,6 @@
       }
     }
 
-    /* ENHANCED LAYOUT WITH GPU ACCELERATION */
     .wrap{
       max-width: 1400px;
       margin: 0 auto;
@@ -160,7 +154,6 @@
       transform: translateZ(0);
     }
 
-    /* EPIC HEADER */
     .header {
       text-align: center;
       margin-bottom: 40px;
@@ -217,14 +210,12 @@
       text-shadow: 0 0 10px rgba(0,0,0,.8);
     }
 
-    /* ENHANCED GRID */
     .grid{
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 20px;
     }
 
-    /* EPIC CARDS WITH PERFORMANCE OPTIMIZATION */
     .card{
       background: 
         linear-gradient(135deg, rgba(26,26,46,.95) 0%, rgba(20,20,40,.98) 100%);
@@ -289,7 +280,6 @@
       border-radius: 1px;
     }
 
-    /* ENHANCED FORM ELEMENTS WITH BETTER UX */
     label{
       display: block;
       font-size: 13px;
@@ -316,7 +306,6 @@
       will-change: transform, border-color, box-shadow;
     }
 
-    /* IMPROVED SELECT DROPDOWN UX */
     select {
       background: 
         linear-gradient(135deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,.1) 100%);
@@ -360,7 +349,6 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* EPIC BUTTONS WITH PERFORMANCE OPTIMIZATION */
     button{
       cursor: pointer;
       border: 2px solid var(--buffalo-orange);
@@ -427,7 +415,6 @@
         0 0 30px rgba(255,71,87,.2);
     }
 
-    /* ENHANCED LAYOUT CLASSES */
     .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .row-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
     .span4{ grid-column: span 4; }
@@ -435,7 +422,6 @@
     .span8{ grid-column: span 8; }
     .span12{ grid-column: span 12; }
 
-    /* EPIC PILLS */
     .pill{
       display: inline-flex; 
       align-items: center; 
@@ -455,7 +441,6 @@
         inset 0 1px 0 rgba(255,255,255,.1);
     }
 
-    /* EPIC KPI CARDS */
     .kpis{ 
       display: flex; 
       gap: 20px; 
@@ -517,7 +502,6 @@
       text-shadow: 0 0 20px rgba(255,69,0,.3);
     }
 
-    /* EPIC TABLE */
     table{ 
       width: 100%; 
       border-collapse: collapse; 
@@ -573,7 +557,6 @@
       font-size: 13px;
     }
 
-    /* ENHANCED SCROLLBAR */
     ::-webkit-scrollbar {
       width: 12px;
     }
@@ -593,13 +576,11 @@
       background: linear-gradient(135deg, var(--buffalo-orange), var(--buffalo-gold));
     }
 
-    /* PULSE ANIMATIONS */
     @keyframes pulse {
       0%, 100% { transform: translateY(-50%) scale(1) translateZ(0); }
       50% { transform: translateY(-50%) scale(1.15) translateZ(0); }
     }
 
-    /* RESPONSIVE DESIGN WITH PERFORMANCE OPTIMIZATION */
     @media (max-width: 1200px){
       .buffalo-hero {
         right: -300px;
@@ -655,19 +636,6 @@
       }
     }
 
-    /* LOADING ANIMATIONS */
-    @keyframes shimmer {
-      0% { background-position: -200px 0; }
-      100% { background-position: calc(200px + 100%) 0; }
-    }
-
-    .loading {
-      background: linear-gradient(90deg, transparent, rgba(139,0,0,.2), transparent);
-      background-size: 200px 100%;
-      animation: shimmer 2s infinite;
-    }
-
-    /* ENHANCED DATA STORAGE INDICATOR */
     .storage-indicator {
       position: fixed;
       bottom: 20px;
@@ -688,18 +656,6 @@
       opacity: 1;
     }
 
-    /* REDUCED MOTION SUPPORT */
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* MANUAL INPUT SECTIONS */
     .manual-section {
       background: rgba(255,69,0,.05);
       border: 1px solid rgba(255,69,0,.2);
@@ -715,104 +671,13 @@
       text-transform: uppercase;
       font-weight: 700;
     }
-
-    /* PERFORMANCE CHART STYLES */
-    .performance-chart {
-      background: rgba(0,0,0,.2);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 15px 0;
-    }
-
-    .chart-bar {
-      display: flex;
-      align-items: center;
-      margin: 10px 0;
-      gap: 15px;
-    }
-
-    .chart-label {
-      min-width: 80px;
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .chart-progress {
-      flex: 1;
-      height: 8px;
-      background: rgba(255,255,255,.1);
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .chart-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--buffalo-red), var(--buffalo-orange), var(--buffalo-gold));
-      border-radius: 4px;
-      transition: width 0.8s ease;
-    }
-
-    .chart-value {
-      min-width: 60px;
-      text-align: right;
-      font-weight: 700;
-      color: var(--buffalo-orange);
-    }
-
-    /* MINI CHARTS */
-    .mini-chart {
-      background: rgba(0,0,0,.2);
-      border-radius: 8px;
-      padding: 15px;
-      margin: 10px 0;
-      height: 120px;
-    }
-
-    .mini-chart h4 {
-      margin: 0 0 10px;
-      font-size: 12px;
-      color: var(--buffalo-orange);
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .mini-chart-container {
-      height: 80px;
-      display: flex;
-      align-items: end;
-      gap: 3px;
-      overflow-x: auto;
-    }
-
-    .mini-bar {
-      min-width: 8px;
-      background: linear-gradient(to top, var(--buffalo-red), var(--buffalo-orange));
-      border-radius: 2px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .mini-bar:hover {
-      background: linear-gradient(to top, var(--buffalo-orange), var(--buffalo-gold));
-      transform: scaleY(1.1);
-    }
   </style>
 </head>
 <body>
-  <!-- EPIC BUFFALO HERO -->
   <div class="buffalo-hero"></div>
   <div class="buffalo-skull"></div>
-  
-  <!-- MYSTICAL PARTICLES -->
   <div class="particles" id="particles"></div>
-
-  <!-- STORAGE INDICATOR -->
-  <div class="storage-indicator" id="storageIndicator">
-    💾 Dados salvos automaticamente
-  </div>
+  <div class="storage-indicator" id="storageIndicator">💾 Dados salvos automaticamente</div>
 
   <div class="wrap">
     <div class="header">
@@ -824,7 +689,6 @@
     </div>
 
     <div class="grid">
-      <!-- STREAMER + PERÍODO -->
       <div class="card span4">
         <h2>⚔️ Streamer e Ciclo</h2>
         <div class="row">
@@ -842,7 +706,7 @@
           <button id="removeStreamerBtn" class="danger">⚔️ Remover Streamer</button>
         </div>
 
-        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin: 0;">
+        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:25px 0;">
 
         <div class="row">
           <div>
@@ -859,7 +723,6 @@
           </div>
         </div>
 
-        <!-- PONTUAÇÃO ANTERIOR MANUAL -->
         <div class="manual-section">
           <h3>🏆 Pontuação Anterior</h3>
           <label>Total de pontos anteriores</label>
@@ -873,37 +736,24 @@
         </div>
       </div>
 
-      <!-- NOVOS LANÇAMENTOS -->
       <div class="card span8">
         <h2>🔥 Novos Lançamentos (Poder Bruto)</h2>
 
         <label for="bulkInput">Cole aqui os lançamentos do streamer (logs do Discord/WhatsApp)</label>
         <textarea id="bulkInput" class="mono" placeholder="Exemplo épico (como o do Lince):
 
-Lince
-: https://vt.tiktok.com/ZS53TNw6w/
-[00:29]Lince
-: 1 vídeo tik tok
-[00:29]Lince
-: https://vt.tiktok.com/ZSHoreBgvRj7t-xAR4x/
-[00:29]Lince
-: 1 story tik tok
-[00:30]Lince
-: 1 story Instagram
-[00:31]Lince
-: 1 reel Instagram
-[00:31]Lince
-: 1 POST Instagram
-[00:32]Lince
-: 1 vídeo YouTube
-[00:32]Lince
-: 1 short YouTube
-[00:32]Lince
-: 1 POST YouTube
-[00:33]Lince
-: 1 vídeo Kwai
-[00:34]Lince
-: 1 vídeo Kick
+Lince: https://vt.tiktok.com/ZS53TNw6w/
+[00:29]Lince: 1 vídeo tik tok
+[00:29]Lince: https://vt.tiktok.com/ZSHoreBgvRj7t-xAR4x/
+[00:29]Lince: 1 story tik tok
+[00:30]Lince: 1 story Instagram
+[00:31]Lince: 1 reel Instagram
+[00:31]Lince: 1 POST Instagram
+[00:32]Lince: 1 vídeo YouTube
+[00:32]Lince: 1 short YouTube
+[00:32]Lince: 1 POST YouTube
+[00:33]Lince: 1 vídeo Kwai
+[00:34]Lince: 1 vídeo Kick
 
 🔥 PODER ESPECIAL:
 live 1: 4h
@@ -911,11 +761,11 @@ views youtube: 1200
 raid twitch x2
 indicação x3"></textarea>
 
-        <button id="processBulkBtn" style="margin-top:20px;">
-          ⚡ PROCESSAR PODER DO BÚFALO ⚡
-        </button>
+        <div class="row" style="margin-top:20px;">
+          <button id="processBulkBtn">⚡ PROCESSAR TEXTO ⚡</button>
+          <button id="importJsonBtn" class="secondary">📥 IMPORTAR JSON</button>
+        </div>
 
-        <!-- ADIÇÃO MANUAL DE LIVES E VIEWS -->
         <div class="manual-section">
           <h3>📺 Adicionar Manualmente</h3>
           <div class="row-3">
@@ -946,15 +796,58 @@ indicação x3"></textarea>
         </div>
 
         <p class="help" style="margin-top:15px;">
-          <strong>🐃 O Búfalo Atlanta reconhece:</strong><br>
-          • <code>1 vídeo tik tok</code> • <code>1 story Instagram</code> • <code>1 POST YouTube</code><br>
-          • <code>live 1: 4h</code> • <code>views youtube: 1200</code> • <code>raid twitch x2</code><br>
-          • <strong>Views:</strong> -100: 2pts | +100: 4pts | +350: 6pts | +500: 8pts | +800: 10pts | +1000: 12pts | +2000: 24pts | +3000: 36pts<br>
-          URLs são ignoradas para pontuação, mas servem como referência épica.
+          <strong>🐃 O Búfalo Atlanta reconhece AGORA:</strong><br>
+          <strong>📝 TEXTO:</strong> <code>1 vídeo tik tok</code> • <code>1 story Instagram</code> • <code>live 1: 4h</code> • <code>views youtube: 1200</code><br>
+          <strong>📥 JSON:</strong> Cole dados estruturados e clique em "IMPORTAR JSON"<br>
+          <strong>💡 Exemplo JSON:</strong><br>
+          <code style="font-size:11px;">{"atividades":[{"data":"2026-01-15","categoria":"conteudo","plataforma":"tiktok","tipo":"stories"}]}</code><br>
+          <strong>Views:</strong> -100: 2pts | +100: 4pts | +350: 6pts | +500: 8pts | +800: 10pts | +1000: 12pts | +2000: 24pts | +3000: 36pts
+        </p>
+
+        <div class="manual-section" style="margin-top:20px;">
+          <h3>🔍 Debug - Atividades Reconhecidas</h3>
+          <textarea id="debugOutput" class="mono" style="min-height:120px;" placeholder="Aqui aparecerão as atividades reconhecidas pelo sistema..." readonly></textarea>
+        </div>
+      </div>
+
+      <div class="card span6">
+        <h2>🛡️ Auditoria de Guerra</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>📅 Data</th>
+              <th>⚔️ Categoria</th>
+              <th>🌐 Plataforma</th>
+              <th>🎯 Tipo</th>
+              <th>✅ Status</th>
+              <th>💎 Pontos</th>
+            </tr>
+          </thead>
+          <tbody id="auditBody"></tbody>
+        </table>
+        <div class="row" style="margin-top:20px;">
+          <button id="removeSelectedBtn" class="danger">🗑️ Remover Selecionados</button>
+          <button id="clearAllStreamerBtn" class="danger">💥 Limpar Tudo</button>
+        </div>
+        <p class="help">
+          <strong>🐃 Poder do Búfalo:</strong> Selecione itens marcando o checkbox para remover da batalha.
         </p>
       </div>
 
-      <!-- RESUMO ÉPICO -->
+      <div class="card span6">
+        <h2>📊 Desempenho Individual</h2>
+        
+        <div class="row">
+          <button id="showWeeklyPerformanceBtn" class="secondary">📊 Relatório Semanal</button>
+          <button id="showMonthlyPerformanceBtn" class="secondary">📈 Relatório Mensal</button>
+        </div>
+
+        <div style="margin-top:20px;">
+          <label>Histórico de Performance</label>
+          <textarea id="performanceOut" class="mono" placeholder="Clique em um botão acima para ver o desempenho individual..."></textarea>
+        </div>
+      </div>
+
       <div class="card span12">
         <h2>👑 Resumo Épico & Mensagem de Guerra</h2>
         <div class="kpis">
@@ -995,29 +888,19 @@ indicação x3"></textarea>
             <option value="🐃">🐃 Búfalo</option>
             <option value="🦬">🦬 Bisão</option>
             <option value="🐂">🐂 Touro</option>
-            <option value="🐄">🐄 Vaca</option>
-            <option value="🐎">🐎 Cavalo</option>
-            <option value="🦄">🦄 Unicórnio</option>
-            <option value="🐺">🐺 Lobo</option>
-            <option value="🦅">🦅 Águia</option>
-            <option value="🐻">🐻 Urso</option>
             <option value="🦁">🦁 Leão</option>
             <option value="🐯">🐯 Tigre</option>
-            <option value="🐆">🐆 Leopardo</option>
-            <option value="🐘">🐘 Elefante</option>
-            <option value="🦏">🦏 Rinoceronte</option>
-            <option value="🐊">🐊 Crocodilo</option>
+            <option value="🐺">🐺 Lobo</option>
+            <option value="🦅">🦅 Águia</option>
             <option value="🐉">🐉 Dragão</option>
-            <option value="🦈">🦈 Tubarão</option>
-            <option value="🐙">🐙 Polvo</option>
-            <option value="🦅">🦅 Falcão</option>
-            <option value="🐍">🐍 Cobra</option>
-            <option value="⚔️">⚔️ Espadas</option>
-            <option value="🔥">🔥 Fogo</option>
-            <option value="⚡">⚡ Raio</option>
             <option value="👑">👑 Coroa</option>
             <option value="💎">💎 Diamante</option>
             <option value="🏆">🏆 Troféu</option>
+            <option value="⚔️">⚔️ Espadas</option>
+            <option value="🛡️">🛡️ Escudo</option>
+            <option value="⚡">⚡ Raio</option>
+            <option value="🔥">🔥 Fogo</option>
+            <option value="💥">💥 Explosão</option>
           </select>
         </div>
 
@@ -1026,74 +909,13 @@ indicação x3"></textarea>
           <textarea id="msgOut" class="mono" placeholder="Clique em 'GERAR MENSAGEM ÉPICA' para invocar o poder do Búfalo..."></textarea>
         </div>
       </div>
-
-      <!-- AUDITORIA DE GUERRA -->
-      <div class="card span6">
-        <h2>🛡️ Auditoria de Guerra</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>📅 Data</th>
-              <th>⚔️ Categoria</th>
-              <th>🌐 Plataforma</th>
-              <th>🎯 Tipo</th>
-              <th>✅ Status</th>
-              <th>💎 Pontos</th>
-            </tr>
-          </thead>
-          <tbody id="auditBody"></tbody>
-        </table>
-        <div class="row" style="margin-top:20px;">
-          <button id="removeSelectedBtn" class="danger">🗑️ Remover Selecionados</button>
-          <button id="clearAllStreamerBtn" class="danger">💥 Limpar Tudo</button>
-        </div>
-        <p class="help">
-          <strong>🐃 Poder do Búfalo:</strong> Selecione itens marcando o checkbox para remover da batalha.
-        </p>
-      </div>
-
-      <!-- DESEMPENHO INDIVIDUAL -->
-      <div class="card span6">
-        <h2>📊 Desempenho Individual</h2>
-        
-        <!-- MINI CHARTS -->
-        <div class="row">
-          <div class="mini-chart">
-            <h4>📊 Performance Semanal</h4>
-            <div class="mini-chart-container" id="weeklyMiniChart"></div>
-          </div>
-          <div class="mini-chart">
-            <h4>📈 Performance Mensal</h4>
-            <div class="mini-chart-container" id="monthlyMiniChart"></div>
-          </div>
-        </div>
-
-        <div class="row">
-          <button id="showWeeklyPerformanceBtn" class="secondary">📊 Relatório Semanal</button>
-          <button id="showMonthlyPerformanceBtn" class="secondary">📈 Relatório Mensal</button>
-        </div>
-        
-        <div class="performance-chart" id="performanceChart" style="display:none;">
-          <h3 style="margin: 0; color:var(--buffalo-orange); font-size:14px;">📈 Evolução de Performance</h3>
-          <div id="chartContainer"></div>
-        </div>
-
-        <div style="margin-top:20px;">
-          <label>Histórico de Performance</label>
-          <textarea id="performanceOut" class="mono" placeholder="Clique em um botão acima para ver o desempenho individual..."></textarea>
-        </div>
-      </div>
     </div>
   </div>
 
   <script>
-    // =========================
-    // REWARDS SYSTEM
-    // =========================
+    // Sistema de recompensas
     const TABELA_RESGATES = {
-      "PIX": [
-        { nome: "200 reais no pix", pontos: 600, limite: "apenas um resgate por mês" }
-      ],
+      "PIX": [{ nome: "200 reais no pix", pontos: 600, limite: "apenas um resgate por mês" }],
       "CAIXAS": [
         { nome: "1 Caixa de Armas Inicial", pontos: 20 },
         { nome: "1 Caixa de Armas Mediana", pontos: 50 },
@@ -1143,41 +965,30 @@ indicação x3"></textarea>
 
     function getAvailableRewards(totalPontos) {
       const available = [];
-      
       Object.keys(TABELA_RESGATES).forEach(categoria => {
         TABELA_RESGATES[categoria].forEach(item => {
           if (totalPontos >= item.pontos) {
-            available.push({
-              ...item,
-              categoria
-            });
+            available.push({ ...item, categoria });
           }
         });
       });
-      
-      // Sort by points (highest first) and return top 3
       return available.sort((a, b) => b.pontos - a.pontos).slice(0, 3);
     }
 
     function getRewardsText(totalPontos) {
       const rewards = getAvailableRewards(totalPontos);
-      
       if (rewards.length === 0) {
         return "Continue acumulando pontos para desbloquear resgates! 🎯";
       }
-      
-      let text = "🎁 **PARABÉNS! VOCÊ JÁ PODE RESGATAR:**\n\n";
+      let text = "🎁 **PARABÉNS! VOCÊ JÁ PODE RESGATAR:**\\n\\n";
       rewards.forEach((reward, idx) => {
-        text += `**${idx + 1}.** ${reward.nome} - **${reward.pontos} pontos** ✅\n`;
+        text += `**${idx + 1}.** ${reward.nome} - **${reward.pontos} pontos** ✅\\n`;
       });
-      text += "\n*💎 Entre em contato com a administração para efetuar seus resgates!*\n";
-      
+      text += "\\n*💎 Entre em contato com a administração para efetuar seus resgates!*\\n";
       return text;
     }
 
-    // =========================
-    // ENHANCED DATA SYSTEM
-    // =========================
+    // Sistema de dados
     const STORAGE_KEY = "atlanta_buffalo_v8";
     const BACKUP_KEY = "atlanta_buffalo_backup_v8";
 
@@ -1187,11 +998,7 @@ indicação x3"></textarea>
         localStorage.setItem(STORAGE_KEY, compressedState);
         
         if (!saveStateEnhanced.lastBackup || Date.now() - saveStateEnhanced.lastBackup > 30000) {
-          const backup = {
-            data: state,
-            timestamp: Date.now(),
-            version: "8.0"
-          };
+          const backup = { data: state, timestamp: Date.now(), version: "8.0" };
           localStorage.setItem(BACKUP_KEY, JSON.stringify(backup));
           saveStateEnhanced.lastBackup = Date.now();
         }
@@ -1222,18 +1029,9 @@ indicação x3"></textarea>
         }
         
         return {
-          streamers: {
-            "Lince": { pontosAnteriores: 0, atividades: [] }
-          },
-          settings: {
-            theme: "dark",
-            autoSave: true,
-            quality: "ultra"
-          },
-          stats: {
-            totalSessions: 0,
-            lastAccess: Date.now()
-          }
+          streamers: { "Lince": { pontosAnteriores: 0, atividades: [] } },
+          settings: { theme: "dark", autoSave: true, quality: "ultra" },
+          stats: { totalSessions: 0, lastAccess: Date.now() }
         };
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
@@ -1255,9 +1053,7 @@ indicação x3"></textarea>
       }, 3000);
     }
 
-    // =========================
-    // ENHANCED RULES SYSTEM
-    // =========================
+    // Sistema de regras
     const REGRAS_PONTOS = {
       tiktok: { video:{pontos:3,limiteDia:1}, stories:{pontos:3,limiteDia:1} },
       kwai: { video:{pontos:3,limiteDia:1}, stories:{pontos:3,limiteDia:1} },
@@ -1296,34 +1092,21 @@ indicação x3"></textarea>
     function nomeTipo(plataforma, tipo){
       const t = normalizarTipo(plataforma, tipo);
       const map = {
-        video: "Vídeo",
-        stories: "Stories",
-        feed: "Postagem no feed",
-        reels: "Reels",
-        shorts: "Shorts",
-        raid: "Raid",
-        indicacao: "Indicação",
-        post: "Post"
+        video: "Vídeo", stories: "Stories", feed: "Postagem no feed",
+        reels: "Reels", shorts: "Shorts", raid: "Raid", indicacao: "Indicação", post: "Post"
       };
       return map[t] || tipo;
     }
 
     function nomePlataforma(p){
       const map = { 
-        tiktok:"TikTok", 
-        kwai:"Kwai", 
-        instagram:"Instagram", 
-        youtube:"YouTube", 
-        twitch:"Twitch", 
-        kick:"Kick", 
-        codigo:"Código" 
+        tiktok:"TikTok", kwai:"Kwai", instagram:"Instagram", 
+        youtube:"YouTube", twitch:"Twitch", kick:"Kick", codigo:"Código" 
       };
       return map[p] || p;
     }
 
-    // =========================
-    // DATE FUNCTIONS
-    // =========================
+    // Funções de data
     const dateCache = new Map();
 
     function toDateOnlyISO(d) {
@@ -1395,14 +1178,10 @@ indicação x3"></textarea>
       return atividades.filter(a => a.data >= iniISO && a.data <= fimISO);
     }
 
-    // =========================
-    // MAIN STATE
-    // =========================
+    // Estado principal
     let state = loadStateEnhanced();
 
-    // =========================
-    // CALCULATION FUNCTIONS
-    // =========================
+    // Cache de cálculos
     const calculationCache = new Map();
 
     function calcularPeriodoStreamer(streamer, periodo, refDateISO){
@@ -1436,7 +1215,6 @@ indicação x3"></textarea>
         const tipoOriginal = a.tipo || "-";
         const tipo = normalizarTipo(plataforma, tipoOriginal);
 
-        // LIVE
         if (categoria === "live"){
           const pts = calcularPontosLive(Number(a.horas));
           if (pts > 0){
@@ -1449,7 +1227,6 @@ indicação x3"></textarea>
           continue;
         }
 
-        // VIEWS
         if (categoria === "views"){
           if (tipo === "reels" || tipo === "shorts"){
             auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (views não contam p/ reels/shorts)", pontos:0 });
@@ -1466,7 +1243,6 @@ indicação x3"></textarea>
           continue;
         }
 
-        // RAID
         if (categoria === "raid"){
           const regra = REGRAS_PONTOS.twitch.raid;
           pontosAcoes += regra.pontos;
@@ -1475,7 +1251,6 @@ indicação x3"></textarea>
           continue;
         }
 
-        // INDICAÇÃO
         if (categoria === "codigo"){
           const regra = REGRAS_PONTOS.codigo.indicacao;
           const qtd = Number(a.quantidade || 1);
@@ -1486,7 +1261,6 @@ indicação x3"></textarea>
           continue;
         }
 
-        // CONTEÚDO
         const regra = REGRAS_PONTOS[plataforma]?.[tipo];
         if (!regra){
           auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (sem regra)", pontos:0 });
@@ -1515,15 +1289,10 @@ indicação x3"></textarea>
       const total = (s.pontosAnteriores || 0) + pontosPeriodo;
 
       const result = {
-        atividadesPeriodo,
-        auditoria,
+        atividadesPeriodo, auditoria,
         pontosConteudo, pontosLives, pontosViews, pontosAcoes,
-        pontosPeriodo, total,
-        conteudosPontuados,
-        gruposConteudo,
-        livesDetalhe,
-        viewsDetalhe,
-        acoesDetalhe
+        pontosPeriodo, total, conteudosPontuados,
+        gruposConteudo, livesDetalhe, viewsDetalhe, acoesDetalhe
       };
       
       calculationCache.set(cacheKey, result);
@@ -1536,9 +1305,7 @@ indicação x3"></textarea>
       return result;
     }
 
-    // =========================
-    // PARSER FUNCTIONS
-    // =========================
+    // Parser de texto
     function uuid(){
       return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
     }
@@ -1550,89 +1317,160 @@ indicação x3"></textarea>
       for (const linha of linhas) {
         const l = linha.toLowerCase();
 
-        // LIVE (ex: "live 1: 4h")
-        let m = l.match(/live\s*\d*[:\-]?\s*(\d+(?:\.\d+)?)h/);
+        let m = l.match(/(?:live\s*\d*[:\-]?\s*(\d+(?:\.\d+)?)h|(\d+(?:\.\d+)?)h?\s*live)/);
         if (m) {
+          const horas = Number(m[1] || m[2]);
           atividades.push({
-            id: uuid(),
-            data: dataISO,
-            categoria: "live",
-            plataforma: "twitch",
-            tipo: "live",
-            horas: Number(m[1])
+            id: uuid(), data: dataISO, categoria: "live",
+            plataforma: "twitch", tipo: "live", horas: horas
           });
           continue;
         }
 
-        // VIEWS (ex: "views youtube: 1200")
-        m = l.match(/views?\s*(youtube|tiktok|kwai|instagram|kick)?[:\-]?\s*(\d+)/);
+        m = l.match(/(?:views?\s*(youtube|tiktok|kwai|instagram|kick)?\s*[:\-]?\s*(\d+)|(\d+)\s*views?\s*(youtube|tiktok|kwai|instagram|kick)?|(youtube|tiktok|kwai|instagram|kick)\s*views?\s*[:\-]?\s*(\d+))/);
         if (m) {
+          const views = Number(m[2] || m[3] || m[6]);
+          const plataforma = (m[1] || m[4] || m[5] || "youtube").toLowerCase();
           atividades.push({
-            id: uuid(),
-            data: dataISO,
-            categoria: "views",
-            plataforma: (m[1] || "youtube").toLowerCase(),
-            tipo: "video",
-            views: Number(m[2])
+            id: uuid(), data: dataISO, categoria: "views",
+            plataforma: plataforma, tipo: "video", views: views
           });
           continue;
         }
 
-        // RAID (ex: "raid twitch x1")
-        m = l.match(/raid\s*(twitch)?\s*x?(\d+)?/);
+        m = l.match(/(?:raid\s*(twitch)?\s*x?(\d+)?|(\d+)\s*raids?)/);
         if (m) {
-          const qtd = Number(m[2] || 1);
+          const qtd = Number(m[2] || m[3] || 1);
           for (let i = 0; i < qtd; i++) {
             atividades.push({
-              id: uuid(),
-              data: dataISO,
-              categoria: "raid",
-              plataforma: "twitch",
-              tipo: "raid"
+              id: uuid(), data: dataISO, categoria: "raid",
+              plataforma: "twitch", tipo: "raid"
             });
           }
           continue;
         }
 
-        // INDICAÇÃO (ex: "indicação x3")
-        m = l.match(/indica[cç][aã]o\s*x?(\d+)/);
+        m = l.match(/(?:indica[cç][aã]o\s*x?(\d+)|(\d+)\s*indica[cç][õo]es?|referrals?\s*x?(\d+)|(\d+)\s*referrals?)/);
         if (m) {
+          const qtd = Number(m[1] || m[2] || m[3] || m[4]);
           atividades.push({
-            id: uuid(),
-            data: dataISO,
-            categoria: "codigo",
-            plataforma: "codigo",
-            tipo: "indicacao",
-            quantidade: Number(m[1])
+            id: uuid(), data: dataISO, categoria: "codigo",
+            plataforma: "codigo", tipo: "indicacao", quantidade: qtd
           });
           continue;
         }
 
-        // CONTEÚDO (ex: "1 vídeo tik tok", "1 story Instagram", etc.)
-        m = l.match(/(\d+)\s*(vídeo|video|story|stories|reel|short|post)\s*(tik\s*tok|tiktok|instagram|youtube|kwai|kick)/);
+        m = l.match(/(?:(\d+)\s*)?(vídeo|video|story|stories|reel|reels|short|shorts|post|feed)\s*(tik\s*tok|tiktok|instagram|youtube|kwai|kick)|(?:(\d+)\s*)?(tik\s*tok|tiktok|instagram|youtube|kwai|kick)\s*(vídeo|video|story|stories|reel|reels|short|shorts|post|feed)/);
         if (m) {
-          const qtd = Number(m[1]);
-          let tipo = m[2];
-          let plataforma = m[3];
+          const qtd = Number(m[1] || m[4] || 1);
+          let tipo = m[2] || m[6];
+          let plataforma = m[3] || m[5];
 
-          plataforma = plataforma.replace(/\s+/g,"");
-          if (plataforma === "tiktok" || plataforma === "tiktk" || plataforma === "tikt") plataforma = "tiktok";
-          if (plataforma === "tikTok") plataforma = "tiktok";
-          if (plataforma === "tik tok") plataforma = "tiktok";
+          plataforma = plataforma.replace(/\s+/g,"").toLowerCase();
+          if (plataforma.includes("tik")) plataforma = "tiktok";
 
-          tipo = tipo.replace("vídeo","video");
+          tipo = tipo.replace("vídeo","video").toLowerCase();
           if (tipo === "story") tipo = "stories";
           if (tipo === "reel") tipo = "reels";
           if (tipo === "short") tipo = "shorts";
-          if (tipo === "post") tipo = (plataforma === "instagram" ? "feed" : "post");
+          if (tipo === "post" || tipo === "feed") {
+            tipo = (plataforma === "instagram" ? "feed" : "post");
+          }
 
           for (let i = 0; i < qtd; i++) {
             atividades.push({
-              id: uuid(),
-              data: dataISO,
-              categoria: "conteudo",
-              plataforma,
-              tipo
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma, tipo
+            });
+          }
+          continue;
+        }
+
+        m = l.match(/^(tik\s*tok|tiktok|instagram|youtube|kwai|kick)(?:\s*(\d+))?$/);
+        if (m) {
+          const qtd = Number(m[2] || 1);
+          let plataforma = m[1].replace(/\s+/g,"").toLowerCase();
+          if (plataforma.includes("tik")) plataforma = "tiktok";
+          
+          let tipo = "video";
+          if (plataforma === "instagram") tipo = "feed";
+          
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma, tipo
+            });
+          }
+          continue;
+        }
+
+        m = l.match(/^(\d+)\s+(tik\s*tok|tiktok|instagram|youtube|kwai|kick)$/);
+        if (m) {
+          const qtd = Number(m[1]);
+          let plataforma = m[2].replace(/\s+/g,"").toLowerCase();
+          if (plataforma.includes("tik")) plataforma = "tiktok";
+          
+          let tipo = "video";
+          if (plataforma === "instagram") tipo = "feed";
+          
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma, tipo
+            });
+          }
+          continue;
+        }
+
+        if (l.match(/^[a-zA-Z0-9_]+$/)) continue;
+        if (l.match(/^\[\d{2}:\d{2}\]/) || l.match(/^\d{2}:\d{2}/)) continue;
+        if (l.match(/^https?:\/\//) || l.match(/^www\./) || l.includes('.com') || l.includes('.br')) continue;
+
+        m = l.match(/(?:\[\d{2}:\d{2}\])?\s*[a-zA-Z0-9_]+\s*:\s*(.+)/);
+        if (m) {
+          const subAtividades = parseBulkInput(m[1], dataISO);
+          atividades.push(...subAtividades);
+          continue;
+        }
+
+        m = l.match(/(?:(\d+)\s*)?post\s*(tik\s*tok|tiktok|instagram|youtube|kwai|kick)|(?:(\d+)\s*)?(tik\s*tok|tiktok|instagram|youtube|kwai|kick)\s*post/);
+        if (m) {
+          const qtd = Number(m[1] || m[3] || 1);
+          let plataforma = (m[2] || m[4]).replace(/\s+/g,"").toLowerCase();
+          if (plataforma.includes("tik")) plataforma = "tiktok";
+          
+          const tipo = (plataforma === "instagram" ? "feed" : "post");
+          
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma, tipo
+            });
+          }
+          continue;
+        }
+
+        m = l.match(/(?:(\d+)\s*)?reels?\s*(instagram)|instagram\s*reels?\s*(?:(\d+))?/);
+        if (m) {
+          const qtd = Number(m[1] || m[3] || 1);
+          
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "instagram", tipo: "reels"
+            });
+          }
+          continue;
+        }
+
+        m = l.match(/(?:(\d+)\s*)?shorts?\s*(youtube)|youtube\s*shorts?\s*(?:(\d+))?/);
+        if (m) {
+          const qtd = Number(m[1] || m[3] || 1);
+          
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: "youtube", tipo: "shorts"
             });
           }
           continue;
@@ -1642,9 +1480,7 @@ indicação x3"></textarea>
       return atividades;
     }
 
-    // =========================
-    // DISCORD MESSAGE GENERATOR
-    // =========================
+    // Gerador de mensagem Discord
     function gerarMensagemDiscord(streamer, periodo, refDateISO, r){
       const linhas = [];
       const emoji = document.getElementById("emojiSelect").value;
@@ -1698,7 +1534,6 @@ indicação x3"></textarea>
       linhas.push(`🎯 **Total de Publicações:** **${r.conteudosPontuados}**`);
       linhas.push(``);
 
-      // SEÇÃO DE RESGATES INTEGRADA
       linhas.push(`---`);
       linhas.push(rewardsText);
       linhas.push(``);
@@ -1708,9 +1543,7 @@ indicação x3"></textarea>
       return linhas.join("\n");
     }
 
-    // =========================
-    // PERFORMANCE TRACKING FUNCTIONS
-    // =========================
+    // Funções de performance
     function calcularDesempenhoIndividual(streamer, mode) {
       const s = state.streamers[streamer];
       if (!s || !s.atividades.length) return [];
@@ -1772,12 +1605,8 @@ indicação x3"></textarea>
 
         const pontosPeriodo = pontosConteudo + pontosLives + pontosViews + pontosAcoes;
         results.push({
-          periodo,
-          pontosPeriodo,
-          pontosConteudo,
-          pontosLives,
-          pontosViews,
-          pontosAcoes,
+          periodo, pontosPeriodo, pontosConteudo,
+          pontosLives, pontosViews, pontosAcoes,
           atividades: atividades.length
         });
       }
@@ -1822,67 +1651,7 @@ indicação x3"></textarea>
       return lines.join("\n");
     }
 
-    function createPerformanceChart(results) {
-      const container = document.getElementById('chartContainer');
-      container.innerHTML = '';
-      
-      if (!results.length) return;
-
-      const maxPontos = Math.max(...results.map(r => r.pontosPeriodo));
-      
-      results.forEach(r => {
-        const barContainer = document.createElement('div');
-        barContainer.className = 'chart-bar';
-        
-        const label = document.createElement('div');
-        label.className = 'chart-label';
-        label.textContent = r.periodo.length > 10 ? r.periodo.substring(0, 10) + '...' : r.periodo;
-        
-        const progress = document.createElement('div');
-        progress.className = 'chart-progress';
-        
-        const fill = document.createElement('div');
-        fill.className = 'chart-fill';
-        const percentage = maxPontos > 0 ? (r.pontosPeriodo / maxPontos) * 100 : 0;
-        fill.style.width = percentage + '%';
-        
-        const value = document.createElement('div');
-        value.className = 'chart-value';
-        value.textContent = r.pontosPeriodo + ' pts';
-        
-        progress.appendChild(fill);
-        barContainer.appendChild(label);
-        barContainer.appendChild(progress);
-        barContainer.appendChild(value);
-        container.appendChild(barContainer);
-      });
-    }
-
-    function createMiniChart(containerId, results) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = '';
-      
-      if (!results.length) {
-        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:11px;">Sem dados</div>';
-        return;
-      }
-
-      const maxPontos = Math.max(...results.map(r => r.pontosPeriodo));
-      const recentResults = results.slice(-10);
-      
-      recentResults.forEach(r => {
-        const bar = document.createElement('div');
-        bar.className = 'mini-bar';
-        const height = maxPontos > 0 ? (r.pontosPeriodo / maxPontos) * 100 : 0;
-        bar.style.height = Math.max(height, 5) + '%';
-        bar.title = `${r.periodo}: ${r.pontosPeriodo} pts`;
-        container.appendChild(bar);
-      });
-    }
-
-    // =========================
-    // PARTICLE SYSTEM
-    // =========================
+    // Sistema de partículas
     function createParticles() {
       const container = document.getElementById('particles');
       const particleCount = 20;
@@ -1897,9 +1666,7 @@ indicação x3"></textarea>
       }
     }
 
-    // =========================
-    // UI FUNCTIONS
-    // =========================
+    // Funções de UI
     const $ = (id) => document.getElementById(id);
 
     function debounce(func, wait) {
@@ -1952,11 +1719,6 @@ indicação x3"></textarea>
       $("kViews").textContent = r.pontosViews;
       $("kAcoes").textContent = r.pontosAcoes;
 
-      const weeklyResults = calcularDesempenhoIndividual(streamer, "semanal");
-      const monthlyResults = calcularDesempenhoIndividual(streamer, "mensal");
-      createMiniChart("weeklyMiniChart", weeklyResults);
-      createMiniChart("monthlyMiniChart", monthlyResults);
-
       const tb = $("auditBody");
       tb.innerHTML = "";
       
@@ -1982,9 +1744,7 @@ indicação x3"></textarea>
       tb.appendChild(fragment);
     }, 100);
 
-    // =========================
-    // EVENT HANDLERS
-    // =========================
+    // Event handlers
     $("addStreamerBtn").addEventListener("click", () => {
       const name = $("newStreamer").value.trim();
       if (!name) return;
@@ -2040,12 +1800,8 @@ indicação x3"></textarea>
       }
       
       const novaAtividade = {
-        id: uuid(),
-        data: dataISO,
-        categoria: "live",
-        plataforma: plataforma,
-        tipo: "live",
-        horas: horas
+        id: uuid(), data: dataISO, categoria: "live",
+        plataforma: plataforma, tipo: "live", horas: horas
       };
       
       state.streamers[streamer].atividades.push(novaAtividade);
@@ -2068,12 +1824,8 @@ indicação x3"></textarea>
       }
       
       const novaAtividade = {
-        id: uuid(),
-        data: dataISO,
-        categoria: "views",
-        plataforma: plataforma,
-        tipo: "video",
-        views: views
+        id: uuid(), data: dataISO, categoria: "views",
+        plataforma: plataforma, tipo: "video", views: views
       };
       
       state.streamers[streamer].atividades.push(novaAtividade);
@@ -2098,6 +1850,43 @@ indicação x3"></textarea>
       }
       
       const novasAtividades = parseBulkInput(texto, dataISO);
+      
+      let debugText = `🔍 ANÁLISE DO PARSING (${novasAtividades.length} atividades reconhecidas):\n\n`;
+      
+      if (novasAtividades.length === 0) {
+        debugText += "❌ NENHUMA ATIVIDADE RECONHECIDA!\n\n";
+        debugText += "📝 LINHAS ANALISADAS:\n";
+        const linhas = texto.split("\n").map(l => l.trim()).filter(Boolean);
+        linhas.forEach((linha, idx) => {
+          debugText += `${idx + 1}. "${linha}"\n`;
+        });
+        debugText += "\n💡 DICA: Verifique se o formato está correto. Exemplos:\n";
+        debugText += "• 1 vídeo tik tok\n• 1 story Instagram\n• live 1: 4h\n• views youtube: 1200\n";
+      } else {
+        const grupos = {};
+        novasAtividades.forEach(a => {
+          const key = `${a.categoria}-${a.plataforma}-${a.tipo}`;
+          if (!grupos[key]) grupos[key] = [];
+          grupos[key].push(a);
+        });
+        
+        Object.keys(grupos).forEach(key => {
+          const ativs = grupos[key];
+          const [categoria, plataforma, tipo] = key.split('-');
+          debugText += `✅ ${categoria.toUpperCase()}: ${nomePlataforma(plataforma)} - ${nomeTipo(plataforma, tipo)} (${ativs.length}x)\n`;
+          
+          if (categoria === 'live') {
+            ativs.forEach(a => debugText += `   └ ${a.horas}h\n`);
+          } else if (categoria === 'views') {
+            ativs.forEach(a => debugText += `   └ ${a.views} views\n`);
+          } else if (categoria === 'codigo') {
+            ativs.forEach(a => debugText += `   └ x${a.quantidade || 1}\n`);
+          }
+        });
+      }
+      
+      $("debugOutput").value = debugText;
+      
       if (novasAtividades.length === 0) {
         showStorageIndicator("⚠️ Nenhuma atividade reconhecida!", true);
         return;
@@ -2109,6 +1898,102 @@ indicação x3"></textarea>
       debouncedRender();
       showStorageIndicator(`⚡ ${novasAtividades.length} atividades processadas!`);
       calculationCache.clear();
+    });
+
+    $("importJsonBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const texto = $("bulkInput").value;
+      
+      if (!texto.trim()) {
+        showStorageIndicator("⚠️ Cole os dados JSON primeiro!", true);
+        return;
+      }
+      
+      try {
+        let jsonData;
+        
+        if (texto.trim().startsWith('{') || texto.trim().startsWith('[')) {
+          jsonData = JSON.parse(texto);
+        } else {
+          showStorageIndicator("⚠️ Formato JSON inválido!", true);
+          return;
+        }
+        
+        let novasAtividades = [];
+        
+        if (jsonData.atividades && Array.isArray(jsonData.atividades)) {
+          novasAtividades = jsonData.atividades.map(a => ({
+            id: uuid(),
+            data: a.data || $("refDate").value,
+            categoria: a.categoria || "conteudo",
+            plataforma: a.plataforma || "desconhecida",
+            tipo: a.tipo || "video",
+            horas: a.horas,
+            views: a.views,
+            quantidade: a.quantidade,
+            url: a.url
+          }));
+        } else if (Array.isArray(jsonData)) {
+          novasAtividades = jsonData.map(a => ({
+            id: uuid(),
+            data: a.data || $("refDate").value,
+            categoria: a.categoria || "conteudo",
+            plataforma: a.plataforma || "desconhecida",
+            tipo: a.tipo || "video",
+            horas: a.horas,
+            views: a.views,
+            quantidade: a.quantidade,
+            url: a.url
+          }));
+        }
+        
+        let debugText = `📥 IMPORTAÇÃO JSON (${novasAtividades.length} atividades importadas):\n\n`;
+        
+        if (novasAtividades.length === 0) {
+          debugText += "❌ NENHUMA ATIVIDADE ENCONTRADA NO JSON!\n\n";
+          debugText += "💡 FORMATO ESPERADO:\n";
+          debugText += '{\n  "atividades": [\n    {\n      "data": "2026-01-15",\n      "categoria": "conteudo",\n      "plataforma": "tiktok",\n      "tipo": "stories"\n    }\n  ]\n}';
+        } else {
+          const grupos = {};
+          novasAtividades.forEach(a => {
+            const key = `${a.categoria}-${a.plataforma}-${a.tipo}`;
+            if (!grupos[key]) grupos[key] = [];
+            grupos[key].push(a);
+          });
+          
+          Object.keys(grupos).forEach(key => {
+            const ativs = grupos[key];
+            const [categoria, plataforma, tipo] = key.split('-');
+            debugText += `✅ ${categoria.toUpperCase()}: ${nomePlataforma(plataforma)} - ${nomeTipo(plataforma, tipo)} (${ativs.length}x)\n`;
+            
+            if (categoria === 'live') {
+              ativs.forEach(a => debugText += `   └ ${a.horas}h\n`);
+            } else if (categoria === 'views') {
+              ativs.forEach(a => debugText += `   └ ${a.views} views\n`);
+            } else if (categoria === 'codigo') {
+              ativs.forEach(a => debugText += `   └ x${a.quantidade || 1}\n`);
+            }
+          });
+        }
+        
+        $("debugOutput").value = debugText;
+        
+        if (novasAtividades.length === 0) {
+          showStorageIndicator("⚠️ Nenhuma atividade encontrada no JSON!", true);
+          return;
+        }
+        
+        state.streamers[streamer].atividades.push(...novasAtividades);
+        saveStateEnhanced(state);
+        $("bulkInput").value = "";
+        debouncedRender();
+        showStorageIndicator(`📥 ${novasAtividades.length} atividades importadas do JSON!`);
+        calculationCache.clear();
+        
+      } catch (error) {
+        showStorageIndicator("❌ Erro ao processar JSON: " + error.message, true);
+        $("debugOutput").value = `❌ ERRO NO JSON:\n\n${error.message}\n\n💡 VERIFIQUE:\n• Vírgulas e chaves corretas\n• Aspas duplas nos textos\n• Estrutura válida do JSON`;
+      }
     });
 
     $("generateMsgBtn").addEventListener("click", () => {
@@ -2167,11 +2052,6 @@ indicação x3"></textarea>
       const streamer = currentStreamer();
       const results = calcularDesempenhoIndividual(streamer, "semanal");
       $("performanceOut").value = formatDesempenhoText(results, "Semanal", streamer);
-      
-      const chart = $("performanceChart");
-      chart.style.display = "block";
-      createPerformanceChart(results);
-      
       showStorageIndicator("📊 Desempenho semanal carregado!");
     });
 
@@ -2179,17 +2059,10 @@ indicação x3"></textarea>
       const streamer = currentStreamer();
       const results = calcularDesempenhoIndividual(streamer, "mensal");
       $("performanceOut").value = formatDesempenhoText(results, "Mensal", streamer);
-      
-      const chart = $("performanceChart");
-      chart.style.display = "block";
-      createPerformanceChart(results);
-      
       showStorageIndicator("📈 Desempenho mensal carregado!");
     });
 
-    // =========================
-    // INITIALIZATION
-    // =========================
+    // Inicialização
     document.addEventListener('DOMContentLoaded', function() {
       createParticles();
       
@@ -2202,41 +2075,10 @@ indicação x3"></textarea>
       if (!state.stats) state.stats = {};
       state.stats.totalSessions = (state.stats.totalSessions || 0) + 1;
       state.stats.lastAccess = Date.now();
-      
-      if (!state.settings) state.settings = {};
-      state.settings.quality = "ultra";
-      
       saveStateEnhanced(state);
       
-      setTimeout(() => {
-        showStorageIndicator("🐃 Bem-vindo à Arena Atlanta!");
-      }, 1000);
-      
-      const cards = document.querySelectorAll('.card');
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.style.animation = 'shimmer 1.5s ease-out';
-        }, index * 150);
-      });
+      showStorageIndicator("🐃 Sistema Atlanta carregado!");
     });
-
-    let lastSave = 0;
-    window.addEventListener('beforeunload', () => {
-      const now = Date.now();
-      if (now - lastSave > 5000) {
-        saveStateEnhanced(state);
-        lastSave = now;
-      }
-    });
-
-    setInterval(() => {
-      if (calculationCache.size > 50) {
-        calculationCache.clear();
-      }
-      if (dateCache.size > 100) {
-        dateCache.clear();
-      }
-    }, 300000);
   </script>
 </body>
 </html>
