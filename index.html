@@ -1,0 +1,2448 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Agente de Pontuação — Streamers Atlanta</title>
+  <style>
+    :root{
+      --bg:#0a0a0a;
+      --card:#1a1a2e;
+      --text:#e8ecff;
+      --muted:#aab2d5;
+      --ok:#48d597;
+      --bad:#ff6b6b;
+      --accent:#7c5cff;
+      --border: rgba(255,255,255,.15);
+      --chip: rgba(255,255,255,.08);
+      --buffalo-red: #8b0000;
+      --buffalo-orange: #ff4500;
+      --buffalo-gold: #ffd700;
+    }
+    
+    *{ box-sizing:border-box; }
+    
+    body{
+      margin:0;
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+      color:var(--text);
+      background: 
+        linear-gradient(135deg, rgba(10,10,10,.98) 0%, rgba(26,26,46,.95) 50%, rgba(10,10,10,.98) 100%),
+        radial-gradient(ellipse at 20% 30%, rgba(139,0,0,.2) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(255,69,0,.15) 0%, transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* EPIC BUFFALO - HERO IMAGE WITH GPU ACCELERATION */
+    .buffalo-hero {
+      position: fixed;
+      top: 0;
+      right: -200px;
+      width: 800px;
+      height: 100vh;
+      background: url('https://cdnb.artstation.com/p/assets/images/images/046/242/845/large/lucas-sant-ana-tatonka.jpg?1648488053') center/cover no-repeat;
+      opacity: 0.25;
+      z-index: -2;
+      will-change: transform, opacity;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      filter: 
+        contrast(1.6) 
+        brightness(0.35) 
+        sepia(1) 
+        hue-rotate(320deg) 
+        saturate(1.8)
+        drop-shadow(0 0 20px rgba(139,0,0,.4));
+      animation: breathe 12s ease-in-out infinite;
+    }
+
+    .buffalo-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        linear-gradient(90deg, rgba(10,10,10,.9) 0%, rgba(10,10,10,.3) 40%, transparent 70%),
+        radial-gradient(circle at 60% 40%, rgba(139,0,0,.4) 0%, transparent 50%);
+      z-index: 1;
+    }
+
+    /* BUFFALO SKULL FLOATING */
+    .buffalo-skull {
+      position: fixed;
+      top: 80px;
+      right: 100px;
+      width: 300px;
+      height: 300px;
+      background: url('https://wallpapers.com/images/high/buffalo-skull-art-1d68pwdvaojagn6y.jpg') center/contain no-repeat;
+      opacity: 0.15;
+      z-index: -1;
+      will-change: transform;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      filter: 
+        contrast(2) 
+        brightness(0.3) 
+        sepia(1) 
+        hue-rotate(320deg) 
+        drop-shadow(0 0 30px rgba(139,0,0,.5));
+      animation: float 15s ease-in-out infinite;
+    }
+
+    /* OPTIMIZED PARTICLE SYSTEM */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      will-change: transform, opacity;
+      transform: translateZ(0);
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, rgba(139,0,0,.8), transparent);
+      animation: particle-float 8s linear infinite;
+    }
+
+    /* OPTIMIZED ANIMATIONS */
+    @keyframes breathe {
+      0%, 100% { transform: scale(1) translateX(0) translateZ(0); opacity: 0.25; }
+      50% { transform: scale(1.08) translateX(-30px) translateZ(0); opacity: 0.35; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg) translateZ(0); }
+      33% { transform: translateY(-20px) rotate(3deg) translateZ(0); }
+      66% { transform: translateY(15px) rotate(-2deg) translateZ(0); }
+    }
+
+    @keyframes particle-float {
+      0% { 
+        transform: translateY(100vh) translateX(0) scale(0) translateZ(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+        transform: scale(1) translateZ(0);
+      }
+      90% {
+        opacity: 1;
+      }
+      100% { 
+        transform: translateY(-100px) translateX(50px) scale(0) translateZ(0);
+        opacity: 0;
+      }
+    }
+
+    /* ENHANCED LAYOUT WITH GPU ACCELERATION */
+    .wrap{
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px 80px;
+      position: relative;
+      z-index: 1;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /* EPIC HEADER */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--buffalo-red), var(--buffalo-orange), var(--buffalo-red), transparent);
+      border-radius: 2px;
+      will-change: box-shadow;
+      box-shadow: 0 0 20px rgba(139,0,0,.5);
+    }
+
+    h1{
+      margin: 20px 0 15px;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--buffalo-gold), var(--buffalo-orange), var(--buffalo-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      will-change: transform;
+      text-shadow: 0 0 30px rgba(139,0,0,.3);
+    }
+
+    h1::after {
+      content: '🐃';
+      position: absolute;
+      right: -50px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      will-change: transform;
+      filter: drop-shadow(0 0 15px rgba(255,69,0,.8));
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    .sub{
+      margin: 0 auto 30px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 800px;
+      font-size: 16px;
+      text-shadow: 0 0 10px rgba(0,0,0,.8);
+    }
+
+    /* ENHANCED GRID */
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+
+    /* EPIC CARDS WITH PERFORMANCE OPTIMIZATION */
+    .card{
+      background: 
+        linear-gradient(135deg, rgba(26,26,46,.95) 0%, rgba(20,20,40,.98) 100%);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      border-radius: 20px;
+      padding: 25px;
+      backdrop-filter: blur(20px);
+      position: relative;
+      box-shadow: 
+        0 15px 35px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.1),
+        0 0 0 1px rgba(139,0,0,.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(139,0,0,.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255,69,0,.05) 0%, transparent 50%);
+      border-radius: 20px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .card:hover {
+      transform: translateY(-5px) translateZ(0);
+      box-shadow: 
+        0 25px 50px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 0 0 2px rgba(139,0,0,.4),
+        0 0 30px rgba(139,0,0,.2);
+    }
+
+    .card h2{
+      margin: 0 0 20px;
+      font-size: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--buffalo-orange);
+      position: relative;
+      text-shadow: 0 0 10px rgba(255,69,0,.3);
+    }
+
+    .card h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--buffalo-red), var(--buffalo-orange));
+      border-radius: 1px;
+    }
+
+    /* ENHANCED FORM ELEMENTS WITH BETTER UX */
+    label{
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea, button{
+      width: 100%;
+      background: 
+        linear-gradient(135deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 100%);
+      border: 2px solid rgba(139,0,0,.4);
+      color: var(--text);
+      padding: 15px;
+      border-radius: 12px;
+      outline: none;
+      font: inherit;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,.3);
+      will-change: transform, border-color, box-shadow;
+    }
+
+    /* IMPROVED SELECT DROPDOWN UX */
+    select {
+      background: 
+        linear-gradient(135deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,.1) 100%);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff4500' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    select option {
+      background: rgba(26,26,46,.98);
+      color: var(--text);
+      padding: 12px 15px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    select option:hover,
+    select option:focus,
+    select option:checked {
+      background: linear-gradient(135deg, rgba(255,69,0,.3) 0%, rgba(139,0,0,.2) 100%);
+      color: var(--buffalo-gold);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--buffalo-orange);
+      transform: translateY(-2px);
+      box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,.3),
+        0 0 0 3px rgba(255,69,0,.2),
+        0 0 20px rgba(255,69,0,.3);
+    }
+
+    textarea{ 
+      min-height: 180px; 
+      resize: vertical; 
+      font-family: 'Courier New', monospace;
+    }
+
+    /* EPIC BUTTONS WITH PERFORMANCE OPTIMIZATION */
+    button{
+      cursor: pointer;
+      border: 2px solid var(--buffalo-orange);
+      background: 
+        linear-gradient(135deg, rgba(255,69,0,.3) 0%, rgba(139,0,0,.2) 100%);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, border-color, background;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+      transition: left 0.6s ease;
+      will-change: left;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      border-color: var(--buffalo-gold);
+      background: 
+        linear-gradient(135deg, rgba(255,215,0,.4) 0%, rgba(255,69,0,.3) 100%);
+      transform: translateY(-3px);
+      box-shadow: 
+        0 8px 25px rgba(255,69,0,.3),
+        0 0 30px rgba(255,215,0,.2);
+    }
+
+    button.secondary{
+      border: 2px solid rgba(255,255,255,.3);
+      background: 
+        linear-gradient(135deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.05) 100%);
+    }
+
+    button.secondary:hover {
+      border-color: var(--buffalo-orange);
+      background: 
+        linear-gradient(135deg, rgba(255,69,0,.2) 0%, rgba(255,255,255,.1) 100%);
+    }
+
+    button.danger{
+      border: 2px solid #ff6b6b;
+      background: 
+        linear-gradient(135deg, rgba(255,107,107,.3) 0%, rgba(255,107,107,.15) 100%);
+    }
+
+    button.danger:hover {
+      border-color: #ff4757;
+      background: 
+        linear-gradient(135deg, rgba(255,71,87,.4) 0%, rgba(255,107,107,.25) 100%);
+      box-shadow: 
+        0 8px 25px rgba(255,107,107,.3),
+        0 0 30px rgba(255,71,87,.2);
+    }
+
+    /* ENHANCED LAYOUT CLASSES */
+    .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .row-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+    .span4{ grid-column: span 4; }
+    .span6{ grid-column: span 6; }
+    .span8{ grid-column: span 8; }
+    .span12{ grid-column: span 12; }
+
+    /* EPIC PILLS */
+    .pill{
+      display: inline-flex; 
+      align-items: center; 
+      gap: 8px;
+      padding: 8px 16px; 
+      border-radius: 25px; 
+      border: 2px solid rgba(139,0,0,.4);
+      background: 
+        linear-gradient(135deg, rgba(139,0,0,.15) 0%, rgba(255,69,0,.1) 100%);
+      color: var(--buffalo-orange); 
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 
+        0 4px 15px rgba(0,0,0,.2),
+        inset 0 1px 0 rgba(255,255,255,.1);
+    }
+
+    /* EPIC KPI CARDS */
+    .kpis{ 
+      display: flex; 
+      gap: 20px; 
+      flex-wrap: wrap; 
+      margin: 20px 0;
+    }
+
+    .kpi{
+      flex: 1 1 200px;
+      background: 
+        linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.04) 100%);
+      border: 2px solid rgba(139,0,0,.3);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 
+        0 8px 25px rgba(0,0,0,.3),
+        inset 0 1px 0 rgba(255,255,255,.1);
+      transition: all 0.3s ease;
+      will-change: transform, border-color, box-shadow;
+    }
+
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--buffalo-red), var(--buffalo-orange), var(--buffalo-gold));
+      border-radius: 16px 16px 0 0;
+    }
+
+    .kpi:hover {
+      transform: translateY(-3px);
+      border-color: var(--buffalo-orange);
+      box-shadow: 
+        0 15px 35px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 0 25px rgba(255,69,0,.2);
+    }
+
+    .kpi .k{ 
+      color: var(--muted); 
+      font-size: 12px; 
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi .v{ 
+      font-weight: 900; 
+      font-size: 28px;
+      background: linear-gradient(135deg, var(--buffalo-gold), var(--buffalo-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(255,69,0,.3);
+    }
+
+    /* EPIC TABLE */
+    table{ 
+      width: 100%; 
+      border-collapse: collapse; 
+      font-size: 13px;
+      background: rgba(0,0,0,.3);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,.3);
+    }
+
+    th, td{ 
+      padding: 15px 12px; 
+      border-bottom: 1px solid rgba(139,0,0,.2); 
+      vertical-align: top; 
+    }
+
+    th{ 
+      color: var(--buffalo-orange); 
+      text-align: left; 
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: 
+        linear-gradient(135deg, rgba(139,0,0,.2) 0%, rgba(255,69,0,.1) 100%);
+      font-size: 12px;
+    }
+
+    tr:hover {
+      background: rgba(139,0,0,.1);
+    }
+
+    .tag-ok{ 
+      color: var(--ok);
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(72,213,151,.4);
+    }
+
+    .tag-no{ 
+      color: var(--bad);
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(255,107,107,.4);
+    }
+
+    .help{ 
+      font-size: 13px; 
+      color: var(--muted); 
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    .mono{ 
+      font-family: 'Courier New', 'Monaco', monospace;
+      font-size: 13px;
+    }
+
+    /* ENHANCED SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,.3);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--buffalo-red), var(--buffalo-orange));
+      border-radius: 6px;
+      border: 2px solid rgba(0,0,0,.2);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, var(--buffalo-orange), var(--buffalo-gold));
+    }
+
+    /* PULSE ANIMATIONS */
+    @keyframes pulse {
+      0%, 100% { transform: translateY(-50%) scale(1) translateZ(0); }
+      50% { transform: translateY(-50%) scale(1.15) translateZ(0); }
+    }
+
+    /* RESPONSIVE DESIGN WITH PERFORMANCE OPTIMIZATION */
+    @media (max-width: 1200px){
+      .buffalo-hero {
+        right: -300px;
+        width: 600px;
+        opacity: 0.15;
+      }
+      
+      .buffalo-skull {
+        width: 200px;
+        height: 200px;
+        right: 50px;
+        top: 60px;
+      }
+    }
+
+    @media (max-width: 980px){
+      .span4, .span6, .span8{ grid-column: span 12; }
+      .row{ grid-template-columns: 1fr; }
+      .row-3{ grid-template-columns: 1fr; }
+      
+      .buffalo-hero {
+        display: none;
+      }
+      
+      .buffalo-skull {
+        width: 150px;
+        height: 150px;
+        right: 20px;
+        top: 40px;
+        opacity: 0.1;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      h1::after {
+        position: static;
+        margin-left: 15px;
+        font-size: 30px;
+      }
+
+      .wrap {
+        padding: 20px 15px 60px;
+      }
+
+      .grid {
+        gap: 15px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+
+    /* LOADING ANIMATIONS */
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    .loading {
+      background: linear-gradient(90deg, transparent, rgba(139,0,0,.2), transparent);
+      background-size: 200px 100%;
+      animation: shimmer 2s infinite;
+    }
+
+    /* ENHANCED DATA STORAGE INDICATOR */
+    .storage-indicator {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, rgba(139,0,0,.9), rgba(255,69,0,.8));
+      color: white;
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,.3);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .storage-indicator.show {
+      opacity: 1;
+    }
+
+    /* REDUCED MOTION SUPPORT */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* MANUAL INPUT SECTIONS */
+    .manual-section {
+      background: rgba(255,69,0,.05);
+      border: 1px solid rgba(255,69,0,.2);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .manual-section h3 {
+      margin: 0 0 15px;
+      font-size: 14px;
+      color: var(--buffalo-orange);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* PERFORMANCE CHART STYLES */
+    .performance-chart {
+      background: rgba(0,0,0,.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .chart-bar {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      gap: 15px;
+    }
+
+    .chart-label {
+      min-width: 80px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .chart-progress {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,.1);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .chart-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--buffalo-red), var(--buffalo-orange), var(--buffalo-gold));
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    .chart-value {
+      min-width: 60px;
+      text-align: right;
+      font-weight: 700;
+      color: var(--buffalo-orange);
+    }
+
+    /* MINI CHARTS */
+    .mini-chart {
+      background: rgba(0,0,0,.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      height: 120px;
+    }
+
+    .mini-chart h4 {
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: var(--buffalo-orange);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .mini-chart-container {
+      height: 80px;
+      display: flex;
+      align-items: end;
+      gap: 3px;
+      overflow-x: auto;
+    }
+
+    .mini-bar {
+      min-width: 8px;
+      background: linear-gradient(to top, var(--buffalo-red), var(--buffalo-orange));
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .mini-bar:hover {
+      background: linear-gradient(to top, var(--buffalo-orange), var(--buffalo-gold));
+      transform: scaleY(1.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- EPIC BUFFALO HERO -->
+  <div class="buffalo-hero"></div>
+  <div class="buffalo-skull"></div>
+  
+  <!-- MYSTICAL PARTICLES -->
+  <div class="particles" id="particles"></div>
+
+  <!-- STORAGE INDICATOR -->
+  <div class="storage-indicator" id="storageIndicator">
+    💾 Dados salvos automaticamente
+  </div>
+
+  <div class="wrap">
+    <div class="header">
+      <h1>Agente de Pontuação — Streamers Atlanta</h1>
+      <p class="sub">
+        Sistema épico de pontuação para streamers com o poder do Búfalo Atlanta. 
+        Cole os lançamentos, escolha streamer e período, e deixe a magia acontecer.
+      </p>
+    </div>
+
+    <div class="grid">
+      <!-- STREAMER + PERÍODO -->
+      <div class="card span4">
+        <h2>⚔️ Streamer e Ciclo</h2>
+        <div class="row">
+          <div>
+            <label>Streamer Ativo</label>
+            <select id="streamerSelect"></select>
+          </div>
+          <div>
+            <label>Novo Streamer</label>
+            <input id="newStreamer" placeholder="Ex.: Lince" />
+          </div>
+        </div>
+        <div class="row" style="margin-top:15px;">
+          <button id="addStreamerBtn">🛡️ Adicionar Streamer</button>
+          <button id="removeStreamerBtn" class="danger">⚔️ Remover Streamer</button>
+        </div>
+
+        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:25px 0;">
+
+        <div class="row">
+          <div>
+            <label>Ciclo</label>
+            <select id="periodo">
+              <option value="dia">Dia</option>
+              <option value="semanal">Semanal</option>
+              <option value="mensal">Mensal</option>
+            </select>
+          </div>
+          <div>
+            <label>Data de Referência</label>
+            <input id="refDate" type="date" value="2026-01-15" />
+          </div>
+        </div>
+
+        <!-- PONTUAÇÃO ANTERIOR MANUAL -->
+        <div class="manual-section">
+          <h3>🏆 Pontuação Anterior</h3>
+          <label>Total de pontos anteriores</label>
+          <input id="pontosAnteriores" type="number" min="0" placeholder="Ex.: 150" />
+          <button id="updatePontosBtn" style="margin-top:10px;">💎 Atualizar Pontos</button>
+        </div>
+
+        <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
+          <span class="pill" id="pillPeriodo">—</span>
+          <span class="pill">🎯 Sistema Atlanta Ativo</span>
+        </div>
+      </div>
+
+      <!-- NOVOS LANÇAMENTOS -->
+      <div class="card span8">
+        <h2>🔥 Novos Lançamentos (Poder Bruto)</h2>
+
+        <label for="bulkInput">Cole aqui os lançamentos do streamer (logs do Discord/WhatsApp)</label>
+        <textarea id="bulkInput" class="mono" placeholder="Exemplo épico (como o do Lince):
+
+Lince
+: https://vt.tiktok.com/ZS53TNw6w/
+[00:29]Lince
+: 1 vídeo tik tok
+[00:29]Lince
+: https://vt.tiktok.com/ZSHoreBgvRj7t-xAR4x/
+[00:29]Lince
+: 1 story tik tok
+[00:30]Lince
+: 1 story Instagram
+[00:31]Lince
+: 1 reel Instagram
+[00:31]Lince
+: 1 POST Instagram
+[00:32]Lince
+: 1 vídeo YouTube
+[00:32]Lince
+: 1 short YouTube
+[00:32]Lince
+: 1 POST YouTube
+[00:33]Lince
+: 1 vídeo Kwai
+[00:34]Lince
+: 1 vídeo Kick
+
+🔥 PODER ESPECIAL:
+live 1: 4h
+views youtube: 1200
+raid twitch x2
+indicação x3"></textarea>
+
+        <button id="processBulkBtn" style="margin-top:20px;">
+          ⚡ PROCESSAR PODER DO BÚFALO ⚡
+        </button>
+
+        <!-- ADIÇÃO MANUAL DE LIVES E VIEWS -->
+        <div class="manual-section">
+          <h3>📺 Adicionar Manualmente</h3>
+          <div class="row-3">
+            <div>
+              <label>Lives (horas)</label>
+              <input id="manualLiveHours" type="number" min="0" step="0.5" placeholder="Ex.: 4.5" />
+            </div>
+            <div>
+              <label>Views</label>
+              <input id="manualViews" type="number" min="0" placeholder="Ex.: 1200" />
+            </div>
+            <div>
+              <label>Plataforma</label>
+              <select id="manualPlatform">
+                <option value="twitch">Twitch</option>
+                <option value="youtube">YouTube</option>
+                <option value="tiktok">TikTok</option>
+                <option value="instagram">Instagram</option>
+                <option value="kwai">Kwai</option>
+                <option value="kick">Kick</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="margin-top:15px;">
+            <button id="addManualLiveBtn">🔴 Adicionar Live</button>
+            <button id="addManualViewsBtn">👁️ Adicionar Views</button>
+          </div>
+        </div>
+
+        <p class="help" style="margin-top:15px;">
+          <strong>🐃 O Búfalo Atlanta reconhece:</strong><br>
+          • <code>1 vídeo tik tok</code> • <code>1 story Instagram</code> • <code>1 POST YouTube</code><br>
+          • <code>live 1: 4h</code> • <code>views youtube: 1200</code> • <code>raid twitch x2</code><br>
+          • <strong>Views:</strong> -100: 2pts | +100: 4pts | +350: 6pts | +500: 8pts | +800: 10pts | +1000: 12pts | +2000: 24pts | +3000: 36pts<br>
+          URLs são ignoradas para pontuação, mas servem como referência épica.
+        </p>
+      </div>
+
+      <!-- RESUMO ÉPICO -->
+      <div class="card span12">
+        <h2>👑 Resumo Épico & Mensagem de Guerra</h2>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="k">⚔️ Pontos do Ciclo</div>
+            <div class="v" id="kPontosPeriodo">—</div>
+          </div>
+          <div class="kpi">
+            <div class="k">🏆 Total Acumulado</div>
+            <div class="v" id="kTotal">—</div>
+          </div>
+          <div class="kpi">
+            <div class="k">📦 Conteúdo</div>
+            <div class="v" id="kConteudo">—</div>
+          </div>
+          <div class="kpi">
+            <div class="k">🔴 Lives</div>
+            <div class="v" id="kLives">—</div>
+          </div>
+          <div class="kpi">
+            <div class="k">👁️ Views</div>
+            <div class="v" id="kViews">—</div>
+          </div>
+          <div class="kpi">
+            <div class="k">⚡ Ações</div>
+            <div class="v" id="kAcoes">—</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:20px;">
+          <button id="generateMsgBtn">🔥 GERAR MENSAGEM ÉPICA</button>
+          <button id="copyMsgBtn" class="secondary">📋 COPIAR PODER</button>
+        </div>
+
+        <div style="margin-top:15px;">
+          <label>Emoji do Relatório</label>
+          <select id="emojiSelect">
+            <!-- MAMÍFEROS TERRESTRES GRANDES -->
+            <option value="🐃">🐃 Búfalo</option>
+            <option value="🦬">🦬 Bisão</option>
+            <option value="🐂">🐂 Touro</option>
+            <option value="🐄">🐄 Vaca</option>
+            <option value="🐎">🐎 Cavalo</option>
+            <option value="🦄">🦄 Unicórnio</option>
+            <option value="🐘">🐘 Elefante</option>
+            <option value="🦏">🦏 Rinoceronte</option>
+            <option value="🦒">🦒 Girafa</option>
+            <option value="🦓">🦓 Zebra</option>
+            <option value="🐪">🐪 Camelo</option>
+            <option value="🐫">🐫 Camelo Duas Corcovas</option>
+            <option value="🦌">🦌 Veado</option>
+            <option value="🐐">🐐 Cabra</option>
+            <option value="🐑">🐑 Ovelha</option>
+            <option value="🐏">🐏 Carneiro</option>
+            <option value="🐖">🐖 Porco</option>
+            <option value="🐗">🐗 Javali</option>
+            
+            <!-- FELINOS E CANINOS -->
+            <option value="🦁">🦁 Leão</option>
+            <option value="🐯">🐯 Tigre</option>
+            <option value="🐆">🐆 Leopardo</option>
+            <option value="🐅">🐅 Tigre Listrado</option>
+            <option value="🐈">🐈 Gato Doméstico</option>
+            <option value="🐈‍⬛">🐈‍⬛ Gato Preto</option>
+            <option value="🐱">🐱 Gato Fofo</option>
+            <option value="🐶">🐶 Cachorro</option>
+            <option value="🐕">🐕 Cão</option>
+            <option value="🦮">🦮 Cão Guia</option>
+            <option value="🐕‍🦺">🐕‍🦺 Cão de Serviço</option>
+            <option value="🐺">🐺 Lobo</option>
+            <option value="🦊">🦊 Raposa</option>
+            <option value="🦝">🦝 Guaxinim</option>
+            
+            <!-- URSOS E PRIMATAS -->
+            <option value="🐻">🐻 Urso</option>
+            <option value="🐻‍❄️">🐻‍❄️ Urso Polar</option>
+            <option value="🐼">🐼 Panda</option>
+            <option value="🐨">🐨 Coala</option>
+            <option value="🐵">🐵 Macaco</option>
+            <option value="🙈">🙈 Macaco Não Vê</option>
+            <option value="🙉">🙉 Macaco Não Ouve</option>
+            <option value="🙊">🙊 Macaco Não Fala</option>
+            <option value="🦍">🦍 Gorila</option>
+            <option value="🦧">🦧 Orangotango</option>
+            
+            <!-- PEQUENOS MAMÍFEROS -->
+            <option value="🐰">🐰 Coelho</option>
+            <option value="🐇">🐇 Coelho Branco</option>
+            <option value="🐿️">🐿️ Esquilo</option>
+            <option value="🦔">🦔 Ouriço</option>
+            <option value="🦫">🦫 Castor</option>
+            <option value="🦨">🦨 Gambá</option>
+            <option value="🦘">🦘 Canguru</option>
+            <option value="🦥">🦥 Preguiça</option>
+            <option value="🐀">🐀 Rato</option>
+            <option value="🐁">🐁 Camundongo</option>
+            <option value="🐭">🐭 Ratinho</option>
+            <option value="🐹">🐹 Hamster</option>
+            <option value="🦇">🦇 Morcego</option>
+            
+            <!-- MAMÍFEROS AQUÁTICOS -->
+            <option value="🐳">🐳 Baleia</option>
+            <option value="🐋">🐋 Baleia Azul</option>
+            <option value="🐬">🐬 Golfinho</option>
+            <option value="🦭">🦭 Foca</option>
+            <option value="🦦">🦦 Lontra</option>
+            
+            <!-- AVES DE RAPINA -->
+            <option value="🦅">🦅 Águia</option>
+            <option value="🦆">🦆 Pato</option>
+            <option value="🦢">🦢 Cisne</option>
+            <option value="🦉">🦉 Coruja</option>
+            <option value="🦚">🦚 Pavão</option>
+            <option value="🦜">🦜 Papagaio</option>
+            <option value="🦩">🦩 Flamingo</option>
+            <option value="🦤">🦤 Dodô</option>
+            <option value="🪶">🪶 Pena</option>
+            
+            <!-- AVES DOMÉSTICAS E COMUNS -->
+            <option value="🐓">🐓 Galo</option>
+            <option value="🐔">🐔 Galinha</option>
+            <option value="🐣">🐣 Pintinho Nascendo</option>
+            <option value="🐤">🐤 Pintinho</option>
+            <option value="🐥">🐥 Pintinho Frente</option>
+            <option value="🐦">🐦 Pássaro</option>
+            <option value="🐧">🐧 Pinguim</option>
+            <option value="🕊️">🕊️ Pomba</option>
+            <option value="🦃">🦃 Peru</option>
+            
+            <!-- RÉPTEIS E ANFÍBIOS -->
+            <option value="🐊">🐊 Crocodilo</option>
+            <option value="🐍">🐍 Cobra</option>
+            <option value="🦎">🦎 Lagarto</option>
+            <option value="🐢">🐢 Tartaruga</option>
+            <option value="🐸">🐸 Sapo</option>
+            <option value="🐲">🐲 Dragão Oriental</option>
+            <option value="🐉">🐉 Dragão Ocidental</option>
+            
+            <!-- PEIXES E VIDA AQUÁTICA -->
+            <option value="🐟">🐟 Peixe</option>
+            <option value="🐠">🐠 Peixe Tropical</option>
+            <option value="🐡">🐡 Baiacu</option>
+            <option value="🦈">🦈 Tubarão</option>
+            <option value="🐙">🐙 Polvo</option>
+            <option value="🦑">🦑 Lula</option>
+            <option value="🦀">🦀 Caranguejo</option>
+            <option value="🦞">🦞 Lagosta</option>
+            <option value="🦐">🦐 Camarão</option>
+            <option value="🐚">🐚 Concha</option>
+            <option value="🪸">🪸 Coral</option>
+            
+            <!-- INSETOS VOADORES -->
+            <option value="🦋">🦋 Borboleta</option>
+            <option value="🐛">🐛 Lagarta</option>
+            <option value="🐝">🐝 Abelha</option>
+            <option value="🪲">🪲 Besouro</option>
+            <option value="🐞">🐞 Joaninha</option>
+            <option value="🦟">🦟 Mosquito</option>
+            <option value="🪰">🪰 Mosca</option>
+            <option value="🪳">🪳 Barata</option>
+            <option value="🦗">🦗 Grilo</option>
+            <option value="🦟">🦟 Pernilongo</option>
+            <option value="🐜">🐜 Formiga</option>
+            <option value="🪱">🪱 Minhoca</option>
+            <option value="🐌">🐌 Caracol</option>
+            
+            <!-- ARACNÍDEOS -->
+            <option value="🕷️">🕷️ Aranha</option>
+            <option value="🕸️">🕸️ Teia de Aranha</option>
+            <option value="🦂">🦂 Escorpião</option>
+            
+            <!-- MICROORGANISMOS -->
+            <option value="🦠">🦠 Micróbio</option>
+            <option value="🧫">🧫 Bactéria</option>
+            
+            <!-- DINOSSAUROS E CRIATURAS EXTINTAS -->
+            <option value="🦕">🦕 Dinossauro Pescoço Longo</option>
+            <option value="🦖">🦖 T-Rex</option>
+            <option value="🦣">🦣 Mamute</option>
+            
+            <!-- CRIATURAS MÍTICAS E FANTÁSTICAS -->
+            <option value="🦄">🦄 Unicórnio</option>
+            <option value="🐲">🐲 Dragão Oriental</option>
+            <option value="🐉">🐉 Dragão Ocidental</option>
+            <option value="🧚">🧚 Fada</option>
+            <option value="🧚‍♂️">🧚‍♂️ Fada Masculina</option>
+            <option value="🧚‍♀️">🧚‍♀️ Fada Feminina</option>
+            <option value="🧜">🧜 Sereia</option>
+            <option value="🧜‍♂️">🧜‍♂️ Tritão</option>
+            <option value="🧜‍♀️">🧜‍♀️ Sereia Feminina</option>
+            <option value="🧞">🧞 Gênio</option>
+            <option value="🧞‍♂️">🧞‍♂️ Gênio Masculino</option>
+            <option value="🧞‍♀️">🧞‍♀️ Gênia Feminina</option>
+            
+            <!-- SERES SOBRENATURAIS -->
+            <option value="👻">👻 Fantasma</option>
+            <option value="💀">💀 Caveira</option>
+            <option value="☠️">☠️ Caveira e Ossos</option>
+            <option value="👹">👹 Oni</option>
+            <option value="👺">👺 Tengu</option>
+            <option value="🤖">🤖 Robô</option>
+            <option value="👽">👽 Alienígena</option>
+            <option value="🛸">🛸 OVNI</option>
+            
+            <!-- PLANTAS E NATUREZA -->
+            <option value="🌱">🌱 Broto</option>
+            <option value="🌿">🌿 Erva</option>
+            <option value="☘️">☘️ Trevo</option>
+            <option value="🍀">🍀 Trevo de 4 Folhas</option>
+            <option value="🌾">🌾 Espiga</option>
+            <option value="🌵">🌵 Cacto</option>
+            <option value="🌲">🌲 Pinheiro</option>
+            <option value="🌳">🌳 Árvore</option>
+            <option value="🌴">🌴 Palmeira</option>
+            <option value="🎋">🎋 Bambu</option>
+            <option value="🎍">🎍 Pinheiro Japonês</option>
+            <option value="🌸">🌸 Flor de Cerejeira</option>
+            <option value="🌺">🌺 Hibisco</option>
+            <option value="🌻">🌻 Girassol</option>
+            <option value="🌹">🌹 Rosa</option>
+            <option value="🥀">🥀 Rosa Murcha</option>
+            <option value="🌷">🌷 Tulipa</option>
+            <option value="🌼">🌼 Margarida</option>
+            <option value="🌻">🌻 Girassol</option>
+            <option value="🏵️">🏵️ Roseta</option>
+            <option value="💐">💐 Buquê</option>
+            <option value="🍄">🍄 Cogumelo</option>
+            
+            <!-- ELEMENTOS CELESTIAIS -->
+            <option value="⭐">⭐ Estrela</option>
+            <option value="🌟">🌟 Estrela Brilhante</option>
+            <option value="💫">💫 Estrela Cadente</option>
+            <option value="✨">✨ Brilho</option>
+            <option value="🌠">🌠 Chuva de Meteoros</option>
+            <option value="☄️">☄️ Cometa</option>
+            <option value="🌙">🌙 Lua Crescente</option>
+            <option value="🌛">🌛 Lua com Rosto</option>
+            <option value="🌜">🌜 Lua Minguante</option>
+            <option value="🌚">🌚 Lua Nova</option>
+            <option value="🌝">🌝 Lua Cheia</option>
+            <option value="🌞">🌞 Sol com Rosto</option>
+            <option value="☀️">☀️ Sol</option>
+            <option value="🌈">🌈 Arco-íris</option>
+            
+            <!-- ELEMENTOS MÍSTICOS -->
+            <option value="🔮">🔮 Bola de Cristal</option>
+            <option value="🧿">🧿 Olho Turco</option>
+            <option value="🪬">🪬 Hamsa</option>
+            <option value="🔯">🔯 Estrela de Davi</option>
+            <option value="☯️">☯️ Yin Yang</option>
+            <option value="☮️">☮️ Paz</option>
+            <option value="🕎">🕎 Menorá</option>
+            <option value="🪄">🪄 Varinha Mágica</option>
+            
+            <!-- SÍMBOLOS DE PODER -->
+            <option value="👑">👑 Coroa</option>
+            <option value="💎">💎 Diamante</option>
+            <option value="🏆">🏆 Troféu</option>
+            <option value="🥇">🥇 Medalha de Ouro</option>
+            <option value="🥈">🥈 Medalha de Prata</option>
+            <option value="🥉">🥉 Medalha de Bronze</option>
+            <option value="🎯">🎯 Alvo</option>
+            <option value="⚔️">⚔️ Espadas</option>
+            <option value="🗡️">🗡️ Espada</option>
+            <option value="🛡️">🛡️ Escudo</option>
+            <option value="🏹">🏹 Arco e Flecha</option>
+            <option value="⚡">⚡ Raio</option>
+            <option value="🔥">🔥 Fogo</option>
+            <option value="💥">💥 Explosão</option>
+            <option value="⭐">⭐ Estrela de Poder</option>
+          </select>
+        </div>
+
+        <div style="margin-top:20px;">
+          <label>Mensagem Épica (Discord / Relatório)</label>
+          <textarea id="msgOut" class="mono" placeholder="Clique em 'GERAR MENSAGEM ÉPICA' para invocar o poder do Búfalo..."></textarea>
+        </div>
+      </div>
+
+      <!-- AUDITORIA DE GUERRA -->
+      <div class="card span6">
+        <h2>🛡️ Auditoria de Guerra</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>📅 Data</th>
+              <th>⚔️ Categoria</th>
+              <th>🌐 Plataforma</th>
+              <th>🎯 Tipo</th>
+              <th>✅ Status</th>
+              <th>💎 Pontos</th>
+            </tr>
+          </thead>
+          <tbody id="auditBody"></tbody>
+        </table>
+        <div class="row" style="margin-top:20px;">
+          <button id="removeSelectedBtn" class="danger">🗑️ Remover Selecionados</button>
+          <button id="clearAllStreamerBtn" class="danger">💥 Limpar Tudo</button>
+        </div>
+        <p class="help">
+          <strong>🐃 Poder do Búfalo:</strong> Selecione itens marcando o checkbox para remover da batalha.
+        </p>
+      </div>
+
+      <!-- DESEMPENHO INDIVIDUAL -->
+      <div class="card span6">
+        <h2>📊 Desempenho Individual</h2>
+        
+        <!-- MINI CHARTS -->
+        <div class="row">
+          <div class="mini-chart">
+            <h4>📊 Performance Semanal</h4>
+            <div class="mini-chart-container" id="weeklyMiniChart"></div>
+          </div>
+          <div class="mini-chart">
+            <h4>📈 Performance Mensal</h4>
+            <div class="mini-chart-container" id="monthlyMiniChart"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="showWeeklyPerformanceBtn" class="secondary">📊 Relatório Semanal</button>
+          <button id="showMonthlyPerformanceBtn" class="secondary">📈 Relatório Mensal</button>
+        </div>
+        
+        <div class="performance-chart" id="performanceChart" style="display:none;">
+          <h3 style="margin:0 0 15px; color:var(--buffalo-orange); font-size:14px;">📈 Evolução de Performance</h3>
+          <div id="chartContainer"></div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <label>Histórico de Performance</label>
+          <textarea id="performanceOut" class="mono" placeholder="Clique em um botão acima para ver o desempenho individual..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // REWARDS SYSTEM
+    // =========================
+    const TABELA_RESGATES = {
+      "PIX": [
+        { nome: "200 reais no pix", pontos: 600, limite: "apenas um resgate por mês" }
+      ],
+      "CAIXAS": [
+        { nome: "1 Caixa de Armas Inicial", pontos: 20 },
+        { nome: "1 Caixa de Armas Mediana", pontos: 50 },
+        { nome: "1 Caixa de Armas Profissional", pontos: 100 }
+      ],
+      "PERSONAGEM": [
+        { nome: "Tamanho Personalizado", pontos: 100 },
+        { nome: "Segundo Personagem (Máximo 5 slots)", pontos: 170 },
+        { nome: "+ 210 espaço mochila (30 dias)", pontos: 210 },
+        { nome: "+ 280 espaço mochila (30 dias)", pontos: 280 },
+        { nome: "+ 300 espaço mochila (30 dias)", pontos: 300 },
+        { nome: "Segundo Job", pontos: 600 }
+      ],
+      "CAVALOS": [
+        { nome: "Cavalo até 500 dólares", pontos: 50 },
+        { nome: "Cavalo até 1000 dólares", pontos: 100 },
+        { nome: "Cavalo até 2000 dólares", pontos: 200 }
+      ],
+      "BARRAS DE OURO": [
+        { nome: "30 Barras de Ouro", pontos: 30 },
+        { nome: "50 Barras de Ouro", pontos: 50 },
+        { nome: "100 Barras de Ouro", pontos: 100 },
+        { nome: "150 Barras de Ouro", pontos: 150 },
+        { nome: "200 Barras de Ouro", pontos: 200 }
+      ],
+      "ARMAS": [
+        { nome: "Mauser", pontos: 40 },
+        { nome: "M1899", pontos: 40 },
+        { nome: "Personalização de Arma", pontos: 50 },
+        { nome: "Faca Personalizada", pontos: 70 },
+        { nome: "Rifle de Ferrolho", pontos: 80 },
+        { nome: "Repetidora Winchester", pontos: 80 },
+        { nome: "Shotgun Double", pontos: 80 },
+        { nome: "Revolver Navy", pontos: 400 },
+        { nome: "Rolling Block Rifle", pontos: 500 }
+      ],
+      "CARROÇAS": [
+        { nome: "Carroça (até 200 gold)", pontos: 200 },
+        { nome: "Carroça (até 500 gold)", pontos: 500 }
+      ],
+      "HERANÇAS": [
+        { nome: "Vip Ouro", pontos: 100 },
+        { nome: "Vip Platina", pontos: 250 },
+        { nome: "Vip Diamante", pontos: 500 }
+      ]
+    };
+
+    function getAvailableRewards(totalPontos) {
+      const available = [];
+      
+      Object.keys(TABELA_RESGATES).forEach(categoria => {
+        TABELA_RESGATES[categoria].forEach(item => {
+          if (totalPontos >= item.pontos) {
+            available.push({
+              ...item,
+              categoria
+            });
+          }
+        });
+      });
+      
+      // Sort by points (highest first) and return top 3
+      return available.sort((a, b) => b.pontos - a.pontos).slice(0, 3);
+    }
+
+    function getRewardsText(totalPontos) {
+      const rewards = getAvailableRewards(totalPontos);
+      
+      if (rewards.length === 0) {
+        return "Continue acumulando pontos para desbloquear resgates! 🎯";
+      }
+      
+      let text = "🎁 **PARABÉNS! VOCÊ JÁ PODE RESGATAR:**\n\n";
+      rewards.forEach((reward, idx) => {
+        text += `**${idx + 1}.** ${reward.nome} - **${reward.pontos} pontos** ✅\n`;
+      });
+      text += "\n*💎 Entre em contato com a administração para efetuar seus resgates!*\n";
+      
+      return text;
+    }
+
+    // =========================
+    // ENHANCED DATA SYSTEM
+    // =========================
+    const STORAGE_KEY = "atlanta_buffalo_v8";
+    const BACKUP_KEY = "atlanta_buffalo_backup_v8";
+
+    function saveStateEnhanced(state) {
+      try {
+        const compressedState = JSON.stringify(state);
+        localStorage.setItem(STORAGE_KEY, compressedState);
+        
+        if (!saveStateEnhanced.lastBackup || Date.now() - saveStateEnhanced.lastBackup > 30000) {
+          const backup = {
+            data: state,
+            timestamp: Date.now(),
+            version: "8.0"
+          };
+          localStorage.setItem(BACKUP_KEY, JSON.stringify(backup));
+          saveStateEnhanced.lastBackup = Date.now();
+        }
+        
+        showStorageIndicator("💾 Dados salvos com segurança!");
+        return true;
+      } catch (error) {
+        console.error("Erro ao salvar dados:", error);
+        showStorageIndicator("❌ Erro ao salvar dados!", true);
+        return false;
+      }
+    }
+
+    function loadStateEnhanced() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const state = JSON.parse(raw);
+          showStorageIndicator("✅ Dados carregados!");
+          return state;
+        }
+        
+        const backupRaw = localStorage.getItem(BACKUP_KEY);
+        if (backupRaw) {
+          const backup = JSON.parse(backupRaw);
+          showStorageIndicator("🔄 Dados restaurados do backup!");
+          return backup.data;
+        }
+        
+        return {
+          streamers: {
+            "Lince": { pontosAnteriores: 0, atividades: [] }
+          },
+          settings: {
+            theme: "dark",
+            autoSave: true,
+            quality: "ultra"
+          },
+          stats: {
+            totalSessions: 0,
+            lastAccess: Date.now()
+          }
+        };
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+        showStorageIndicator("❌ Erro ao carregar dados!", true);
+        return { streamers: {}, settings: {}, stats: {} };
+      }
+    }
+
+    function showStorageIndicator(message, isError = false) {
+      const indicator = document.getElementById('storageIndicator');
+      indicator.textContent = message;
+      indicator.style.background = isError ? 
+        'linear-gradient(135deg, rgba(255,107,107,.9), rgba(255,71,87,.8))' :
+        'linear-gradient(135deg, rgba(139,0,0,.9), rgba(255,69,0,.8))';
+      indicator.classList.add('show');
+      
+      setTimeout(() => {
+        indicator.classList.remove('show');
+      }, 3000);
+    }
+
+    // =========================
+    // ENHANCED RULES SYSTEM
+    // =========================
+    const REGRAS_PONTOS = {
+      tiktok: { video:{pontos:3,limiteDia:1}, stories:{pontos:3,limiteDia:1} },
+      kwai: { video:{pontos:3,limiteDia:1}, stories:{pontos:3,limiteDia:1} },
+      instagram: { feed:{pontos:3,limiteDia:1}, reels:{pontos:3,limiteDia:1}, stories:{pontos:3,limiteDia:1} },
+      youtube: { video:{pontos:3,limiteDia:1}, shorts:{pontos:3,limiteDia:1}, stories:{pontos:3,limiteDia:1}, post:{pontos:3,limiteDia:1} },
+      kick: { video:{pontos:3,limiteDia:1} },
+      twitch: { raid:{pontos:8,limiteDia:1}, stories:{pontos:3,limiteDia:1} },
+      codigo: { indicacao:{pontos:5} }
+    };
+
+    function calcularPontosLive(horas) {
+      if (typeof horas !== "number" || isNaN(horas)) return 0;
+      if (horas < 1) return 0;
+      return Math.min(Math.floor(horas), 20);
+    }
+
+    function calcularPontosViews(views) {
+      if (typeof views !== "number" || isNaN(views)) return 0;
+      if (views < 100) return 2;
+      if (views >= 3000) return 36;
+      if (views >= 2000) return 24;
+      if (views >= 1000) return 12;
+      if (views >= 800) return 10;
+      if (views >= 500) return 8;
+      if (views >= 350) return 6;
+      if (views >= 100) return 4;
+      return 2;
+    }
+
+    function normalizarTipo(plataforma, tipo){
+      if (plataforma === "kwai" && tipo === "feed") return "video";
+      if (plataforma === "youtube" && tipo === "post") return "post";
+      return tipo;
+    }
+
+    function nomeTipo(plataforma, tipo){
+      const t = normalizarTipo(plataforma, tipo);
+      const map = {
+        video: "Vídeo",
+        stories: "Stories",
+        feed: "Postagem no feed",
+        reels: "Reels",
+        shorts: "Shorts",
+        raid: "Raid",
+        indicacao: "Indicação",
+        post: "Post"
+      };
+      return map[t] || tipo;
+    }
+
+    function nomePlataforma(p){
+      const map = { 
+        tiktok:"TikTok", 
+        kwai:"Kwai", 
+        instagram:"Instagram", 
+        youtube:"YouTube", 
+        twitch:"Twitch", 
+        kick:"Kick", 
+        codigo:"Código" 
+      };
+      return map[p] || p;
+    }
+
+    // =========================
+    // DATE FUNCTIONS
+    // =========================
+    const dateCache = new Map();
+
+    function toDateOnlyISO(d) {
+      const key = d.getTime();
+      if (dateCache.has(key)) return dateCache.get(key);
+      
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      const result = `${yyyy}-${mm}-${dd}`;
+      
+      dateCache.set(key, result);
+      return result;
+    }
+
+    function parseISODate(iso) {
+      const cacheKey = `parse_${iso}`;
+      if (dateCache.has(cacheKey)) return dateCache.get(cacheKey);
+      
+      const [y,m,d] = iso.split("-").map(Number);
+      const result = new Date(y, m-1, d, 12, 0, 0, 0);
+      
+      dateCache.set(cacheKey, result);
+      return result;
+    }
+
+    function startOfWeek(d) {
+      const x = new Date(d);
+      const day = x.getDay();
+      const diff = (day === 0 ? -6 : 1 - day);
+      x.setDate(x.getDate() + diff);
+      x.setHours(12,0,0,0);
+      return x;
+    }
+
+    function endOfWeek(d) {
+      const s = startOfWeek(d);
+      const e = new Date(s);
+      e.setDate(e.getDate() + 6);
+      e.setHours(12,0,0,0);
+      return e;
+    }
+
+    function startOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1, 12,0,0,0); }
+    function endOfMonth(d) { return new Date(d.getFullYear(), d.getMonth()+1, 0, 12,0,0,0); }
+
+    function labelPeriodo(periodo, refDateISO) {
+      const d = parseISODate(refDateISO);
+      if (periodo === "dia") return refDateISO;
+      if (periodo === "semanal") {
+        const s = startOfWeek(d), e = endOfWeek(d);
+        return `${toDateOnlyISO(s)} a ${toDateOnlyISO(e)}`;
+      }
+      const s = startOfMonth(d), e = endOfMonth(d);
+      return `${toDateOnlyISO(s)} a ${toDateOnlyISO(e)}`;
+    }
+
+    function filtrarPorPeriodo(atividades, periodo, refDateISO) {
+      const ref = parseISODate(refDateISO);
+      let ini, fim;
+
+      if (periodo === "dia") { ini = parseISODate(refDateISO); fim = parseISODate(refDateISO); }
+      else if (periodo === "semanal") { ini = startOfWeek(ref); fim = endOfWeek(ref); }
+      else { ini = startOfMonth(ref); fim = endOfMonth(ref); }
+
+      const iniISO = toDateOnlyISO(ini);
+      const fimISO = toDateOnlyISO(fim);
+
+      return atividades.filter(a => a.data >= iniISO && a.data <= fimISO);
+    }
+
+    // =========================
+    // MAIN STATE
+    // =========================
+    let state = loadStateEnhanced();
+
+    // =========================
+    // CALCULATION FUNCTIONS
+    // =========================
+    const calculationCache = new Map();
+
+    function calcularPeriodoStreamer(streamer, periodo, refDateISO){
+      const cacheKey = `${streamer}_${periodo}_${refDateISO}_${JSON.stringify(state.streamers[streamer]?.atividades || [])}`;
+      if (calculationCache.has(cacheKey)) return calculationCache.get(cacheKey);
+      
+      const s = state.streamers[streamer];
+      if (!s) return { pontosPeriodo: 0, total: 0, auditoria: [] };
+      
+      const atividadesPeriodo = filtrarPorPeriodo(s.atividades, periodo, refDateISO);
+
+      const controleDiarioConteudo = {};
+      const auditoria = [];
+
+      let pontosConteudo = 0;
+      let pontosLives = 0;
+      let pontosViews = 0;
+      let pontosAcoes = 0;
+
+      const gruposConteudo = {};
+      const livesDetalhe = [];
+      const viewsDetalhe = [];
+      const acoesDetalhe = [];
+
+      let conteudosPontuados = 0;
+
+      for (const a of atividadesPeriodo){
+        const data = a.data;
+        const categoria = a.categoria || "conteudo";
+        const plataforma = a.plataforma || "desconhecida";
+        const tipoOriginal = a.tipo || "-";
+        const tipo = normalizarTipo(plataforma, tipoOriginal);
+
+        // LIVE
+        if (categoria === "live"){
+          const pts = calcularPontosLive(Number(a.horas));
+          if (pts > 0){
+            pontosLives += pts;
+            livesDetalhe.push({ data, plataforma, horas: Number(a.horas), pontos: pts });
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:"live", status:"Pontuado", pontos:pts });
+          } else {
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:"live", status:"Ignorado (horas < 1)", pontos:0 });
+          }
+          continue;
+        }
+
+        // VIEWS
+        if (categoria === "views"){
+          if (tipo === "reels" || tipo === "shorts"){
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (views não contam p/ reels/shorts)", pontos:0 });
+            continue;
+          }
+          const pts = calcularPontosViews(Number(a.views));
+          if (pts > 0){
+            pontosViews += pts;
+            viewsDetalhe.push({ data, plataforma, tipo: tipoOriginal, views: Number(a.views), pontos: pts });
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Pontuado", pontos:pts });
+          } else {
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (faixa sem pontos)", pontos:0 });
+          }
+          continue;
+        }
+
+        // RAID
+        if (categoria === "raid"){
+          const regra = REGRAS_PONTOS.twitch.raid;
+          pontosAcoes += regra.pontos;
+          acoesDetalhe.push({ data, acao:"Raid", plataforma, pontos: regra.pontos });
+          auditoria.push({ id:a.id, data, categoria, plataforma, tipo:"raid", status:"Pontuado", pontos:regra.pontos });
+          continue;
+        }
+
+        // INDICAÇÃO
+        if (categoria === "codigo"){
+          const regra = REGRAS_PONTOS.codigo.indicacao;
+          const qtd = Number(a.quantidade || 1);
+          const pts = regra.pontos * (isNaN(qtd) ? 1 : qtd);
+          pontosAcoes += pts;
+          acoesDetalhe.push({ data, acao:"Indicação", plataforma:"codigo", pontos: pts });
+          auditoria.push({ id:a.id, data, categoria, plataforma:"codigo", tipo:"indicacao", status:"Pontuado", pontos:pts });
+          continue;
+        }
+
+        // CONTEÚDO
+        const regra = REGRAS_PONTOS[plataforma]?.[tipo];
+        if (!regra){
+          auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (sem regra)", pontos:0 });
+          continue;
+        }
+
+        const chave = `${data}_${plataforma}_${tipo}`;
+        if (controleDiarioConteudo[chave]){
+          auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (limite diário)", pontos:0 });
+          continue;
+        }
+
+        controleDiarioConteudo[chave] = true;
+        pontosConteudo += regra.pontos;
+        conteudosPontuados += 1;
+
+        const label = `${nomeTipo(plataforma, tipo)} ${nomePlataforma(plataforma)}`;
+        if (!gruposConteudo[label]) gruposConteudo[label] = { count: 0, pontos: 0 };
+        gruposConteudo[label].count += 1;
+        gruposConteudo[label].pontos += regra.pontos;
+
+        auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Pontuado", pontos:regra.pontos });
+      }
+
+      const pontosPeriodo = pontosConteudo + pontosLives + pontosViews + pontosAcoes;
+      const total = (s.pontosAnteriores || 0) + pontosPeriodo;
+
+      const result = {
+        atividadesPeriodo,
+        auditoria,
+        pontosConteudo, pontosLives, pontosViews, pontosAcoes,
+        pontosPeriodo, total,
+        conteudosPontuados,
+        gruposConteudo,
+        livesDetalhe,
+        viewsDetalhe,
+        acoesDetalhe
+      };
+      
+      calculationCache.set(cacheKey, result);
+      
+      if (calculationCache.size > 100) {
+        const firstKey = calculationCache.keys().next().value;
+        calculationCache.delete(firstKey);
+      }
+      
+      return result;
+    }
+
+    // =========================
+    // PARSER FUNCTIONS
+    // =========================
+    function uuid(){
+      return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+    }
+
+    function parseBulkInput(text, dataISO) {
+      const linhas = text.split("\n").map(l => l.trim()).filter(Boolean);
+      const atividades = [];
+
+      for (const linha of linhas) {
+        const l = linha.toLowerCase();
+
+        // LIVE (ex: "live 1: 4h")
+        let m = l.match(/live\s*\d*[:\-]?\s*(\d+(?:\.\d+)?)h/);
+        if (m) {
+          atividades.push({
+            id: uuid(),
+            data: dataISO,
+            categoria: "live",
+            plataforma: "twitch",
+            tipo: "live",
+            horas: Number(m[1])
+          });
+          continue;
+        }
+
+        // VIEWS (ex: "views youtube: 1200")
+        m = l.match(/views?\s*(youtube|tiktok|kwai|instagram|kick)?[:\-]?\s*(\d+)/);
+        if (m) {
+          atividades.push({
+            id: uuid(),
+            data: dataISO,
+            categoria: "views",
+            plataforma: (m[1] || "youtube").toLowerCase(),
+            tipo: "video",
+            views: Number(m[2])
+          });
+          continue;
+        }
+
+        // RAID (ex: "raid twitch x1")
+        m = l.match(/raid\s*(twitch)?\s*x?(\d+)?/);
+        if (m) {
+          const qtd = Number(m[2] || 1);
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(),
+              data: dataISO,
+              categoria: "raid",
+              plataforma: "twitch",
+              tipo: "raid"
+            });
+          }
+          continue;
+        }
+
+        // INDICAÇÃO (ex: "indicação x3")
+        m = l.match(/indica[cç][aã]o\s*x?(\d+)/);
+        if (m) {
+          atividades.push({
+            id: uuid(),
+            data: dataISO,
+            categoria: "codigo",
+            plataforma: "codigo",
+            tipo: "indicacao",
+            quantidade: Number(m[1])
+          });
+          continue;
+        }
+
+        // CONTEÚDO (ex: "1 vídeo tik tok", "1 story Instagram", etc.)
+        m = l.match(/(\d+)\s*(vídeo|video|story|stories|reel|short|post)\s*(tik\s*tok|tiktok|instagram|youtube|kwai|kick)/);
+        if (m) {
+          const qtd = Number(m[1]);
+          let tipo = m[2];
+          let plataforma = m[3];
+
+          plataforma = plataforma.replace(/\s+/g,"");
+          if (plataforma === "tiktok" || plataforma === "tiktk" || plataforma === "tikt") plataforma = "tiktok";
+          if (plataforma === "tikTok") plataforma = "tiktok";
+          if (plataforma === "tik tok") plataforma = "tiktok";
+
+          tipo = tipo.replace("vídeo","video");
+          if (tipo === "story") tipo = "stories";
+          if (tipo === "reel") tipo = "reels";
+          if (tipo === "short") tipo = "shorts";
+          if (tipo === "post") tipo = (plataforma === "instagram" ? "feed" : "post");
+
+          for (let i = 0; i < qtd; i++) {
+            atividades.push({
+              id: uuid(),
+              data: dataISO,
+              categoria: "conteudo",
+              plataforma,
+              tipo
+            });
+          }
+          continue;
+        }
+      }
+
+      return atividades;
+    }
+
+    // =========================
+    // DISCORD MESSAGE GENERATOR
+    // =========================
+    function gerarMensagemDiscord(streamer, periodo, refDateISO, r){
+      const linhas = [];
+      const emoji = document.getElementById("emojiSelect").value;
+      const rewardsText = getRewardsText(r.total);
+
+      linhas.push(`# ${emoji} **RELATÓRIO ÉPICO - STREAMERS ATLANTA** ${emoji}`);
+      linhas.push(`## ⚔️ **STREAMER:** ${streamer}`);
+      linhas.push(`## 📅 **PERÍODO:** ${labelPeriodo(periodo, refDateISO)} (${periodo[0].toUpperCase()+periodo.slice(1)})`);
+      linhas.push(``);
+
+      if (r.livesDetalhe.length){
+        linhas.push(`### 🔴 **BATALHAS AO VIVO**`);
+        r.livesDetalhe.forEach((l, idx) => {
+          const h = (typeof l.horas === "number" && !isNaN(l.horas)) ? l.horas : 0;
+          linhas.push(`**Live ${idx+1}:** 🎬 ${h}h → **${l.pontos} pontos**`);
+        });
+        linhas.push(``);
+      }
+
+      if (r.viewsDetalhe.length){
+        linhas.push(`### 👁️ **PODER DAS VISUALIZAÇÕES**`);
+        r.viewsDetalhe.forEach((v) => {
+          linhas.push(`> **${nomePlataforma(v.plataforma)}**: ${v.views} views → **${v.pontos} pontos**`);
+        });
+        linhas.push(``);
+      }
+
+      if (r.acoesDetalhe.length){
+        linhas.push(`### ⚡ **AÇÕES ESPECIAIS**`);
+        r.acoesDetalhe.forEach((a) => {
+          linhas.push(`> **${a.acao}**: **${a.pontos} pontos**`);
+        });
+        linhas.push(``);
+      }
+
+      const conteudoKeys = Object.keys(r.gruposConteudo);
+      if (conteudoKeys.length){
+        linhas.push(`### 📦 **ARSENAL DE CONTEÚDO**`);
+        conteudoKeys.sort().forEach((k) => {
+          const it = r.gruposConteudo[k];
+          linhas.push(`> **${k}** (x${it.count}): **${it.pontos} pontos**`);
+        });
+        linhas.push(``);
+      }
+
+      linhas.push(`---`);
+      linhas.push(`### 📊 **RESUMO DO CICLO**`);
+      linhas.push(`> 🔥 **Pontos deste Ciclo:** \`${r.pontosPeriodo} pontos\``);
+      linhas.push(`> 🏆 **Pontos Anteriores:** \`+${state.streamers[streamer]?.pontosAnteriores || 0} pontos\``);
+      linhas.push(`# 👑 **PONTUAÇÃO TOTAL: ${r.total} PONTOS** 👑`);
+      linhas.push(`🎯 **Total de Publicações:** **${r.conteudosPontuados}**`);
+      linhas.push(``);
+
+      // SEÇÃO DE RESGATES INTEGRADA
+      linhas.push(`---`);
+      linhas.push(rewardsText);
+      linhas.push(``);
+
+      linhas.push(`*🐃 Powered by Sistema Búfalo Atlanta*`);
+
+      return linhas.join("\n");
+    }
+
+    // =========================
+    // PERFORMANCE TRACKING FUNCTIONS
+    // =========================
+    function calcularDesempenhoIndividual(streamer, mode) {
+      const s = state.streamers[streamer];
+      if (!s || !s.atividades.length) return [];
+
+      const buckets = new Map();
+      
+      for (const a of s.atividades) {
+        const d = parseISODate(a.data);
+        let key;
+        
+        if (mode === "semanal") {
+          const startWeek = startOfWeek(d);
+          const endWeek = endOfWeek(d);
+          key = `${toDateOnlyISO(startWeek)} a ${toDateOnlyISO(endWeek)}`;
+        } else {
+          const y = d.getFullYear();
+          const m = String(d.getMonth()+1).padStart(2,"0");
+          key = `${y}-${m}`;
+        }
+        
+        if (!buckets.has(key)) {
+          buckets.set(key, []);
+        }
+        buckets.get(key).push(a);
+      }
+
+      const results = [];
+      for (const [periodo, atividades] of buckets) {
+        const controleDiarioConteudo = {};
+        let pontosConteudo = 0, pontosLives = 0, pontosViews = 0, pontosAcoes = 0;
+
+        for (const a of atividades) {
+          const categoria = a.categoria || "conteudo";
+          const plataforma = a.plataforma || "desconhecida";
+          const tipo = normalizarTipo(plataforma, a.tipo || "-");
+
+          if (categoria === "live") {
+            pontosLives += calcularPontosLive(Number(a.horas));
+          } else if (categoria === "views") {
+            if (tipo !== "reels" && tipo !== "shorts") {
+              pontosViews += calcularPontosViews(Number(a.views));
+            }
+          } else if (categoria === "raid") {
+            pontosAcoes += REGRAS_PONTOS.twitch.raid.pontos;
+          } else if (categoria === "codigo") {
+            const qtd = Number(a.quantidade || 1);
+            pontosAcoes += REGRAS_PONTOS.codigo.indicacao.pontos * (isNaN(qtd) ? 1 : qtd);
+          } else {
+            const regra = REGRAS_PONTOS[plataforma]?.[tipo];
+            if (regra) {
+              const chave = `${a.data}_${plataforma}_${tipo}`;
+              if (!controleDiarioConteudo[chave]) {
+                controleDiarioConteudo[chave] = true;
+                pontosConteudo += regra.pontos;
+              }
+            }
+          }
+        }
+
+        const pontosPeriodo = pontosConteudo + pontosLives + pontosViews + pontosAcoes;
+        results.push({
+          periodo,
+          pontosPeriodo,
+          pontosConteudo,
+          pontosLives,
+          pontosViews,
+          pontosAcoes,
+          atividades: atividades.length
+        });
+      }
+
+      results.sort((a, b) => a.periodo.localeCompare(b.periodo));
+      return results;
+    }
+
+    function formatDesempenhoText(results, titulo, streamer) {
+      const lines = [];
+      lines.push(`# 📊 DESEMPENHO ${titulo.toUpperCase()} — ${streamer.toUpperCase()} 🐃`);
+      lines.push(`*Evolução do streamer na arena Atlanta*`);
+      lines.push(``);
+      
+      if (!results.length) {
+        lines.push(`*🐃 Ainda não há dados de performance para este período...*`);
+        return lines.join("\n");
+      }
+
+      const totalPontos = results.reduce((sum, r) => sum + r.pontosPeriodo, 0);
+      const mediaPontos = Math.round(totalPontos / results.length);
+      const melhorPeriodo = results.reduce((max, r) => r.pontosPeriodo > max.pontosPeriodo ? r : max);
+      
+      lines.push(`### 🏆 **ESTATÍSTICAS GERAIS**`);
+      lines.push(`> **Total de Pontos:** ${totalPontos} pts`);
+      lines.push(`> **Média por Período:** ${mediaPontos} pts`);
+      lines.push(`> **Melhor Período:** ${melhorPeriodo.periodo} (${melhorPeriodo.pontosPeriodo} pts)`);
+      lines.push(``);
+
+      lines.push(`### 📈 **HISTÓRICO DETALHADO**`);
+      results.forEach((r, idx) => {
+        const trend = idx > 0 ? 
+          (r.pontosPeriodo > results[idx-1].pontosPeriodo ? "📈" : 
+           r.pontosPeriodo < results[idx-1].pontosPeriodo ? "📉" : "➡️") : "🎯";
+        
+        lines.push(`**${r.periodo}** ${trend}`);
+        lines.push(`> 🎯 **Total:** ${r.pontosPeriodo} pts | 📦 Conteúdo: ${r.pontosConteudo} | 🔴 Lives: ${r.pontosLives} | 👁️ Views: ${r.pontosViews} | ⚡ Ações: ${r.pontosAcoes}`);
+        lines.push(`> 📊 **Atividades:** ${r.atividades} registradas`);
+        lines.push(``);
+      });
+      
+      return lines.join("\n");
+    }
+
+    function createPerformanceChart(results) {
+      const container = document.getElementById('chartContainer');
+      container.innerHTML = '';
+      
+      if (!results.length) return;
+
+      const maxPontos = Math.max(...results.map(r => r.pontosPeriodo));
+      
+      results.forEach(r => {
+        const barContainer = document.createElement('div');
+        barContainer.className = 'chart-bar';
+        
+        const label = document.createElement('div');
+        label.className = 'chart-label';
+        label.textContent = r.periodo.length > 10 ? r.periodo.substring(0, 10) + '...' : r.periodo;
+        
+        const progress = document.createElement('div');
+        progress.className = 'chart-progress';
+        
+        const fill = document.createElement('div');
+        fill.className = 'chart-fill';
+        const percentage = maxPontos > 0 ? (r.pontosPeriodo / maxPontos) * 100 : 0;
+        fill.style.width = percentage + '%';
+        
+        const value = document.createElement('div');
+        value.className = 'chart-value';
+        value.textContent = r.pontosPeriodo + ' pts';
+        
+        progress.appendChild(fill);
+        barContainer.appendChild(label);
+        barContainer.appendChild(progress);
+        barContainer.appendChild(value);
+        container.appendChild(barContainer);
+      });
+    }
+
+    function createMiniChart(containerId, results) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      
+      if (!results.length) {
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:11px;">Sem dados</div>';
+        return;
+      }
+
+      const maxPontos = Math.max(...results.map(r => r.pontosPeriodo));
+      const recentResults = results.slice(-10);
+      
+      recentResults.forEach(r => {
+        const bar = document.createElement('div');
+        bar.className = 'mini-bar';
+        const height = maxPontos > 0 ? (r.pontosPeriodo / maxPontos) * 100 : 0;
+        bar.style.height = Math.max(height, 5) + '%';
+        bar.title = `${r.periodo}: ${r.pontosPeriodo} pts`;
+        container.appendChild(bar);
+      });
+    }
+
+    // =========================
+    // PARTICLE SYSTEM
+    // =========================
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+        container.appendChild(particle);
+      }
+    }
+
+    // =========================
+    // UI FUNCTIONS
+    // =========================
+    const $ = (id) => document.getElementById(id);
+
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    function refreshStreamerSelect(){
+      const sel = $("streamerSelect");
+      sel.innerHTML = "";
+      const names = Object.keys(state.streamers).sort();
+      for (const n of names){
+        const opt = document.createElement("option");
+        opt.value = n;
+        opt.textContent = n;
+        sel.appendChild(opt);
+      }
+      if (!names.length){
+        state.streamers["Streamer 1"] = { pontosAnteriores: 0, atividades: [] };
+        saveStateEnhanced(state);
+        return refreshStreamerSelect();
+      }
+    }
+
+    function currentStreamer(){
+      return $("streamerSelect").value;
+    }
+
+    const debouncedRender = debounce(function render(){
+      const streamer = currentStreamer();
+      const periodo = $("periodo").value;
+      const refDateISO = $("refDate").value;
+
+      $("pillPeriodo").textContent = labelPeriodo(periodo, refDateISO);
+      $("pontosAnteriores").value = state.streamers[streamer]?.pontosAnteriores || 0;
+
+      const r = calcularPeriodoStreamer(streamer, periodo, refDateISO);
+
+      $("kPontosPeriodo").textContent = r.pontosPeriodo;
+      $("kTotal").textContent = r.total;
+      $("kConteudo").textContent = r.pontosConteudo;
+      $("kLives").textContent = r.pontosLives;
+      $("kViews").textContent = r.pontosViews;
+      $("kAcoes").textContent = r.pontosAcoes;
+
+      const weeklyResults = calcularDesempenhoIndividual(streamer, "semanal");
+      const monthlyResults = calcularDesempenhoIndividual(streamer, "mensal");
+      createMiniChart("weeklyMiniChart", weeklyResults);
+      createMiniChart("monthlyMiniChart", monthlyResults);
+
+      const tb = $("auditBody");
+      tb.innerHTML = "";
+      
+      const fragment = document.createDocumentFragment();
+      
+      for (const row of r.auditoria){
+        const tr = document.createElement("tr");
+        const ok = row.status === "Pontuado";
+        tr.innerHTML = `
+          <td class="mono">
+            <input type="checkbox" data-id="${row.id}" style="transform:scale(1.2); margin-right:10px; vertical-align:middle;">
+            ${row.data}
+          </td>
+          <td>${row.categoria}</td>
+          <td>${nomePlataforma(row.plataforma)}</td>
+          <td>${row.tipo}</td>
+          <td class="${ok ? "tag-ok" : "tag-no"}">${row.status}</td>
+          <td><strong>${row.pontos}</strong></td>
+        `;
+        fragment.appendChild(tr);
+      }
+      
+      tb.appendChild(fragment);
+    }, 100);
+
+    // =========================
+    // EVENT HANDLERS
+    // =========================
+    $("addStreamerBtn").addEventListener("click", () => {
+      const name = $("newStreamer").value.trim();
+      if (!name) return;
+      if (state.streamers[name]) {
+        showStorageIndicator("⚠️ Streamer já existe!", true);
+        return;
+      }
+      state.streamers[name] = { pontosAnteriores: 0, atividades: [] };
+      saveStateEnhanced(state);
+      $("newStreamer").value = "";
+      refreshStreamerSelect();
+      $("streamerSelect").value = name;
+      debouncedRender();
+      showStorageIndicator(`🛡️ Streamer ${name} adicionado!`);
+      calculationCache.clear();
+    });
+
+    $("removeStreamerBtn").addEventListener("click", () => {
+      const name = currentStreamer();
+      if (!name) return;
+      if (confirm(`🗡️ Tem certeza que deseja remover o streamer ${name} da arena?`)) {
+        delete state.streamers[name];
+        saveStateEnhanced(state);
+        refreshStreamerSelect();
+        debouncedRender();
+        showStorageIndicator(`⚔️ Streamer ${name} removido!`);
+        calculationCache.clear();
+      }
+    });
+
+    $("updatePontosBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const pontos = parseInt($("pontosAnteriores").value) || 0;
+      
+      if (!state.streamers[streamer]) return;
+      
+      state.streamers[streamer].pontosAnteriores = pontos;
+      saveStateEnhanced(state);
+      debouncedRender();
+      showStorageIndicator(`💎 Pontos anteriores atualizados: ${pontos}`);
+      calculationCache.clear();
+    });
+
+    $("addManualLiveBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const horas = parseFloat($("manualLiveHours").value);
+      const plataforma = $("manualPlatform").value;
+      const dataISO = $("refDate").value;
+      
+      if (!horas || horas <= 0) {
+        showStorageIndicator("⚠️ Insira as horas da live!", true);
+        return;
+      }
+      
+      const novaAtividade = {
+        id: uuid(),
+        data: dataISO,
+        categoria: "live",
+        plataforma: plataforma,
+        tipo: "live",
+        horas: horas
+      };
+      
+      state.streamers[streamer].atividades.push(novaAtividade);
+      saveStateEnhanced(state);
+      $("manualLiveHours").value = "";
+      debouncedRender();
+      showStorageIndicator(`🔴 Live adicionada: ${horas}h`);
+      calculationCache.clear();
+    });
+
+    $("addManualViewsBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const views = parseInt($("manualViews").value);
+      const plataforma = $("manualPlatform").value;
+      const dataISO = $("refDate").value;
+      
+      if (!views || views <= 0) {
+        showStorageIndicator("⚠️ Insira o número de views!", true);
+        return;
+      }
+      
+      const novaAtividade = {
+        id: uuid(),
+        data: dataISO,
+        categoria: "views",
+        plataforma: plataforma,
+        tipo: "video",
+        views: views
+      };
+      
+      state.streamers[streamer].atividades.push(novaAtividade);
+      saveStateEnhanced(state);
+      $("manualViews").value = "";
+      debouncedRender();
+      showStorageIndicator(`👁️ Views adicionadas: ${views}`);
+      calculationCache.clear();
+    });
+
+    $("streamerSelect").addEventListener("change", debouncedRender);
+    $("periodo").addEventListener("change", debouncedRender);
+    $("refDate").addEventListener("change", debouncedRender);
+
+    $("processBulkBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const texto = $("bulkInput").value;
+      const dataISO = $("refDate").value;
+      if (!texto.trim()) {
+        showStorageIndicator("⚠️ Cole os dados primeiro!", true);
+        return;
+      }
+      
+      const novasAtividades = parseBulkInput(texto, dataISO);
+      if (novasAtividades.length === 0) {
+        showStorageIndicator("⚠️ Nenhuma atividade reconhecida!", true);
+        return;
+      }
+      
+      state.streamers[streamer].atividades.push(...novasAtividades);
+      saveStateEnhanced(state);
+      $("bulkInput").value = "";
+      debouncedRender();
+      showStorageIndicator(`⚡ ${novasAtividades.length} atividades processadas!`);
+      calculationCache.clear();
+    });
+
+    $("generateMsgBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const periodo = $("periodo").value;
+      const refDateISO = $("refDate").value;
+      const r = calcularPeriodoStreamer(streamer, periodo, refDateISO);
+      $("msgOut").value = gerarMensagemDiscord(streamer, periodo, refDateISO, r);
+      showStorageIndicator("🔥 Mensagem épica gerada!");
+    });
+
+    $("copyMsgBtn").addEventListener("click", async () => {
+      const text = $("msgOut").value;
+      if (!text) {
+        showStorageIndicator("⚠️ Gere a mensagem primeiro!", true);
+        return;
+      }
+      try { 
+        await navigator.clipboard.writeText(text);
+        showStorageIndicator("📋 Mensagem copiada!");
+      } catch {
+        showStorageIndicator("❌ Erro ao copiar!", true);
+      }
+    });
+
+    $("removeSelectedBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const checks = Array.from(document.querySelectorAll("#auditBody input[type='checkbox']:checked"));
+      if (checks.length === 0) {
+        showStorageIndicator("⚠️ Selecione itens primeiro!", true);
+        return;
+      }
+      
+      if (confirm(`🗑️ Remover ${checks.length} item(s) selecionado(s)?`)) {
+        const ids = new Set(checks.map(c => c.getAttribute("data-id")));
+        state.streamers[streamer].atividades = state.streamers[streamer].atividades.filter(a => !ids.has(a.id));
+        saveStateEnhanced(state);
+        debouncedRender();
+        showStorageIndicator(`🗑️ ${checks.length} item(s) removido(s)!`);
+        calculationCache.clear();
+      }
+    });
+
+    $("clearAllStreamerBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      if (confirm(`💥 ATENÇÃO! Isso vai limpar TODOS os dados do streamer ${streamer}. Continuar?`)) {
+        state.streamers[streamer].atividades = [];
+        saveStateEnhanced(state);
+        debouncedRender();
+        showStorageIndicator(`💥 Dados do streamer ${streamer} limpos!`);
+        calculationCache.clear();
+      }
+    });
+
+    $("showWeeklyPerformanceBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const results = calcularDesempenhoIndividual(streamer, "semanal");
+      $("performanceOut").value = formatDesempenhoText(results, "Semanal", streamer);
+      
+      const chart = $("performanceChart");
+      chart.style.display = "block";
+      createPerformanceChart(results);
+      
+      showStorageIndicator("📊 Desempenho semanal carregado!");
+    });
+
+    $("showMonthlyPerformanceBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const results = calcularDesempenhoIndividual(streamer, "mensal");
+      $("performanceOut").value = formatDesempenhoText(results, "Mensal", streamer);
+      
+      const chart = $("performanceChart");
+      chart.style.display = "block";
+      createPerformanceChart(results);
+      
+      showStorageIndicator("📈 Desempenho mensal carregado!");
+    });
+
+    // =========================
+    // INITIALIZATION
+    // =========================
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+      
+      refreshStreamerSelect();
+      if (Object.keys(state.streamers).length > 0) {
+        $("streamerSelect").value = Object.keys(state.streamers).sort()[0];
+      }
+      debouncedRender();
+      
+      if (!state.stats) state.stats = {};
+      state.stats.totalSessions = (state.stats.totalSessions || 0) + 1;
+      state.stats.lastAccess = Date.now();
+      
+      if (!state.settings) state.settings = {};
+      state.settings.quality = "ultra";
+      
+      saveStateEnhanced(state);
+      
+      setTimeout(() => {
+        showStorageIndicator("🐃 Bem-vindo à Arena Atlanta!");
+      }, 1000);
+      
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.animation = 'shimmer 1.5s ease-out';
+        }, index * 150);
+      });
+    });
+
+    let lastSave = 0;
+    window.addEventListener('beforeunload', () => {
+      const now = Date.now();
+      if (now - lastSave > 5000) {
+        saveStateEnhanced(state);
+        lastSave = now;
+      }
+    });
+
+    setInterval(() => {
+      if (calculationCache.size > 50) {
+        calculationCache.clear();
+      }
+      if (dateCache.size > 100) {
+        dateCache.clear();
+      }
+    }, 300000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+title: "Sistema de Pontuação Atlanta Buffalo"
+description: "Sistema épico de pontuação para streamers com o poder do Búfalo Atlanta"
+url: "https://seu-usuario.github.io"
+baseurl: "/atlanta-buffalo"
+
+# GitHub Pages settings
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Theme
+theme: minima
+
+# Exclude files
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
+  - todo.md
+
+# Include files
+include:
+  - index.html
+
+# SEO
+lang: pt-BR
+author: "Sistema Atlanta Buffalo"
+twitter:
+  username: atlanta_buffalo
+  card: summary_large_image
+
+# Social
+social:
+  name: Sistema Atlanta Buffalo
+  links:
+    - https://github.com/seu-usuario/atlanta-buffalo
+
+# Analytics (opcional)
+google_analytics: # Adicione seu ID do Google Analytics aqui
+
+# Favicon
+favicon: data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🐃</text></svg>
