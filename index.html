@@ -147,7 +147,7 @@
     .wrap{
       max-width: 1400px;
       margin: 0 auto;
-      padding: 20px 15px 50px;
+      padding: 15px 10px 35px;
       position: relative;
       z-index: 1;
       will-change: transform;
@@ -156,7 +156,7 @@
 
     .header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       position: relative;
     }
 
@@ -175,7 +175,7 @@
     }
 
     h1{
-      margin: 15px 0 15px;
+      margin: 10px 0 10px;
       font-size: 32px;
       font-weight: 900;
       letter-spacing: 1px;
@@ -202,7 +202,7 @@
     }
 
     .sub{
-      margin: 0 auto 30px;
+      margin: 0 auto 15px;
       color: var(--muted);
       line-height: 1.6;
       max-width: 800px;
@@ -213,7 +213,7 @@
     .grid{
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 20px;
+      gap: 12px;
     }
 
     .card{
@@ -222,7 +222,7 @@
       border: 2px solid transparent;
       background-clip: padding-box;
       border-radius: 20px;
-      padding: 18px;
+      padding: 14px;
       backdrop-filter: blur(20px);
       position: relative;
       box-shadow: 
@@ -259,7 +259,7 @@
     }
 
     .card h2{
-      margin: 0 0 12px;
+      margin: 0 0 8px;
       font-size: 17px;
       font-weight: 900;
       text-transform: uppercase;
@@ -272,7 +272,7 @@
     .card h2::after {
       content: '';
       position: absolute;
-      bottom: -8px;
+      bottom: -5px;
       left: 0;
       width: 60px;
       height: 2px;
@@ -284,7 +284,7 @@
       display: block;
       font-size: 13px;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -296,7 +296,7 @@
         linear-gradient(135deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.08) 100%);
       border: 2px solid rgba(139,0,0,.4);
       color: var(--text);
-      padding: 15px;
+      padding: 12px;
       border-radius: 12px;
       outline: none;
       font: inherit;
@@ -415,8 +415,8 @@
         0 0 30px rgba(255,71,87,.2);
     }
 
-    .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .row-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+    .row-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px; }
     .span4{ grid-column: span 4; }
     .span6{ grid-column: span 6; }
     .span8{ grid-column: span 8; }
@@ -425,8 +425,8 @@
     .pill{
       display: inline-flex; 
       align-items: center; 
-      gap: 8px;
-      padding: 8px 16px; 
+      gap: 6px;
+      padding: 6px 12px; 
       border-radius: 25px; 
       border: 2px solid rgba(139,0,0,.4);
       background: 
@@ -443,9 +443,9 @@
 
     .kpis{ 
       display: flex; 
-      gap: 20px; 
+      gap: 12px; 
       flex-wrap: wrap; 
-      margin: 20px 0;
+      margin: 10px 0;
     }
 
     .kpi{
@@ -454,7 +454,7 @@
         linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.04) 100%);
       border: 2px solid rgba(139,0,0,.3);
       border-radius: 16px;
-      padding: 20px;
+      padding: 14px;
       position: relative;
       box-shadow: 
         0 8px 25px rgba(0,0,0,.3),
@@ -549,7 +549,7 @@
       font-size: 13px; 
       color: var(--muted); 
       line-height: 1.6;
-      margin-top: 10px;
+      margin-top: 6px;
     }
 
     .mono{ 
@@ -660,12 +660,12 @@
       background: rgba(255,69,0,.05);
       border: 1px solid rgba(255,69,0,.2);
       border-radius: 12px;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 10px;
+      margin: 6px 0;
     }
 
     .manual-section h3 {
-      margin: 0 0 10px;
+      margin: 0 0 6px;
       font-size: 14px;
       color: var(--buffalo-orange);
       text-transform: uppercase;
@@ -705,7 +705,7 @@
           <button id="removeStreamerBtn" class="danger">⚔️ Remover Streamer</button>
         </div>
 
-        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:15px 0;">
+        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:10px 0;">
 
         <div class="row">
           <div>
@@ -726,10 +726,10 @@
           <h3>🏆 Pontuação Anterior</h3>
           <label>Total de pontos anteriores</label>
           <input id="pontosAnteriores" type="number" min="0" placeholder="Ex.: 150" />
-          <button id="updatePontosBtn" style="margin-top:10px;">💎 Atualizar Pontos</button>
+          <button id="updatePontosBtn" style="margin-top:6px;">💎 Atualizar Pontos</button>
         </div>
 
-        <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
           <span class="pill" id="pillPeriodo">—</span>
           <span class="pill">🎯 Sistema Atlanta Ativo</span>
         </div>
@@ -770,8 +770,8 @@ raid twitch"></textarea>
           <div class="collapse-content" id="advanced-content">
             
             <!-- SEÇÃO MANUAL -->
-            <div style="padding:15px; background:rgba(255,69,0,.05); border:1px solid rgba(255,69,0,.2); border-radius:8px; margin-bottom:20px;">
-              <h4 style="margin:0 0 15px; color:var(--buffalo-orange); font-size:12px; text-transform:uppercase; font-weight:700;">✋ Adicionar Live / Views</h4>
+            <div style="padding:12px; background:rgba(255,69,0,.05); border:1px solid rgba(255,69,0,.2); border-radius:8px; margin-bottom:12px;">
+              <h4 style="margin:0 0 10px; color:var(--buffalo-orange); font-size:12px; text-transform:uppercase; font-weight:700;">✋ Adicionar Live / Views</h4>
               <div class="row" style="gap:10px;">
                 <div style="flex:1;">
                   <label>🔴 Live (horas)</label>
@@ -793,23 +793,23 @@ raid twitch"></textarea>
                   </select>
                 </div>
               </div>
-              <div class="row" style="margin-top:12px; gap:8px;">
+              <div class="row" style="margin-top:8px; gap:8px;">
                 <button id="addManualLiveBtn" style="flex:1;">🔴 Live</button>
                 <button id="addManualViewsBtn" style="flex:1;">👁️ Views</button>
               </div>
             </div>
             
             <!-- SEÇÃO RAID -->
-            <div style="padding:15px; background:rgba(139,0,0,.1); border-left:4px solid var(--buffalo-red); border-radius:8px;">
-              <h4 style="margin:0 0 10px; color:var(--buffalo-red); font-size:12px; text-transform:uppercase; font-weight:700;">⚡ Adicionar RAID</h4>
-              <p style="font-size:11px; color:var(--muted); margin:0 0 12px;">⚠️ Limite: 1 raid por dia</p>
+            <div style="padding:12px; background:rgba(139,0,0,.1); border-left:4px solid var(--buffalo-red); border-radius:8px; margin-top:12px;">
+              <h4 style="margin:0 0 8px; color:var(--buffalo-red); font-size:12px; text-transform:uppercase; font-weight:700;">⚡ Adicionar RAID</h4>
+              <p style="font-size:11px; color:var(--muted); margin:0 0 8px;">⚠️ Limite: 1 raid por dia</p>
               <div class="row" style="gap:10px;">
                 <div style="flex:1;">
                   <label>Data do RAID</label>
                   <input id="manualRaidDate" type="date" />
                 </div>
                 <div style="flex:0 0 auto;">
-                  <button id="addManualRaidBtn" style="margin-top:23px;">⚡ RAID (8pts)</button>
+                  <button id="addManualRaidBtn" style="margin-top:18px;">⚡ RAID (8pts)</button>
                 </div>
               </div>
             </div>
@@ -867,7 +867,7 @@ raid twitch"></textarea>
       <div class="card span6">
         <h2>📊 Desempenho Individual</h2>
         
-        <div style="margin-top:15px; padding:20px; background:rgba(139,0,0,.05); border-radius:8px;">
+        <div style="margin-top:10px; padding:20px; background:rgba(139,0,0,.05); border-radius:8px;">
           <div style="display:flex; justify-content:space-around; text-align:center;">
             <div>
               <div style="font-size:32px; font-weight:bold; color:var(--buffalo-red);" id="perfWeekPoints">—</div>
