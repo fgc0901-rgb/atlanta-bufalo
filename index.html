@@ -1111,18 +1111,8 @@
 
         <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:20px 0;">
 
-        <h3 style="margin:0 0 15px; color:var(--buffalo-orange); font-size:16px;">🎫 Resgates Efetuados</h3>
+        <h3 style="margin:0 0 15px; color:var(--buffalo-orange); font-size:16px;">📋 Histórico de Resgates</h3>
         
-        <div style="padding:15px; background:rgba(139,0,0,.08); border-radius:12px; border:1px solid rgba(139,0,0,.2); margin-bottom:15px;">
-          <label>Descrição do Resgate</label>
-          <input id="resgateDesc" type="text" placeholder="Ex.: Resgate de prêmio mensal" style="margin-bottom:10px;" />
-          
-          <label>Pontos a Deduzir</label>
-          <input id="resgatePontos" type="number" min="1" placeholder="Ex.: 50" style="margin-bottom:10px;" />
-          
-          <button id="addResgateBtn" style="width:100%; background: linear-gradient(135deg, #8b0000, #dc143c); color:white; font-weight:700;">🎫 Registrar Resgate</button>
-        </div>
-
         <div id="resgatesLista" style="max-height:200px; overflow-y:auto; background:rgba(0,0,0,.2); border-radius:8px; padding:10px;">
           <p style="text-align:center; color:var(--muted); font-size:13px;" id="resgatesEmpty">Nenhum resgate registrado</p>
         </div>
@@ -1205,6 +1195,20 @@ raid twitch"></textarea>
                   <button id="addManualRaidBtn" style="margin-top:18px;">⚡ RAID (8pts)</button>
                 </div>
               </div>
+            </div>
+            
+            <!-- SEÇÃO RESGATES -->
+            <div style="padding:12px; background:rgba(220,20,60,.08); border-left:4px solid #dc143c; border-radius:8px; margin-top:12px;">
+              <h4 style="margin:0 0 10px; color:#dc143c; font-size:12px; text-transform:uppercase; font-weight:700;">🎫 Registrar Resgate</h4>
+              <p style="font-size:11px; color:var(--muted); margin:0 0 10px;">Deduza pontos por resgates efetuados</p>
+              
+              <label>Descrição do Resgate</label>
+              <input id="resgateDesc" type="text" placeholder="Ex.: Resgate de prêmio mensal" style="margin-bottom:10px;" />
+              
+              <label>Pontos a Deduzir</label>
+              <input id="resgatePontos" type="number" min="1" placeholder="Ex.: 50" style="margin-bottom:10px;" />
+              
+              <button id="addResgateBtn" style="width:100%; background: linear-gradient(135deg, #8b0000, #dc143c); color:white; font-weight:700;">🎫 Registrar Resgate</button>
             </div>
             
           </div>
@@ -2846,6 +2850,7 @@ raid twitch"></textarea>
 
     // Navegação: Seção 1 → Seção 2
     $("nextToSection2").addEventListener("click", () => {
+      disableSection(['section1b']); // Desabilitar Seção 1
       enableSection(['section2a', 'section2b']);
       showStorageIndicator("⚔️ Seção 2 desbloqueada: Adicione suas atividades!");
       // Scroll suave para seção 2
@@ -2856,6 +2861,7 @@ raid twitch"></textarea>
 
     // Navegação: Seção 2 → Seção 1
     $("backToSection1").addEventListener("click", () => {
+      enableSection(['section1b']); // Reabilitar Seção 1
       disableSection(['section2a', 'section2b', 'section3']);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       showStorageIndicator("🔙 Voltando para Seção 1");
@@ -2863,6 +2869,7 @@ raid twitch"></textarea>
 
     // Navegação: Seção 2 → Seção 3
     $("nextToSection3").addEventListener("click", () => {
+      disableSection(['section2a', 'section2b']); // Desabilitar Seção 2
       enableSection(['section3']);
       showStorageIndicator("🔥 Seção 3 desbloqueada: Gere seu relatório épico!");
       setTimeout(() => {
@@ -2872,6 +2879,7 @@ raid twitch"></textarea>
 
     // Navegação: Seção 3 → Seção 2
     $("backToSection2").addEventListener("click", () => {
+      enableSection(['section2a', 'section2b']); // Reabilitar Seção 2
       disableSection(['section3']);
       setTimeout(() => {
         $("section2a").scrollIntoView({ behavior: 'smooth', block: 'start' });
