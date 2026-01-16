@@ -765,22 +765,15 @@ raid twitch"></textarea>
         <div class="collapse-section">
           <div class="collapse-header" onclick="toggleCollapse('advanced')">
             <span class="collapse-icon" id="advanced-icon">▶</span>
-            <span><strong>⚙️ Opções Avançadas</strong> (JSON, Manual, RAIDS)</span>
+            <span><strong>⚙️ Opções Avançadas</strong> (Manual, RAIDS)</span>
           </div>
           <div class="collapse-content" id="advanced-content">
             <div class="tabs" style="margin-top:15px;">
-              <button class="tab active" onclick="switchTab('json')">📥 JSON</button>
-              <button class="tab" onclick="switchTab('manual')">✋ Manual</button>
+              <button class="tab active" onclick="switchTab('manual')">✋ Manual</button>
               <button class="tab" onclick="switchTab('raid')">⚡ RAID</button>
             </div>
             
-            <div class="tab-content active" id="json-tab">
-              <label>Cole o JSON estruturado</label>
-              <textarea id="jsonInput" class="mono" style="min-height:150px;" placeholder='{"atividades":[{"data":"2026-01-16","categoria":"conteudo","plataforma":"tiktok","tipo":"stories"}]}'></textarea>
-              <button id="importJsonBtn" style="margin-top:10px;">📥 IMPORTAR JSON</button>
-            </div>
-            
-            <div class="tab-content" id="manual-tab">
+            <div class="tab-content active" id="manual-tab">
               <div class="row" style="gap:10px;">
                 <div style="flex:1;">
                   <label>🔴 Live (horas)</label>
@@ -822,32 +815,6 @@ raid twitch"></textarea>
             </div>
           </div>
         </div>
-
-        <div class="manual-section">
-          <h3>📺 Adicionar Manualmente</h3>
-          <div class="row-3">
-            <div>
-              <label>Lives (horas)</label>
-              <input id="manualLiveHours" type="number" min="0" step="0.5" placeholder="Ex.: 4.5" />
-            </div>
-            <div>
-              <label>Views</label>
-              <input id="manualViews" type="number" min="0" placeholder="Ex.: 1200" />
-            </div>
-            <div>
-              <label>Plataforma</label>
-              <select id="manualPlatform">
-                <option value="twitch">Twitch</option>
-                <option value="youtube">YouTube</option>
-                <option value="tiktok">TikTok</option>
-                <option value="instagram">Instagram</option>
-                <option value="kwai">Kwai</option>
-                <option value="kick">Kick</option>
-              </select>
-            </div>
-          </div>
-          <div class="row" style="margin-top:15px;">
-            <button id="addManualLiveBtn">🔴 Adicionar Live</button>
             <button id="addManualViewsBtn">👁️ Adicionar Views</button>
           </div>
           <div style="margin-top:20px; padding:15px; background:rgba(139,0,0,.1); border-left:4px solid var(--buffalo-red); border-radius:8px;">
@@ -915,14 +882,21 @@ raid twitch"></textarea>
       <div class="card span6">
         <h2>📊 Desempenho Individual</h2>
         
-        <div class="row">
-          <button id="showWeeklyPerformanceBtn" class="secondary">📊 Relatório Semanal</button>
-          <button id="showMonthlyPerformanceBtn" class="secondary">📈 Relatório Mensal</button>
-        </div>
-
-        <div style="margin-top:20px;">
-          <label>Histórico de Performance</label>
-          <textarea id="performanceOut" class="mono" placeholder="Clique em um botão acima para ver o desempenho individual..."></textarea>
+        <div style="margin-top:15px; padding:20px; background:rgba(139,0,0,.05); border-radius:8px;">
+          <div style="display:flex; justify-content:space-around; text-align:center;">
+            <div>
+              <div style="font-size:32px; font-weight:bold; color:var(--buffalo-red);" id="perfWeekPoints">—</div>
+              <div style="font-size:11px; color:var(--muted);">Pts Esta Semana</div>
+            </div>
+            <div>
+              <div style="font-size:32px; font-weight:bold; color:var(--buffalo-gold);" id="perfMonthPoints">—</div>
+              <div style="font-size:11px; color:var(--muted);">Pts Este Mês</div>
+            </div>
+            <div>
+              <div style="font-size:32px; font-weight:bold; color:#4CAF50;" id="perfAvgDaily">—</div>
+              <div style="font-size:11px; color:var(--muted);">Média Diária</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -960,133 +934,25 @@ raid twitch"></textarea>
           <button id="copyMsgBtn" class="secondary">📋 COPIAR PODER</button>
         </div>
 
-        <div style="margin-top:15px;">
-          <label>Emoji do Relatório</label>
-          <select id="emojiSelect">
-            <optgroup label="🐃 Mamíferos Grandes">
-              <option value="🐃">🐃 Búfalo</option>
+        <div class="collapse-section" style="margin-top:15px;">
+          <div class="collapse-header" onclick="toggleCollapse('emoji')">
+            <span class="collapse-icon" id="emoji-icon">▶</span>
+            <span><strong>🎉 Emoji do Relatório</strong></span>
+          </div>
+          <div class="collapse-content" id="emoji-content">
+            <select id="emojiSelect" style="margin-top:10px;">
+              <option value="🐃">🐃 Búfalo (Padrão)</option>
               <option value="🦬">🦬 Bisão</option>
               <option value="🐂">🐂 Touro</option>
-              <option value="🐄">🐄 Vaca</option>
-              <option value="🐘">🐘 Elefante</option>
-              <option value="🦏">🦏 Rinoceronte</option>
-              <option value="🦛">🦛 Hipopótamo</option>
-              <option value="🦒">🦒 Girafa</option>
-              <option value="🐪">🐪 Camelo</option>
-              <option value="🐫">🐫 Camelo de 2 Corcovas</option>
-            </optgroup>
-            <optgroup label="🦁 Felinos & Predadores">
               <option value="🦁">🦁 Leão</option>
-              <option value="🐯">🐯 Tigre</option>
-              <option value="🐅">🐅 Tigre Laranja</option>
-              <option value="🐆">🐆 Leopardo</option>
-              <option value="🐱">🐱 Gato</option>
-              <option value="🐈">🐈 Gato Doméstico</option>
-              <option value="🐈‍⬛">🐈‍⬛ Gato Preto</option>
-            </optgroup>
-            <optgroup label="🐺 Caninos">
+              <option value="🐅">🐅 Tigre</option>
               <option value="🐺">🐺 Lobo</option>
-              <option value="🦊">🦊 Raposa</option>
-              <option value="🐶">🐶 Cachorro</option>
-              <option value="🐕">🐕 Cão</option>
-              <option value="🦮">🦮 Cão Guia</option>
-              <option value="🐕‍🦺">🐕‍🦺 Cão de Serviço</option>
-            </optgroup>
-            <optgroup label="🐻 Ursos & Grandes Mamíferos">
-              <option value="🐻">🐻 Urso</option>
-              <option value="🐻‍❄️">🐻‍❄️ Urso Polar</option>
-              <option value="🐼">🐼 Panda</option>
-              <option value="🦘">🦘 Canguru</option>
-              <option value="🦡">🦡 Texugo</option>
-              <option value="🦫">🦫 Castor</option>
-            </optgroup>
-            <optgroup label="🦅 Aves de Rapina & Voo">
               <option value="🦅">🦅 Águia</option>
-              <option value="🦆">🦆 Pato</option>
-              <option value="🦉">🦉 Coruja</option>
-              <option value="🦚">🦚 Pavão</option>
-              <option value="🦜">🦜 Papagaio</option>
-              <option value="🦢">🦢 Cisne</option>
-              <option value="🦩">🦩 Flamingo</option>
-              <option value="🐦">🐦 Pássaro</option>
-              <option value="🐦‍⬛">🐦‍⬛ Corvo</option>
-              <option value="🐧">🐧 Pinguim</option>
-              <option value="🐔">🐔 Galinha</option>
-              <option value="🐓">🐓 Galo</option>
-              <option value="🐣">🐣 Pintinho</option>
-              <option value="🐤">🐤 Pintinho Bebê</option>
-              <option value="🐥">🐥 Pintinho Frontal</option>
-            </optgroup>
-            <optgroup label="🐵 Primatas">
-              <option value="🐵">🐵 Macaco Rosto</option>
-              <option value="🐒">🐒 Macaco</option>
               <option value="🦍">🦍 Gorila</option>
-              <option value="🦧">🦧 Orangotango</option>
-            </optgroup>
-            <optgroup label="🐴 Equinos & Ungulados">
-              <option value="🐴">🐴 Cavalo Rosto</option>
-              <option value="🐎">🐎 Cavalo</option>
-              <option value="🦄">🦄 Unicórnio</option>
-              <option value="🦓">🦓 Zebra</option>
-              <option value="🐗">🐗 Javali</option>
-              <option value="🐖">🐖 Porco</option>
-              <option value="🐷">🐷 Porco Rosto</option>
-            </optgroup>
-            <optgroup label="🦎 Répteis">
               <option value="🐊">🐊 Crocodilo</option>
-              <option value="🐢">🐢 Tartaruga</option>
-              <option value="🦎">🦎 Lagarto</option>
-              <option value="🐍">🐍 Cobra</option>
-              <option value="🐲">🐲 Rosto de Dragão</option>
-              <option value="🐉">🐉 Dragão</option>
-            </optgroup>
-            <optgroup label="🐸 Anfíbios">
-              <option value="🐸">🐸 Sapo</option>
-            </optgroup>
-            <optgroup label="🐙 Vida Marinha">
-              <option value="🐋">🐋 Baleia</option>
-              <option value="🐳">🐳 Baleia Esguichando</option>
-              <option value="🐬">🐬 Golfinho</option>
-              <option value="🦭">🦭 Foca</option>
-              <option value="🐟">🐟 Peixe</option>
-              <option value="🐠">🐠 Peixe Tropical</option>
-              <option value="🐡">🐡 Baiacu</option>
               <option value="🦈">🦈 Tubarão</option>
-              <option value="🐙">🐙 Polvo</option>
-              <option value="🦑">🦑 Lula</option>
-              <option value="🦀">🦀 Caranguejo</option>
-              <option value="🦞">🦞 Lagosta</option>
-              <option value="🦐">🦐 Camarão</option>
-            </optgroup>
-            <optgroup label="🦋 Insetos & Aracnídeos">
-              <option value="🐌">🐌 Caracol</option>
-              <option value="🦋">🦋 Borboleta</option>
-              <option value="🐛">🐛 Lagarta</option>
-              <option value="🐜">🐜 Formiga</option>
-              <option value="🐝">🐝 Abelha</option>
-              <option value="🪲">🪲 Besouro</option>
-              <option value="🐞">🐞 Joaninha</option>
-              <option value="🦗">🦗 Grilo</option>
-              <option value="🪳">🪳 Barata</option>
-              <option value="🕷️">🕷️ Aranha</option>
-              <option value="🕸️">🕸️ Teia de Aranha</option>
-              <option value="🦂">🦂 Escorpião</option>
-              <option value="🦟">🦟 Mosquito</option>
-              <option value="🪰">🪰 Mosca</option>
-              <option value="🪱">🪱 Minhoca</option>
-            </optgroup>
-            <optgroup label="🐰 Pequenos Mamíferos">
-              <option value="🐭">🐭 Rato Rosto</option>
-              <option value="🐁">🐁 Rato</option>
-              <option value="🐀">🐀 Ratazana</option>
-              <option value="🐹">🐹 Hamster</option>
-              <option value="🐰">🐰 Coelho Rosto</option>
-              <option value="🐇">🐇 Coelho</option>
-              <option value="🐿️">🐿️ Esquilo</option>
-              <option value="🦔">🦔 Ouriço</option>
-              <option value="🦇">🦇 Morcego</option>
-            </optgroup>
-          </select>
+            </select>
+          </div>
         </div>
 
         <div style="margin-top:20px;">
@@ -2057,6 +1923,9 @@ raid twitch"></textarea>
       $("kViews").textContent = r.pontosViews;
       $("kAcoes").textContent = r.pontosAcoes;
 
+      // Update performance stats
+      updatePerformanceStats();
+
       const tb = $("auditBody");
       tb.innerHTML = "";
       
@@ -2270,101 +2139,7 @@ raid twitch"></textarea>
       calculationCache.clear();
     });
 
-    $("importJsonBtn").addEventListener("click", () => {
-      const streamer = currentStreamer();
-      const texto = $("bulkInput").value;
-      
-      if (!texto.trim()) {
-        showStorageIndicator("⚠️ Cole os dados JSON primeiro!", true);
-        return;
-      }
-      
-      try {
-        let jsonData;
-        
-        if (texto.trim().startsWith('{') || texto.trim().startsWith('[')) {
-          jsonData = JSON.parse(texto);
-        } else {
-          showStorageIndicator("⚠️ Formato JSON inválido!", true);
-          return;
-        }
-        
-        let novasAtividades = [];
-        
-        if (jsonData.atividades && Array.isArray(jsonData.atividades)) {
-          novasAtividades = jsonData.atividades.map(a => ({
-            id: uuid(),
-            data: a.data || $("refDate").value,
-            categoria: a.categoria || "conteudo",
-            plataforma: a.plataforma || "desconhecida",
-            tipo: a.tipo || "video",
-            horas: a.horas,
-            views: a.views,
-            quantidade: a.quantidade,
-            url: a.url
-          }));
-        } else if (Array.isArray(jsonData)) {
-          novasAtividades = jsonData.map(a => ({
-            id: uuid(),
-            data: a.data || $("refDate").value,
-            categoria: a.categoria || "conteudo",
-            plataforma: a.plataforma || "desconhecida",
-            tipo: a.tipo || "video",
-            horas: a.horas,
-            views: a.views,
-            quantidade: a.quantidade,
-            url: a.url
-          }));
-        }
-        
-        let debugText = `📥 IMPORTAÇÃO JSON (${novasAtividades.length} atividades importadas):\n\n`;
-        
-        if (novasAtividades.length === 0) {
-          debugText += "❌ NENHUMA ATIVIDADE ENCONTRADA NO JSON!\n\n";
-          debugText += "💡 FORMATO ESPERADO:\n";
-          debugText += '{\n  "atividades": [\n    {\n      "data": "2026-01-15",\n      "categoria": "conteudo",\n      "plataforma": "tiktok",\n      "tipo": "stories"\n    }\n  ]\n}';
-        } else {
-          const grupos = {};
-          novasAtividades.forEach(a => {
-            const key = `${a.categoria}-${a.plataforma}-${a.tipo}`;
-            if (!grupos[key]) grupos[key] = [];
-            grupos[key].push(a);
-          });
-          
-          Object.keys(grupos).forEach(key => {
-            const ativs = grupos[key];
-            const [categoria, plataforma, tipo] = key.split('-');
-            debugText += `✅ ${categoria.toUpperCase()}: ${nomePlataforma(plataforma)} - ${nomeTipo(plataforma, tipo)} (${ativs.length}x)\n`;
-            
-            if (categoria === 'live') {
-              ativs.forEach(a => debugText += `   └ ${a.horas}h\n`);
-            } else if (categoria === 'views') {
-              ativs.forEach(a => debugText += `   └ ${a.views} views\n`);
-            } else if (categoria === 'codigo') {
-              ativs.forEach(a => debugText += `   └ x${a.quantidade || 1}\n`);
-            }
-          });
-        }
-        
-        $("debugOutput").value = debugText;
-        
-        if (novasAtividades.length === 0) {
-          showStorageIndicator("⚠️ Nenhuma atividade encontrada no JSON!", true);
-          return;
-        }
-        
-        state.streamers[streamer].atividades.push(...novasAtividades);
-        saveStateEnhanced(state);
-        $("bulkInput").value = "";
-        debouncedRender();
-        showStorageIndicator(`📥 ${novasAtividades.length} atividades importadas do JSON!`);
-        calculationCache.clear();
-        
-      } catch (error) {
-        showStorageIndicator("❌ Erro ao processar JSON: " + error.message, true);
-        $("debugOutput").value = `❌ ERRO NO JSON:\n\n${error.message}\n\n💡 VERIFIQUE:\n• Vírgulas e chaves corretas\n• Aspas duplas nos textos\n• Estrutura válida do JSON`;
-      }
-    });
+    // JSON import removed - use text parser instead
 
     $("generateMsgBtn").addEventListener("click", () => {
       const streamer = currentStreamer();
@@ -2418,19 +2193,18 @@ raid twitch"></textarea>
       }
     });
 
-    $("showWeeklyPerformanceBtn").addEventListener("click", () => {
+    // Automatic performance stats update
+    function updatePerformanceStats() {
       const streamer = currentStreamer();
-      const results = calcularDesempenhoIndividual(streamer, "semanal");
-      $("performanceOut").value = formatDesempenhoText(results, "Semanal", streamer);
-      showStorageIndicator("📊 Desempenho semanal carregado!");
-    });
-
-    $("showMonthlyPerformanceBtn").addEventListener("click", () => {
-      const streamer = currentStreamer();
-      const results = calcularDesempenhoIndividual(streamer, "mensal");
-      $("performanceOut").value = formatDesempenhoText(results, "Mensal", streamer);
-      showStorageIndicator("📈 Desempenho mensal carregado!");
-    });
+      const weekResults = calcularDesempenhoIndividual(streamer, "semanal");
+      const monthResults = calcularDesempenhoIndividual(streamer, "mensal");
+      
+      $("perfWeekPoints").textContent = weekResults.pontos || 0;
+      $("perfMonthPoints").textContent = monthResults.pontos || 0;
+      
+      const avgDaily = monthResults.dias > 0 ? Math.round(monthResults.pontos / monthResults.dias) : 0;
+      $("perfAvgDaily").textContent = avgDaily;
+    }
 
     // Inicialização
     document.addEventListener('DOMContentLoaded', function() {
