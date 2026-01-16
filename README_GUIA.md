@@ -100,11 +100,11 @@ Clique em **"📥 IMPORTAR JSON"**
 
 Use a seção **"📺 Adicionar Manualmente"** para:
 
-- Selecionar plataforma (TikTok, Instagram, YouTube, Kwai, Kick)
-- Selecionar tipo de conteúdo (Vídeo, Stories, Reels, Shorts, Post)
-- Adicionar URLs (opcional)
-- Selecionar quantidade
-- Clicar em **"✅ ADICIONAR"**
+- **Lives**: Digite as horas e selecione a plataforma
+- **Views**: Digite o número de views e selecione a plataforma
+- **RAIDS**: Selecione a data do RAID (⚠️ Limite: apenas 1 por dia)
+
+Clique em **"🔴 Adicionar Live"**, **"👁️ Adicionar Views"** ou **"⚡ Adicionar RAID"**
 
 ---
 
@@ -122,12 +122,12 @@ Use a seção **"📺 Adicionar Manualmente"** para:
 
 ### Ações Especiais
 
-| Ação | Pontos | Exemplo |
-|------|--------|---------|
-| **Live** | Variável por hora | `live 1: 4h` = pontos extras |
-| **Views** | Variável | `views youtube: 1200` = pontos |
-| **Raids** | 8 pontos | `raid x2` = 16 pontos |
-| **Indicações** | 5 pontos | `indicação x3` = 15 pontos |
+| Ação | Pontos | Exemplo | Observação |
+|------|--------|---------|------------|
+| **Live** | Variável por hora | `live 1: 4h` = pontos extras | - |
+| **Views** | Variável | `views youtube: 1200` = pontos | - |
+| **Raids** | 8 pontos | `raid twitch` ou `raid x1` | ⚠️ **Limite: 1 por dia** |
+| **Indicações** | 5 pontos | `indicação x3` = 15 pontos | - |
 
 ---
 
@@ -254,6 +254,11 @@ Youtube (Pontos)
 - Selecione diferentes períodos para comparar
 - Veja evolução semanal/mensal
 
+### 5. RAIDS com Controle de Limite
+- Sistema garante apenas **1 raid por dia** será pontuado
+- Tentativas adicionais no mesmo dia serão ignoradas
+- Veja na auditoria: "Ignorado (limite 1 por dia)"
+
 ---
 
 ## 💡 Dicas e Truques
@@ -277,6 +282,10 @@ Youtube (Pontos)
 4. **Processe regularmente** em vez de tudo de uma vez
    - Ajuda a manter histórico organizado
 
+5. **Atenção aos limites de RAIDS**
+   - Apenas 1 raid por dia será pontuado
+   - Sistema avisa se tentar adicionar mais de um no mesmo dia
+
 ### ⚠️ Troubleshooting
 
 **Sistema não reconhece minhas atividades?**
@@ -291,6 +300,10 @@ Youtube (Pontos)
 **Posso exportar meus dados?**
 - Copie o JSON do relatório
 - Cole em um arquivo .json para backup
+
+**Adicionei 2 raids no mesmo dia, mas só contou 1?**
+- Correto! Sistema limita **1 raid por dia** conforme regras
+- Verifique a auditoria para ver qual foi pontuado
 
 ---
 
@@ -343,6 +356,8 @@ Seus dados são armazenados em localStorage no formato:
 - ✅ Novo formato de mensagem Discord com trophy emoji
 - ✅ Sistema de resgates integrado
 - ✅ Interface melhorada com tema Buffalo
+- ✅ Campo manual para RAIDS com limite de 1 por dia
+- ✅ Validação automática de limites diários para RAIDS
 
 ---
 

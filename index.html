@@ -793,15 +793,29 @@ indicação x3"></textarea>
             <button id="addManualLiveBtn">🔴 Adicionar Live</button>
             <button id="addManualViewsBtn">👁️ Adicionar Views</button>
           </div>
+          <div style="margin-top:20px; padding:15px; background:rgba(139,0,0,.1); border-left:4px solid var(--buffalo-red); border-radius:8px;">
+            <label style="display:block; margin-bottom:10px;">⚡ RAID para @📸・Streamers e @💎・Streamers Oficiais (8 pontos)</label>
+            <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">⚠️ Apenas 1 raid por dia será pontuado</p>
+            <div class="row">
+              <div>
+                <label>Data do RAID</label>
+                <input id="manualRaidDate" type="date" />
+              </div>
+              <div>
+                <button id="addManualRaidBtn" style="margin-top:23px;">⚡ Adicionar RAID</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p class="help" style="margin-top:15px;">
           <strong>🐃 O Búfalo Atlanta reconhece AGORA:</strong><br>
-          <strong>📝 TEXTO:</strong> <code>1 vídeo tik tok</code> • <code>1 story Instagram</code> • <code>live 1: 4h</code> • <code>views youtube: 1200</code><br>
+          <strong>📝 TEXTO:</strong> <code>1 vídeo tik tok</code> • <code>1 story Instagram</code> • <code>live 1: 4h</code> • <code>views youtube: 1200</code> • <code>raid twitch x2</code><br>
           <strong>📥 JSON:</strong> Cole dados estruturados e clique em "IMPORTAR JSON"<br>
           <strong>💡 Exemplo JSON:</strong><br>
           <code style="font-size:11px;">{"atividades":[{"data":"2026-01-15","categoria":"conteudo","plataforma":"tiktok","tipo":"stories"}]}</code><br>
-          <strong>Views:</strong> -100: 2pts | +100: 4pts | +350: 6pts | +500: 8pts | +800: 10pts | +1000: 12pts | +2000: 24pts | +3000: 36pts
+          <strong>Views:</strong> -100: 2pts | +100: 4pts | +350: 6pts | +500: 8pts | +800: 10pts | +1000: 12pts | +2000: 24pts | +3000: 36pts<br>
+          <strong>⚡ RAIDS:</strong> 8 pontos por raid • <strong>Limite:</strong> Apenas 1 raid por dia será pontuado
         </p>
 
         <div class="manual-section" style="margin-top:20px;">
@@ -1245,6 +1259,17 @@ indicação x3"></textarea>
 
         if (categoria === "raid"){
           const regra = REGRAS_PONTOS.twitch.raid;
+          
+          // Verificar se já existe um raid nesta data
+          const raidExistenteNaData = atividadesPeriodo.some(
+            at => at.categoria === "raid" && at.data === data && at.id !== a.id
+          );
+          
+          if (raidExistenteNaData) {
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:"raid", status:"Ignorado (limite 1 por dia)", pontos:0 });
+            continue;
+          }
+          
           pontosAcoes += regra.pontos;
           acoesDetalhe.push({ data, acao:"Raid", plataforma, pontos: regra.pontos });
           auditoria.push({ id:a.id, data, categoria, plataforma, tipo:"raid", status:"Pontuado", pontos:regra.pontos });
@@ -1848,6 +1873,9 @@ indicação x3"></textarea>
 
       $("pillPeriodo").textContent = labelPeriodo(periodo, refDateISO);
       $("pontosAnteriores").value = state.streamers[streamer]?.pontosAnteriores || 0;
+      
+      // Sincronizar campo de data do raid com a data de referência
+      $("manualRaidDate").value = refDateISO;
 
       const r = calcularPeriodoStreamer(streamer, periodo, refDateISO);
 
@@ -1972,6 +2000,38 @@ indicação x3"></textarea>
       $("manualViews").value = "";
       debouncedRender();
       showStorageIndicator(`👁️ Views adicionadas: ${views}`);
+      calculationCache.clear();
+    });
+
+    $("addManualRaidBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const dataRaid = $("manualRaidDate").value;
+      
+      if (!dataRaid) {
+        showStorageIndicator("⚠️ Selecione a data do RAID!", true);
+        return;
+      }
+      
+      // Verificar se já existe um raid nesta data
+      const raidExistente = state.streamers[streamer].atividades.some(
+        a => a.categoria === "raid" && a.data === dataRaid
+      );
+      
+      if (raidExistente) {
+        showStorageIndicator("⚠️ Já existe um RAID registrado nesta data! (Limite: 1 por dia)", true);
+        return;
+      }
+      
+      const novaAtividade = {
+        id: uuid(), data: dataRaid, categoria: "raid",
+        plataforma: "twitch", tipo: "raid"
+      };
+      
+      state.streamers[streamer].atividades.push(novaAtividade);
+      saveStateEnhanced(state);
+      $("manualRaidDate").value = "";
+      debouncedRender();
+      showStorageIndicator(`⚡ RAID adicionado: ${dataRaid} (8 pontos)`);
       calculationCache.clear();
     });
 
