@@ -1388,7 +1388,46 @@ raid twitch"></textarea>
         // Pular cabeçalhos e linhas irrelevantes primeiro
         if (l.match(/^(tiktok|kwai|instagram|youtube|kick|twitch)\s*\(pontos\)$/)) continue;
         if (l.match(/^[a-zA-Z0-9_]+$/)) continue;
-        if (l.match(/^\[\d{2}:\d{2}\]/) || l.match(/^\d{2}:\d{2}/)) continue;
+        
+        // NOVO: Parser para formato com timestamp [HH:MM]Streamer: Tipo Plataforma URL
+        // Exemplos:
+        // "[21:00]Ragnar Stormborn #2879: Tiktok vídeo https://vt.tiktok.com/ZS5KryGMu/"
+        // "[21:01]Ragnar Stormborn #2879: YouTube Shorts https://youtube.com/shorts/ZetIGXbexI4"
+        let timestampMatch = linha.match(/^\[(\d{2}):(\d{2})\]\s*[^:]+:\s*(.+)$/);
+        if (timestampMatch) {
+          const activityText = timestampMatch[3];
+          const urlMatch = activityText.match(/(https?:\/\/[^\s]+)/);
+          const url = urlMatch ? urlMatch[1] : null;
+          const platform = getPlatformaFromUrl(url);
+          
+          if (platform) {
+            // Extrair tipo da descrição da atividade
+            let tipo = 'video';
+            const actLower = activityText.toLowerCase();
+            
+            if (actLower.includes('story') || actLower.includes('stories')) {
+              tipo = 'stories';
+            } else if (actLower.includes('reel') || actLower.includes('reels')) {
+              tipo = 'reels';
+            } else if (actLower.includes('short') || actLower.includes('shorts')) {
+              tipo = 'shorts';
+            } else if (actLower.includes('feed')) {
+              tipo = 'feed';
+            } else if (actLower.includes('post')) {
+              tipo = 'post';
+            }
+            
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: platform, tipo: tipo, url: url
+            });
+            continue;
+          }
+        }
+
+        // Pular linhas que são apenas timestamps
+        if (l.match(/^\[\d{2}:\d{2}\]$/)) continue;
+        if (l.match(/^\d{2}:\d{2}$/)) continue;
 
         // Extrair URL da linha atual ou próxima
         let url = null;

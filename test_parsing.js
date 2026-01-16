@@ -3,12 +3,82 @@ function uuid(){
     return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
 }
 
+// Função para extrair plataforma de URL
+function getPlatformaFromUrl(url) {
+    if (!url) return null;
+    const urlLower = url.toLowerCase();
+    if (urlLower.includes('tiktok.com') || urlLower.includes('vt.tiktok.com')) return 'tiktok';
+    if (urlLower.includes('instagram.com')) return 'instagram';
+    if (urlLower.includes('youtube.com') || urlLower.includes('youtu.be')) return 'youtube';
+    if (urlLower.includes('kwai')) return 'kwai';
+    if (urlLower.includes('kick.com')) return 'kick';
+    return null;
+}
+
+// Função para extrair tipo de conteúdo de URL
+function getTipoFromUrl(url) {
+    if (!url) return 'video';
+    const urlLower = url.toLowerCase();
+    if (urlLower.includes('/shorts/') || urlLower.includes('youtube.com/shorts')) return 'shorts';
+    if (urlLower.includes('/reel/')) return 'reels';
+    if (urlLower.includes('/stories/') || urlLower.includes('/stories')) return 'stories';
+    if (urlLower.includes('/post/') || urlLower.includes('youtube.com/post')) return 'post';
+    if (urlLower.includes('/p/') && urlLower.includes('instagram')) return 'feed';
+    return 'video';
+}
+
 function parseBulkInput(text, dataISO) {
     const linhas = text.split("\n").map(l => l.trim()).filter(Boolean);
     const atividades = [];
 
-    for (const linha of linhas) {
+    for (let i = 0; i < linhas.length; i++) {
+        const linha = linhas[i];
         const l = linha.toLowerCase();
+
+        // NOVO: Parser para formato com timestamp [HH:MM]Streamer: Tipo Plataforma URL
+        // Exemplos:
+        // "[21:00]Ragnar Stormborn #2879: Tiktok vídeo https://vt.tiktok.com/ZS5KryGMu/"
+        // "[21:01]Ragnar Stormborn #2879: YouTube Shorts https://youtube.com/shorts/ZetIGXbexI4"
+        let timestampMatch = linha.match(/^\[(\d{2}):(\d{2})\]\s*[^:]+:\s*(.+)$/);
+        if (timestampMatch) {
+            const activityText = timestampMatch[3];
+            const urlMatch = activityText.match(/(https?:\/\/[^\s]+)/);
+            const url = urlMatch ? urlMatch[1] : null;
+            const platform = getPlatformaFromUrl(url);
+            
+            if (platform) {
+                // Extrair tipo da descrição da atividade
+                let tipo = 'video';
+                const actLower = activityText.toLowerCase();
+                
+                if (actLower.includes('story') || actLower.includes('stories')) {
+                    tipo = 'stories';
+                } else if (actLower.includes('reel') || actLower.includes('reels')) {
+                    tipo = 'reels';
+                } else if (actLower.includes('short') || actLower.includes('shorts')) {
+                    tipo = 'shorts';
+                } else if (actLower.includes('feed')) {
+                    tipo = 'feed';
+                } else if (actLower.includes('post')) {
+                    tipo = 'post';
+                }
+                
+                atividades.push({
+                    id: uuid(),
+                    data: dataISO,
+                    categoria: "conteudo",
+                    plataforma: platform,
+                    tipo: tipo,
+                    url: url,
+                    linha_original: linha
+                });
+                continue;
+            }
+        }
+
+        // Pular linhas que são apenas timestamps
+        if (l.match(/^\[\d{2}:\d{2}\]$/)) continue;
+        if (l.match(/^\d{2}:\d{2}$/)) continue;
 
         // LIVE (ex: "live 1: 4h", "live: 2.5h", "4h live")
         let m = l.match(/(?:live\s*\d*[:\-]?\s*(\d+(?:\.\d+)?)h|(\d+(?:\.\d+)?)h?\s*live)/);
@@ -137,37 +207,15 @@ function parseBulkInput(text, dataISO) {
     return atividades;
 }
 
-// Dados de teste
-const testData = `Lince
-: https://vt.tiktok.com/ZS53TNw6w/
-[00:29]Lince
-: 1 vídeo tik tok
-[00:29]Lince
-: https://vt.tiktok.com/ZSHoreBgvRj7t-xAR4x/
-[00:29]Lince
-: 1 story tik tok
-[00:30]Lince
-: 1 story Instagram
-[00:31]Lince
-: 1 reel Instagram
-[00:31]Lince
-: 1 POST Instagram
-[00:32]Lince
-: 1 vídeo YouTube
-[00:32]Lince
-: 1 short YouTube
-[00:32]Lince
-: 1 POST YouTube
-[00:33]Lince
-: 1 vídeo Kwai
-[00:34]Lince
-: 1 vídeo Kick
-
-🔥 PODER ESPECIAL:
-live 1: 4h
-views youtube: 1200
-raid twitch x2
-indicação x3`;
+// Dados de teste - novo formato com timestamp e URL
+const testData = `]Ragnar Stormborn #2879: Kwai vídeo https://k.kwai.com/p/NEcCfsGg
+[20:56]Ragnar Stormborn #2879: Instagram Stories https://www.instagram.com/stories/ragnarstormborn_12/3810952823643683962?utm_source=ig_story_item_share&igsh=Ym44aHkyZG9sYzM5
+[20:57]Ragnar Stormborn #2879: Instagram feed https://www.instagram.com/p/DTjOzUMDbms/?igsh=dGM5dngzMGR2MXky
+[20:58]Ragnar Stormborn #2879: Instagram reel https://www.instagram.com/reel/DTjODXQDSWs/?igsh=MTQ0dHRqM3FvYWNsOQ==
+[20:59]Ragnar Stormborn #2879: Tiktok Stories https://vt.tiktok.com/ZSHoBWPfbWo4Q-Xa0Jc/
+[21:00]Ragnar Stormborn #2879: Tiktok vídeo https://vt.tiktok.com/ZS5KryGMu/
+[21:01]Ragnar Stormborn #2879: YouTube Shorts https://youtube.com/shorts/ZetIGXbexI4?si=D4ZEOcNY9rAW_xDo
+[21:01]Ragnar Stormborn #2879: YouTube video https://youtu.be/LyKxAiC1jJ0?si=msYxlDDeplaJ0MEI`;
 
 console.log("🐃 TESTE DO SISTEMA DE PARSING ATLANTA BUFFALO\n");
 console.log("📝 DADOS DE ENTRADA:");
