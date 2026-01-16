@@ -1,4 +1,6 @@
-// Test the JSON import handling with the new parser
+// Test the JSON import handling with the centralized scoring (score.js)
+
+const { calcularPontuacao, nomeTipo, nomePlataforma, REGRAS_PONTOS } = require('./score');
 
 const jsonData = {
   "pontosAnteriores": 29,
@@ -58,42 +60,32 @@ const jsonData = {
       "plataforma": "youtube",
       "tipo": "post",
       "url": "https://www.youtube.com/post/Ugkxs2p40U5dxe0PzKdf2et7syH5gwhPzEej"
+    },
+    // Adicionar Stories no Twitch (2 no mesmo dia para validar limite 1/dia)
+    {
+      "data": "2026-01-16",
+      "categoria": "conteudo",
+      "plataforma": "twitch",
+      "tipo": "stories",
+      "url": "https://twitch.tv/stories/example1"
+    },
+    {
+      "data": "2026-01-16",
+      "categoria": "conteudo",
+      "plataforma": "twitch",
+      "tipo": "stories",
+      "url": "https://twitch.tv/stories/example2"
+    },
+    // Código de indicação (Allowist/codiguin) com quantidade
+    {
+      "data": "2026-01-16",
+      "categoria": "codigo",
+      "plataforma": "codigo",
+      "tipo": "indicacao",
+      "quantidade": 3
     }
   ]
 };
-
-const REGRAS_PONTOS = {
-  tiktok: { video:{pontos:3}, stories:{pontos:3} },
-  kwai: { video:{pontos:3}, stories:{pontos:3} },
-  instagram: { feed:{pontos:3}, reels:{pontos:3}, stories:{pontos:3} },
-  youtube: { video:{pontos:3}, shorts:{pontos:3}, post:{pontos:3} },
-  kick: { video:{pontos:3} },
-  twitch: { raid:{pontos:8}, stories:{pontos:3} },
-  codigo: { indicacao:{pontos:5} }
-};
-
-function normalizarTipo(plataforma, tipo){
-  if (plataforma === "kwai" && tipo === "feed") return "video";
-  if (plataforma === "youtube" && tipo === "post") return "post";
-  return tipo;
-}
-
-function nomeTipo(plataforma, tipo){
-  const t = normalizarTipo(plataforma, tipo);
-  const map = {
-    video: "Vídeo", stories: "Stories", feed: "Postagem no feed",
-    reels: "Reels", shorts: "Shorts", raid: "Raid", indicacao: "Indicação", post: "Post"
-  };
-  return map[t] || tipo;
-}
-
-function nomePlataforma(p){
-  const map = { 
-    tiktok:"TikTok", kwai:"Kwai", instagram:"Instagram", 
-    youtube:"YouTube", twitch:"Twitch", kick:"Kick", codigo:"Código" 
-  };
-  return map[p] || p;
-}
 
 console.log("=".repeat(80));
 console.log("TESTE DE CÁLCULO COM JSON IMPORTADO");
@@ -122,18 +114,30 @@ const pontosPeriodo = pontosConteudo;
 const total = jsonData.pontosAnteriores + pontosPeriodo;
 const conteudosPontuados = jsonData.atividades.length;
 
-console.log("📊 RESULTADO DO CÁLCULO:\n");
-Object.keys(gruposConteudo).sort().forEach(k => {
-  const it = gruposConteudo[k];
+// Usar módulo central de pontuação
+const resultado = calcularPontuacao({
+  atividades: jsonData.atividades,
+  pontosAnteriores: jsonData.pontosAnteriores
+});
+
+console.log("\n📊 RESULTADO DO CÁLCULO:\n");
+Object.keys(resultado.grupos).sort().forEach(k => {
+  const it = resultado.grupos[k];
   console.log(`> **${k}** (x${it.count}): ${it.pontos} pontos`);
 });
 
 console.log(`\n### 📈 Resumo`);
-console.log(`> **Pontos Deste Ciclo:** \`${pontosPeriodo} pontos\``);
-console.log(`> **Pontos Anteriores:** \`${jsonData.pontosAnteriores} pontos\``);
+console.log(`> **Pontos Deste Ciclo:** \`${resultado.pontosPeriodo} pontos\``);
+console.log(`> **Pontos Anteriores:** \`${resultado.pontosAnteriores} pontos\``);
 console.log(``);
-console.log(`# 🪙 Pontuação Total Atual: **${total} pontos**`);
-console.log(`🖥️ Total de Publicações no Ciclo: **${conteudosPontuados}**`);
+console.log(`# 🪙 Pontuação Total Atual: **${resultado.total} pontos**`);
+console.log(`🖥️ Total de Atividades Recebidas: **${resultado.conteudosPontuados}**`);
 
-console.log(`\n✅ Esperado: 8 publicações = 24 pontos, Total: 53 pontos`);
-console.log("=".repeat(80));
+// Mostrar auditoria, destacando a identificação das regras aplicadas
+console.log(`\n🔎 Auditoria (identificação de regras aplicadas):\n`);
+resultado.auditoria.forEach(a => {
+  const regraInfo = a.regra ? ` | Regra: ${a.regra}` : "";
+  console.log(`- ${a.data} | ${a.atividade} | ${a.status} | ${a.pontos} pts${regraInfo}`);
+});
+
+console.log("\n" + "=".repeat(80));
