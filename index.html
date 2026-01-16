@@ -990,21 +990,15 @@ raid twitch"></textarea>
         <div class="collapse-section" style="margin-top:15px;">
           <div class="collapse-header" onclick="toggleCollapse('emoji')">
             <span class="collapse-icon" id="emoji-icon">▶</span>
-            <span><strong>🎉 Emoji do Relatório</strong></span>
+            <span><strong>🎉 Personalize o Emoji do Relatório</strong></span>
           </div>
           <div class="collapse-content" id="emoji-content">
-            <select id="emojiSelect" style="margin-top:10px;">
-              <option value="🐃">🐃 Búfalo (Padrão)</option>
-              <option value="🦬">🦬 Bisão</option>
-              <option value="🐂">🐂 Touro</option>
-              <option value="🦁">🦁 Leão</option>
-              <option value="🐅">🐅 Tigre</option>
-              <option value="🐺">🐺 Lobo</option>
-              <option value="🦅">🦅 Águia</option>
-              <option value="🦍">🦍 Gorila</option>
-              <option value="🐊">🐊 Crocodilo</option>
-              <option value="🦈">🦈 Tubarão</option>
-            </select>
+            <label>Digite o emoji desejado:</label>
+            <div class="row" style="margin-top:10px; gap:10px;">
+              <input id="emojiInput" type="text" maxlength="5" placeholder="🐃" style="flex:1; font-size:18px; text-align:center;" />
+              <button id="emojiResetBtn" class="secondary" style="flex:0 0 auto;">↻ Padrão</button>
+            </div>
+            <p style="font-size:11px; color:var(--muted); margin-top:8px;">💡 Cole ou digite qualquer emoji para personalizar seus relatórios</p>
           </div>
         </div>
 
@@ -1284,6 +1278,14 @@ raid twitch"></textarea>
 
     // Estado principal
     let state = loadStateEnhanced();
+
+    // Carregar emoji customizado do localStorage
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedEmoji = localStorage.getItem("customReportEmoji");
+      if (savedEmoji) {
+        document.getElementById("emojiInput").value = savedEmoji;
+      }
+    });
 
     // Cache de cálculos
     const calculationCache = new Map();
@@ -1741,8 +1743,11 @@ raid twitch"></textarea>
     function gerarMensagemDiscord(streamer, periodo, refDateISO, r){
       const linhas = [];
       const rewardsText = getRewardsText(r.total);
+      
+      // Pegar emoji customizado ou usar padrão
+      const emojiCustomizado = document.getElementById('emojiInput').value || '🐃';
 
-      linhas.push(`# <a:trofeu1:1432593868439949343> **Relatório de Pontuação Streamers Atlanta** <a:trofeu1:1432593868439949343> 🐃`);
+      linhas.push(`# <a:trofeu1:1432593868439949343> **Relatório de Pontuação Streamers Atlanta** <a:trofeu1:1432593868439949343> ${emojiCustomizado}`);
       linhas.push(`### 📦 Pontos por Conteúdo e Ação`);
       
       // Agrupar conteúdo por tipo e plataforma de forma clara
@@ -1795,7 +1800,7 @@ raid twitch"></textarea>
       linhas.push(rewardsText);
       linhas.push(``);
 
-      linhas.push(`*🐃 Powered by Sistema Búfalo Atlanta*`);
+      linhas.push(`*${emojiCustomizado} Powered by Sistema Búfalo Atlanta*`);
 
       return linhas.join("\n");
     }
@@ -2215,6 +2220,19 @@ raid twitch"></textarea>
       } catch {
         showStorageIndicator("❌ Erro ao copiar!", true);
       }
+    });
+
+    // Event listener para reset do emoji
+    $("emojiResetBtn").addEventListener("click", () => {
+      document.getElementById("emojiInput").value = "🐃";
+      showStorageIndicator("🐃 Emoji resetado!");
+    });
+
+    // Auto-save emoji no localStorage
+    document.getElementById("emojiInput").addEventListener("change", () => {
+      const emoji = document.getElementById("emojiInput").value || "🐃";
+      localStorage.setItem("customReportEmoji", emoji);
+      showStorageIndicator("🎉 Emoji personalizado salvo!");
     });
 
     $("removeSelectedBtn").addEventListener("click", () => {
