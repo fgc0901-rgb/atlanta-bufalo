@@ -1406,12 +1406,7 @@ raid twitch"></textarea>
               <p style="font-size:11px; color:var(--muted); margin-top:8px;">💡 Cole ou digite qualquer emoji para personalizar seus relatórios</p>
             </div>
           </div>
-        </div>
-
-        <div style="margin-top:20px;">
-          <label>Mensagem Épica (Discord / Relatório)</label>
-          <textarea id="msgOut" class="mono" placeholder="Clique em 'GERAR MENSAGEM ÉPICA' para invocar o poder do Búfalo..."></textarea>
-          <div class="collapse-section" style="margin-top:16px;">
+          <div class="collapse-section" style="flex:1;">
             <div class="collapse-header" onclick="toggleCollapse('epicimg')">
               <span class="collapse-icon" id="epicimg-icon">▶</span>
               <span><strong>🖼️ Imagem da Mensagem Épica</strong></span>
@@ -1428,6 +1423,11 @@ raid twitch"></textarea>
               </div>
             </div>
           </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <label>Mensagem Épica (Discord / Relatório)</label>
+          <textarea id="msgOut" class="mono" placeholder="Clique em 'GERAR MENSAGEM ÉPICA' para invocar o poder do Búfalo..."></textarea>
         </div>
 
         <div class="wizard-nav">
@@ -1717,10 +1717,6 @@ raid twitch"></textarea>
       }
       const savedEpicImg = localStorage.getItem("customEpicImage");
       if (savedEpicImg) {
-        const epicUrlInput = document.getElementById("epicImageUrl");
-        if (epicUrlInput && savedEpicImg.startsWith("http")) {
-          epicUrlInput.value = savedEpicImg;
-        }
         const wrap = document.getElementById("epicImagePreviewWrap");
         const img = document.getElementById("epicImagePreview");
         if (img && wrap) {
@@ -2968,7 +2964,6 @@ raid twitch"></textarea>
     }
 
     const epicFile = document.getElementById("epicImageFile");
-    const epicUrl = document.getElementById("epicImageUrl");
     const epicReset = document.getElementById("epicImageResetBtn");
 
     if (epicFile) {
@@ -2984,27 +2979,9 @@ raid twitch"></textarea>
         reader.onload = (e) => {
           const dataUrl = e.target.result;
           setEpicImage(dataUrl);
-          if (epicUrl) epicUrl.value = "";
           showStorageIndicator("🖼️ Imagem épica adicionada!");
         };
         reader.readAsDataURL(file);
-      });
-    }
-
-    if (epicUrl) {
-      epicUrl.addEventListener("change", () => {
-        const url = epicUrl.value.trim();
-        if (!url) {
-          setEpicImage("");
-          showStorageIndicator("✖ Imagem removida!");
-          return;
-        }
-        if (!/^https?:\/\//i.test(url)) {
-          showStorageIndicator("⚠️ URL inválida (use http/https)", true);
-          return;
-        }
-        setEpicImage(url);
-        showStorageIndicator("🖼️ Imagem épica definida por URL!");
       });
     }
 
@@ -3012,7 +2989,6 @@ raid twitch"></textarea>
       epicReset.addEventListener("click", () => {
         setEpicImage("");
         if (epicFile) epicFile.value = "";
-        if (epicUrl) epicUrl.value = "";
         showStorageIndicator("✖ Imagem épica removida!");
       });
     }
