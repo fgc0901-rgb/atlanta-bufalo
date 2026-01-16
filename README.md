@@ -62,6 +62,18 @@ Acesse diretamente: **[https://seu-usuario.github.io/atlanta-buffalo](https://se
 - Raid Twitch: 8 pontos
 - Indicação: 5 pontos cada
 
+### Atualização de Regras (Jan/2026)
+- Stories no Twitch: 3 pontos; pontua apenas um por dia.
+   - Atividades extras no mesmo dia são identificadas na auditoria como "Ignorado (limite 1/dia)".
+- Código de Indicação (Allowist/codiguin): 5 pontos por indicado.
+   - Use o campo `quantidade` na atividade para informar o número de indicados.
+
+As regras são centralizadas no arquivo `score.js`, que também produz uma auditoria detalhando cada atividade com o status da regra aplicada.
+
+#### Identificação das Regras na Auditoria
+- Cada item processado exibe: data, atividade, status e pontos.
+- Quando aplicável, a auditoria inclui a descrição textual da regra (ex.: "Stories no Twitch: 3 pontos; (pontua apenas um por dia)").
+
 ### 🎁 Sistema de Resgates
 Recompensas automáticas baseadas na pontuação total:
 - **PIX**: 200 reais (600 pontos)
