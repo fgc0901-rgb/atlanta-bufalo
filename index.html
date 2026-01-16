@@ -1151,7 +1151,7 @@ raid twitch"></textarea>
               <div class="row" style="gap:10px;">
                 <div style="flex:1;">
                   <label>🔴 Live (horas)</label>
-                  <input id="manualLiveHours" type="number" min="0" step="0.5" placeholder="4.5" />
+                  <input id="manualLiveHours" type="number" min="0" step="1" placeholder="4" />
                 </div>
                 <div style="flex:1;">
                   <label>👁️ Views</label>
@@ -1170,8 +1170,7 @@ raid twitch"></textarea>
                 </div>
               </div>
               <div class="row" style="margin-top:8px; gap:8px;">
-                <button id="addManualLiveBtn" style="flex:1;">🔴 Live</button>
-                <button id="addManualViewsBtn" style="flex:1;">👁️ Views</button>
+                <button id="addManualLiveViewsBtn" style="flex:1; background: linear-gradient(135deg, var(--buffalo-red), var(--buffalo-orange)); color:white; font-weight:700;">🔥 Adicionar Live + Views</button>
               </div>
             </div>
             
@@ -2425,51 +2424,47 @@ raid twitch"></textarea>
       calculationCache.clear();
     });
 
-    $("addManualLiveBtn").addEventListener("click", () => {
+    $("addManualLiveViewsBtn").addEventListener("click", () => {
       const streamer = currentStreamer();
-      const horas = parseFloat($("manualLiveHours").value);
+      let horas = parseFloat($("manualLiveHours").value);
+      let views = parseInt($("manualViews").value);
       const plataforma = $("manualPlatform").value;
       const dataISO = $("refDate").value;
       
-      if (!horas || horas <= 0) {
-        showStorageIndicator("⚠️ Insira as horas da live!", true);
+      // Validação: Live e Views devem ser preenchidos juntos
+      if (!horas || horas <= 0 || !views || views <= 0) {
+        showStorageIndicator("⚠️ Live e Views devem ser preenchidos juntos!", true);
         return;
       }
       
-      const novaAtividade = {
-        id: uuid(), data: dataISO, categoria: "live",
-        plataforma: plataforma, tipo: "live", horas: horas
-      };
+      const atividadesAdicionadas = [];
       
-      state.streamers[streamer].atividades.push(novaAtividade);
+      // Adicionar Live se preenchido (com arredondamento para inteiro)
+      if (horas && horas > 0) {
+        horas = Math.round(horas); // Arredondar para inteiro
+        const atividadeLive = {
+          id: uuid(), data: dataISO, categoria: "live",
+          plataforma: plataforma, tipo: "live", horas: horas
+        };
+        state.streamers[streamer].atividades.push(atividadeLive);
+        atividadesAdicionadas.push(`🔴 Live: ${horas}h`);
+      }
+      
+      // Adicionar Views se preenchido
+      if (views && views > 0) {
+        const atividadeViews = {
+          id: uuid(), data: dataISO, categoria: "views",
+          plataforma: plataforma, tipo: "video", views: views
+        };
+        state.streamers[streamer].atividades.push(atividadeViews);
+        atividadesAdicionadas.push(`👁️ Views: ${views}`);
+      }
+      
       saveStateEnhanced(state);
       $("manualLiveHours").value = "";
-      debouncedRender();
-      showStorageIndicator(`🔴 Live adicionada: ${horas}h`);
-      calculationCache.clear();
-    });
-
-    $("addManualViewsBtn").addEventListener("click", () => {
-      const streamer = currentStreamer();
-      const views = parseInt($("manualViews").value);
-      const plataforma = $("manualPlatform").value;
-      const dataISO = $("refDate").value;
-      
-      if (!views || views <= 0) {
-        showStorageIndicator("⚠️ Insira o número de views!", true);
-        return;
-      }
-      
-      const novaAtividade = {
-        id: uuid(), data: dataISO, categoria: "views",
-        plataforma: plataforma, tipo: "video", views: views
-      };
-      
-      state.streamers[streamer].atividades.push(novaAtividade);
-      saveStateEnhanced(state);
       $("manualViews").value = "";
       debouncedRender();
-      showStorageIndicator(`👁️ Views adicionadas: ${views}`);
+      showStorageIndicator(`✅ Adicionado: ${atividadesAdicionadas.join(" + ")}`);
       calculationCache.clear();
     });
 
@@ -2479,6 +2474,16 @@ raid twitch"></textarea>
       
       if (!dataRaid) {
         showStorageIndicator("⚠️ Selecione a data do RAID!", true);
+        return;
+      }
+      
+      // Validação: Verificar se existe Live cadastrada na mesma data
+      const liveNaData = state.streamers[streamer].atividades.some(
+        a => a.categoria === "live" && a.data === dataRaid
+      );
+      
+      if (!liveNaData) {
+        showStorageIndicator("⚠️ RAID só pode ser adicionado se houver uma Live cadastrada na mesma data!", true);
         return;
       }
       
