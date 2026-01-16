@@ -929,7 +929,8 @@
     </div>
 
     <div class="grid">
-      <div class="card span4">
+      <!-- SEÇÃO 1: STREAMER E DESEMPENHO -->
+      <div class="card span6">
         <h2>⚔️ Streamer e Ciclo</h2>
         <div class="row">
           <div>
@@ -976,8 +977,42 @@
         </div>
       </div>
 
+      <div class="card span6">
+        <h2>📊 Desempenho Individual</h2>
+        
+        <div class="perf-metrics">
+          <div class="perf-kpi perf-week">
+            <div class="perf-icon">📅</div>
+            <div class="perf-content">
+              <div class="perf-label">Semana</div>
+              <div class="perf-value" id="perfWeekPoints">—</div>
+              <div class="perf-sublabel">pontos</div>
+            </div>
+          </div>
+          
+          <div class="perf-kpi perf-month">
+            <div class="perf-icon">📆</div>
+            <div class="perf-content">
+              <div class="perf-label">Mês</div>
+              <div class="perf-value" id="perfMonthPoints">—</div>
+              <div class="perf-sublabel">pontos</div>
+            </div>
+          </div>
+          
+          <div class="perf-kpi perf-avg">
+            <div class="perf-icon">📈</div>
+            <div class="perf-content">
+              <div class="perf-label">Média/Dia</div>
+              <div class="perf-value" id="perfAvgDaily">—</div>
+              <div class="perf-sublabel">pontos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 2: ADICIONAR E LISTAR ATIVIDADES -->
       <div class="card span8">
-        <h2>� Adicionar Atividades</h2>
+        <h2>📝 Adicionar Atividades</h2>
 
         <div class="quick-start">
           <h3>⚡ Início Rápido</h3>
@@ -1085,13 +1120,13 @@ raid twitch"></textarea>
         </div>
       </div>
 
-      <div class="card span6">
+      <div class="card span4">
         <h2>🗂️ Atividades</h2>
         <table>
           <thead>
             <tr>
               <th>Data</th>
-              <th>Plataforma</th>
+              <th>Plat.</th>
               <th>Tipo</th>
               <th>Status</th>
               <th>Pts</th>
@@ -1105,39 +1140,7 @@ raid twitch"></textarea>
         </div>
       </div>
 
-      <div class="card span6">
-        <h2>📊 Desempenho Individual</h2>
-        
-        <div class="perf-metrics">
-          <div class="perf-kpi perf-week">
-            <div class="perf-icon">📅</div>
-            <div class="perf-content">
-              <div class="perf-label">Semana</div>
-              <div class="perf-value" id="perfWeekPoints">—</div>
-              <div class="perf-sublabel">pontos</div>
-            </div>
-          </div>
-          
-          <div class="perf-kpi perf-month">
-            <div class="perf-icon">📆</div>
-            <div class="perf-content">
-              <div class="perf-label">Mês</div>
-              <div class="perf-value" id="perfMonthPoints">—</div>
-              <div class="perf-sublabel">pontos</div>
-            </div>
-          </div>
-          
-          <div class="perf-kpi perf-avg">
-            <div class="perf-icon">📈</div>
-            <div class="perf-content">
-              <div class="perf-label">Média/Dia</div>
-              <div class="perf-value" id="perfAvgDaily">—</div>
-              <div class="perf-sublabel">pontos</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <!-- SEÇÃO 3: RESUMO ÉPICO E MENSAGEM -->
       <div class="card span12">
         <h2>👑 Resumo Épico & Mensagem de Guerra</h2>
         <div class="kpis">
