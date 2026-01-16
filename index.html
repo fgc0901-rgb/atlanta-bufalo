@@ -1730,55 +1730,55 @@ indicação x3"></textarea>
     // Gerador de mensagem Discord
     function gerarMensagemDiscord(streamer, periodo, refDateISO, r){
       const linhas = [];
-      const emoji = document.getElementById("emojiSelect").value;
       const rewardsText = getRewardsText(r.total);
 
-      linhas.push(`# ${emoji} **RELATÓRIO ÉPICO - STREAMERS ATLANTA** ${emoji}`);
-      linhas.push(`## ⚔️ **STREAMER:** ${streamer}`);
-      linhas.push(`## 📅 **PERÍODO:** ${labelPeriodo(periodo, refDateISO)} (${periodo[0].toUpperCase()+periodo.slice(1)})`);
-      linhas.push(``);
+      linhas.push(`# <a:trofeu1:1432593868439949343> **Relatório de Pontuação Streamers Atlanta** <a:trofeu1:1432593868439949343> 🐃`);
+      linhas.push(`### 📦 Pontos por Conteúdo e Ação`);
+      
+      // Agrupar conteúdo por tipo e plataforma de forma clara
+      const conteudoDetalhado = {};
+      for (const [label, item] of Object.entries(r.gruposConteudo)) {
+        if (!conteudoDetalhado[label]) {
+          conteudoDetalhado[label] = { count: 0, pontos: 0 };
+        }
+        conteudoDetalhado[label].count += item.count;
+        conteudoDetalhado[label].pontos += item.pontos;
+      }
 
+      // Exibir conteúdo agrupado
+      Object.keys(conteudoDetalhado).sort().forEach((k) => {
+        const it = conteudoDetalhado[k];
+        linhas.push(`> **${k}** (x${it.count}): ${it.pontos} pontos`);
+      });
+
+      // Exibir lives se houver
       if (r.livesDetalhe.length){
-        linhas.push(`### 🔴 **BATALHAS AO VIVO**`);
-        r.livesDetalhe.forEach((l, idx) => {
+        r.livesDetalhe.forEach((l) => {
           const h = (typeof l.horas === "number" && !isNaN(l.horas)) ? l.horas : 0;
-          linhas.push(`**Live ${idx+1}:** 🎬 ${h}h → **${l.pontos} pontos**`);
+          linhas.push(`> **Lives Twitch** (${h}h): ${l.pontos} pontos`);
         });
-        linhas.push(``);
       }
 
+      // Exibir views se houver
       if (r.viewsDetalhe.length){
-        linhas.push(`### 👁️ **PODER DAS VISUALIZAÇÕES**`);
         r.viewsDetalhe.forEach((v) => {
-          linhas.push(`> **${nomePlataforma(v.plataforma)}**: ${v.views} views → **${v.pontos} pontos**`);
+          linhas.push(`> **${nomePlataforma(v.plataforma)} Views** (${v.views} views): ${v.pontos} pontos`);
         });
-        linhas.push(``);
       }
 
+      // Exibir ações especiais se houver
       if (r.acoesDetalhe.length){
-        linhas.push(`### ⚡ **AÇÕES ESPECIAIS**`);
         r.acoesDetalhe.forEach((a) => {
-          linhas.push(`> **${a.acao}**: **${a.pontos} pontos**`);
+          linhas.push(`> **${a.acao}**: ${a.pontos} pontos`);
         });
-        linhas.push(``);
       }
 
-      const conteudoKeys = Object.keys(r.gruposConteudo);
-      if (conteudoKeys.length){
-        linhas.push(`### 📦 **ARSENAL DE CONTEÚDO**`);
-        conteudoKeys.sort().forEach((k) => {
-          const it = r.gruposConteudo[k];
-          linhas.push(`> **${k}** (x${it.count}): **${it.pontos} pontos**`);
-        });
-        linhas.push(``);
-      }
-
-      linhas.push(`---`);
-      linhas.push(`### 📊 **RESUMO DO CICLO**`);
-      linhas.push(`> 🔥 **Pontos deste Ciclo:** \`${r.pontosPeriodo} pontos\``);
-      linhas.push(`> 🏆 **Pontos Anteriores:** \`+${state.streamers[streamer]?.pontosAnteriores || 0} pontos\``);
-      linhas.push(`# 👑 **PONTUAÇÃO TOTAL: ${r.total} PONTOS** 👑`);
-      linhas.push(`🎯 **Total de Publicações:** **${r.conteudosPontuados}**`);
+      linhas.push(`### 📈 Resumo`);
+      linhas.push(`> **Pontos Deste Ciclo:** \`${r.pontosPeriodo} pontos\``);
+      linhas.push(`> **Pontos Anteriores:** \`${state.streamers[streamer]?.pontosAnteriores || 0} pontos\``);
+      linhas.push(``);
+      linhas.push(`# 🪙 Pontuação Total Atual: **${r.total} pontos**`);
+      linhas.push(`🖥️ Total de Publicações no Ciclo: **${r.conteudosPontuados}**`);
       linhas.push(``);
 
       linhas.push(`---`);
