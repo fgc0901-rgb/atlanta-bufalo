@@ -1051,11 +1051,14 @@ raid twitch"></textarea>
       if (rewards.length === 0) {
         return "Continue acumulando pontos para desbloquear resgates! 🎯";
       }
-      let text = "🎁 **PARABÉNS! VOCÊ JÁ PODE RESGATAR:**\\n\\n";
+      let text = "🎁 **Resgates Disponíveis**\n";
+      text += ">━━━━━━━━━━━━━━━<\n";
       rewards.forEach((reward, idx) => {
-        text += `**${idx + 1}.** ${reward.nome} - **${reward.pontos} pontos** ✅\\n`;
+        text += `> ✅ ${idx + 1}) ${reward.nome} — **${reward.pontos} pts**\n`;
       });
-      text += "\\n*💎 Entre em contato com a administração para efetuar seus resgates!*\\n";
+      text += ">━━━━━━━━━━━━━━━<\n";
+      text += "💎 Fale com a administração para resgatar.\n";
+      return text.trim();
       return text;
     }
 
