@@ -1406,16 +1406,20 @@ raid twitch"></textarea>
               <p style="font-size:11px; color:var(--muted); margin-top:8px;">💡 Cole ou digite qualquer emoji para personalizar seus relatórios</p>
             </div>
           </div>
-          <div class="collapse-section" style="flex:1;">
+        </div>
+
+        <div style="margin-top:20px;">
+          <label>Mensagem Épica (Discord / Relatório)</label>
+          <textarea id="msgOut" class="mono" placeholder="Clique em 'GERAR MENSAGEM ÉPICA' para invocar o poder do Búfalo..."></textarea>
+          <div class="collapse-section" style="margin-top:16px;">
             <div class="collapse-header" onclick="toggleCollapse('epicimg')">
               <span class="collapse-icon" id="epicimg-icon">▶</span>
               <span><strong>🖼️ Imagem da Mensagem Épica</strong></span>
             </div>
             <div class="collapse-content" id="epicimg-content">
-              <label>Selecione uma imagem ou informe URL:</label>
+              <label>Selecione uma imagem:</label>
               <div class="row" style="margin-top:10px; gap:10px; align-items:center;">
                 <input id="epicImageFile" type="file" accept="image/*" style="flex:1;" />
-                <input id="epicImageUrl" type="url" placeholder="https://exemplo.com/banner.png" style="flex:1;" />
                 <button id="epicImageResetBtn" class="secondary" style="flex:0 0 auto;">✖ Remover</button>
               </div>
               <div id="epicImagePreviewWrap" style="margin-top:10px; display:none;">
@@ -1424,11 +1428,6 @@ raid twitch"></textarea>
               </div>
             </div>
           </div>
-        </div>
-
-        <div style="margin-top:20px;">
-          <label>Mensagem Épica (Discord / Relatório)</label>
-          <textarea id="msgOut" class="mono" placeholder="Clique em 'GERAR MENSAGEM ÉPICA' para invocar o poder do Búfalo..."></textarea>
         </div>
 
         <div class="wizard-nav">
