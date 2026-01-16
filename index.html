@@ -1408,8 +1408,21 @@ raid twitch"></textarea>
         if (urlLower.includes('tiktok.com') || urlLower.includes('vt.tiktok.com')) return 'tiktok';
         if (urlLower.includes('instagram.com')) return 'instagram';
         if (urlLower.includes('youtube.com') || urlLower.includes('youtu.be')) return 'youtube';
-        if (urlLower.includes('kwai')) return 'kwai';
+        // Kwai: cobrir domínios comuns e fallback amplo
+        if (urlLower.includes('kwai.com') || urlLower.includes('k.kwai.com') || urlLower.includes('kw.ai') || urlLower.includes('/kwai/') || urlLower.includes('kwai')) return 'kwai';
         if (urlLower.includes('kick.com')) return 'kick';
+        return null;
+      }
+
+      // Função para tentar inferir plataforma a partir do texto (quando URL não ajuda)
+      function getPlatformFromText(text) {
+        if (!text) return null;
+        const t = text.toLowerCase();
+        if (/(tik\s*tok|tiktok)/.test(t)) return 'tiktok';
+        if (/instagram/.test(t)) return 'instagram';
+        if (/youtube|youtu\.be/.test(t)) return 'youtube';
+        if (/\bkwai\b/.test(t)) return 'kwai';
+        if (/\bkick\b/.test(t)) return 'kick';
         return null;
       }
 
@@ -1432,6 +1445,8 @@ raid twitch"></textarea>
         // Pular cabeçalhos e linhas irrelevantes primeiro
         if (l.match(/^(tiktok|kwai|instagram|youtube|kick|twitch)\s*\(pontos\)$/)) continue;
         if (l.match(/^[a-zA-Z0-9_]+$/)) continue;
+        // Ignorar ruídos comuns de páginas/apps (ex.: artefatos do Kwai)
+        if (l === 'kwai-nuxt-pwa-pc' || l === 'make everyone shine') continue;
         
         // NOVO: Parser para formato com timestamp [HH:MM]Streamer: Tipo Plataforma URL
         // Exemplos:
@@ -1442,7 +1457,7 @@ raid twitch"></textarea>
           const activityText = timestampMatch[3];
           const urlMatch = activityText.match(/(https?:\/\/[^\s]+)/);
           const url = urlMatch ? urlMatch[1] : null;
-          const platform = getPlatformaFromUrl(url);
+          const platform = getPlatformaFromUrl(url) || getPlatformFromText(activityText);
           
           if (platform) {
             // Extrair tipo da descrição da atividade
@@ -1483,6 +1498,24 @@ raid twitch"></textarea>
           const nextMatch = linhas[i + 1].match(/^(https?:\/\/[^\s]+)/);
           if (nextMatch) {
             url = nextMatch[1];
+          }
+        }
+
+        // Se achamos URL, tentamos pontuar mesmo que haja texto antes/depois
+        if (url) {
+          let platform = getPlatformaFromUrl(url) || getPlatformFromText(linha);
+          if (platform) {
+            let tipo = getTipoFromUrl(url);
+            if (l.includes('story') || l.includes('stories')) tipo = 'stories';
+            else if (l.includes('reel')) tipo = 'reels';
+            else if (l.includes('short')) tipo = 'shorts';
+            else if (l.includes('feed')) tipo = 'feed';
+            else if (l.includes('post')) tipo = 'post';
+            atividades.push({
+              id: uuid(), data: dataISO, categoria: "conteudo",
+              plataforma: platform, tipo, url
+            });
+            continue;
           }
         }
 
@@ -1742,8 +1775,8 @@ raid twitch"></textarea>
           continue;
         }
 
-        // Parser de mensagens do Discord/WhatsApp
-        m = l.match(/(?:\[\d{2}:\d{2}\])?\s*[a-zA-Z0-9_]+\s*:\s*(.+)/);
+        // Parser de mensagens do Discord/WhatsApp (nomes com espaços/#)
+        m = l.match(/(?:\[\d{2}:\d{2}\]\s*)?[^:]+:\s*(.+)/);
         if (m) {
           const subAtividades = parseBulkInput(m[1], dataISO);
           atividades.push(...subAtividades);
