@@ -40,24 +40,35 @@
     .buffalo-hero {
       position: fixed;
       top: 0;
-      right: -200px;
-      width: 800px;
+      right: -100px;
+      width: 700px;
       height: 100vh;
       background: url('https://cdnb.artstation.com/p/assets/images/images/046/242/845/large/lucas-sant-ana-tatonka.jpg?1648488053') center/cover no-repeat;
-      opacity: 0.45;
+      opacity: 0.5;
       z-index: -2;
-      will-change: transform, opacity, filter;
+      will-change: transform, opacity;
       transform: translateZ(0);
       backface-visibility: hidden;
       filter: 
         contrast(2.2) 
-        brightness(0.5) 
-        sepia(1.2) 
+        brightness(0.55) 
+        sepia(1) 
         hue-rotate(310deg) 
-        saturate(2.5)
-        drop-shadow(0 0 40px rgba(139,0,0,.8))
-        drop-shadow(0 0 80px rgba(255,69,0,.6));
-      animation: breathe-enhanced 8s ease-in-out infinite;
+        saturate(2.3)
+        drop-shadow(0 0 50px rgba(139,0,0,.9))
+        drop-shadow(0 0 100px rgba(255,69,0,.7));
+      animation: breathe-hero 12s ease-in-out infinite;
+    }
+
+    @keyframes breathe-hero {
+      0%, 100% { 
+        transform: translateY(0) scale(1) translateZ(0);
+        opacity: 0.5;
+      }
+      50% { 
+        transform: translateY(-20px) scale(1.03) translateZ(0);
+        opacity: 0.6;
+      }
     }
 
     .buffalo-hero::before {
@@ -68,35 +79,63 @@
       right: 0;
       bottom: 0;
       background: 
-        linear-gradient(90deg, rgba(10,10,10,.95) 0%, rgba(10,10,10,.5) 30%, transparent 65%),
-        radial-gradient(ellipse 800px 600px at 100% 40%, rgba(139,0,0,.5) 0%, rgba(139,0,0,.2) 30%, transparent 70%),
-        radial-gradient(ellipse 500px 500px at 120% 50%, rgba(255,69,0,.3) 0%, transparent 60%),
-        radial-gradient(ellipse 600px 400px at 80% 60%, rgba(255,107,107,.15) 0%, transparent 50%);
+        linear-gradient(90deg, rgba(10,10,10,.98) 0%, rgba(10,10,10,.6) 25%, transparent 60%),
+        radial-gradient(ellipse 900px 700px at 100% 50%, rgba(139,0,0,.6) 0%, rgba(139,0,0,.2) 35%, transparent 75%),
+        radial-gradient(ellipse 600px 600px at 120% 40%, rgba(255,69,0,.35) 0%, transparent 65%);
       z-index: 1;
-      animation: gradient-shift 15s ease-in-out infinite;
+      animation: gradient-pulse 18s ease-in-out infinite;
     }
 
-    .buffalo-skull {
+    @keyframes gradient-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+
+    .buffalo-left {
       position: fixed;
-      top: 80px;
-      right: 100px;
-      width: 300px;
-      height: 300px;
-      background: url('https://wallpapers.com/images/high/buffalo-skull-art-1d68pwdvaojagn6y.jpg') center/contain no-repeat;
+      top: 0;
+      left: -150px;
+      width: 600px;
+      height: 100vh;
+      background: url('https://cdnb.artstation.com/p/assets/images/images/046/242/845/large/lucas-sant-ana-tatonka.jpg?1648488053') center/cover no-repeat;
       opacity: 0.25;
-      z-index: -1;
-      will-change: transform, filter;
-      transform: translateZ(0);
+      z-index: -3;
+      will-change: transform, opacity;
+      transform: translateZ(0) scaleX(-1);
       backface-visibility: hidden;
       filter: 
-        contrast(2.5) 
+        contrast(2) 
         brightness(0.4) 
-        sepia(1.2) 
-        hue-rotate(310deg) 
+        sepia(1.1) 
+        hue-rotate(315deg) 
         saturate(2)
-        drop-shadow(0 0 25px rgba(139,0,0,.6))
-        drop-shadow(0 0 50px rgba(255,69,0,.4));
-      animation: float-enhanced 20s ease-in-out infinite;
+        drop-shadow(0 0 40px rgba(139,0,0,.7))
+        blur(2px);
+      animation: float-left 15s ease-in-out infinite;
+    }
+
+    @keyframes float-left {
+      0%, 100% { 
+        transform: translateY(0) translateX(0) scaleX(-1) translateZ(0);
+        opacity: 0.25;
+      }
+      50% { 
+        transform: translateY(-30px) translateX(20px) scaleX(-1) translateZ(0);
+        opacity: 0.35;
+      }
+    }
+
+    .buffalo-left::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        linear-gradient(270deg, rgba(10,10,10,.98) 0%, rgba(10,10,10,.7) 30%, transparent 70%),
+        radial-gradient(ellipse 700px 600px at 0% 50%, rgba(139,0,0,.4) 0%, transparent 70%);
+      z-index: 1;
     }
 
     .particles {
@@ -824,16 +863,15 @@
 
     @media (max-width: 1200px){
       .buffalo-hero {
-        right: -300px;
-        width: 600px;
-        opacity: 0.15;
+        right: -250px;
+        width: 550px;
+        opacity: 0.2;
       }
       
-      .buffalo-skull {
-        width: 200px;
-        height: 200px;
-        right: 50px;
-        top: 60px;
+      .buffalo-left {
+        left: -250px;
+        width: 500px;
+        opacity: 0.15;
       }
     }
 
@@ -846,12 +884,8 @@
         display: none;
       }
       
-      .buffalo-skull {
-        width: 150px;
-        height: 150px;
-        right: 20px;
-        top: 40px;
-        opacity: 0.1;
+      .buffalo-left {
+        display: none;
       }
 
       h1 {
@@ -988,7 +1022,7 @@
 </head>
 <body>
   <div class="buffalo-hero"></div>
-  <div class="buffalo-skull"></div>
+  <div class="buffalo-left"></div>
   <div class="particles" id="particles"></div>
   <div class="storage-indicator" id="storageIndicator">💾 Dados salvos automaticamente</div>
 
@@ -1021,19 +1055,9 @@
 
         <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:10px 0;">
 
-        <div class="row">
-          <div>
-            <label>Ciclo</label>
-            <select id="periodo">
-              <option value="dia">Dia</option>
-              <option value="semanal">Semanal</option>
-              <option value="mensal">Mensal</option>
-            </select>
-          </div>
-          <div>
-            <label>Data de Referência</label>
-            <input id="refDate" type="date" value="2026-01-15" />
-          </div>
+        <div style="margin-bottom:15px;">
+          <label>Data de Referência</label>
+          <input id="refDate" type="date" value="2026-01-15" style="width:100%;" />
         </div>
 
         <div class="manual-section">
@@ -1044,8 +1068,8 @@
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-          <span class="pill" id="pillPeriodo">—</span>
           <span class="pill">🎯 Sistema Atlanta Ativo</span>
+          <span class="pill">📅 Ciclo Diário</span>
         </div>
 
         <div class="wizard-nav">
@@ -2311,10 +2335,10 @@ raid twitch"></textarea>
 
     const debouncedRender = debounce(function render(){
       const streamer = currentStreamer();
-      const periodo = $("periodo").value;
+      const periodo = "dia"; // Sempre ciclo diário
       const refDateISO = $("refDate").value;
 
-      $("pillPeriodo").textContent = labelPeriodo(periodo, refDateISO);
+      // Remover atualização de pillPeriodo pois agora é fixo
       $("pontosAnteriores").value = state.streamers[streamer]?.pontosAnteriores || 0;
       
       // Sincronizar campo de data do raid com a data de referência
@@ -2482,7 +2506,6 @@ raid twitch"></textarea>
     });
 
     $("streamerSelect").addEventListener("change", debouncedRender);
-    $("periodo").addEventListener("change", debouncedRender);
     $("refDate").addEventListener("change", debouncedRender);
 
     $("processBulkBtn").addEventListener("click", () => {
@@ -2549,7 +2572,7 @@ raid twitch"></textarea>
 
     $("generateMsgBtn").addEventListener("click", () => {
       const streamer = currentStreamer();
-      const periodo = $("periodo").value;
+      const periodo = "dia"; // Sempre ciclo diário
       const refDateISO = $("refDate").value;
       const r = calcularPeriodoStreamer(streamer, periodo, refDateISO);
       $("msgOut").value = gerarMensagemDiscord(streamer, periodo, refDateISO, r);
