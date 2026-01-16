@@ -1685,6 +1685,18 @@ raid twitch"></textarea>
     function startOfMonth(d) { return new Date(d.getFullYear(), d.getMonth(), 1, 12,0,0,0); }
     function endOfMonth(d) { return new Date(d.getFullYear(), d.getMonth()+1, 0, 12,0,0,0); }
 
+    function calcularIntervalo(periodo, refDateISO) {
+      const ref = parseISODate(refDateISO);
+      if (periodo === "dia") {
+        const dia = parseISODate(refDateISO);
+        return [dia, dia];
+      }
+      if (periodo === "semanal") {
+        return [startOfWeek(ref), endOfWeek(ref)];
+      }
+      return [startOfMonth(ref), endOfMonth(ref)];
+    }
+
     function labelPeriodo(periodo, refDateISO) {
       const d = parseISODate(refDateISO);
       if (periodo === "dia") return refDateISO;
@@ -1794,6 +1806,14 @@ raid twitch"></textarea>
 
         if (categoria === "raid"){
           const regra = REGRAS_PONTOS.twitch.raid;
+
+          const liveNaData = atividadesPeriodo.some(
+            at => at.categoria === "live" && at.data === data
+          );
+          if (!liveNaData) {
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:"raid", status:"Ignorado (raid sem live no dia)", pontos:0 });
+            continue;
+          }
           
           // Verificar se já existe um raid nesta data
           const raidExistenteNaData = atividadesPeriodo.some(
@@ -1881,6 +1901,31 @@ raid twitch"></textarea>
     // Parser de texto
     function uuid(){
       return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+    }
+
+    function raidPermitidoNaData(streamer, dataISO, novasAtividades = []) {
+      const livesExistentes = state.streamers[streamer]?.atividades?.some(
+        a => a.categoria === "live" && a.data === dataISO
+      );
+      const livesNoLote = novasAtividades.some(
+        a => a.categoria === "live" && a.data === dataISO
+      );
+      return Boolean(livesExistentes || livesNoLote);
+    }
+
+    function aplicarRegraRaidLive(atividades, streamer, dataISO) {
+      let raidsIgnoradas = 0;
+      if (!raidPermitidoNaData(streamer, dataISO, atividades)) {
+        const filtradas = atividades.filter(a => {
+          if (a.categoria === "raid" && a.data === dataISO) {
+            raidsIgnoradas += 1;
+            return false;
+          }
+          return true;
+        });
+        return { atividades: filtradas, raidsIgnoradas };
+      }
+      return { atividades, raidsIgnoradas };
     }
 
     function parseBulkInput(text, dataISO) {
@@ -2856,10 +2901,11 @@ raid twitch"></textarea>
       }
       
       const novasAtividades = parseBulkInput(texto, dataISO);
+      const { atividades: atividadesValidadas, raidsIgnoradas } = aplicarRegraRaidLive(novasAtividades, streamer, dataISO);
       
-      let debugText = `🔍 ANÁLISE DO PARSING (${novasAtividades.length} atividades reconhecidas):\n\n`;
+      let debugText = `🔍 ANÁLISE DO PARSING (${atividadesValidadas.length} atividades reconhecidas):\n\n`;
       
-      if (novasAtividades.length === 0) {
+      if (atividadesValidadas.length === 0) {
         debugText += "❌ NENHUMA ATIVIDADE RECONHECIDA!\n\n";
         debugText += "📝 LINHAS ANALISADAS:\n";
         const linhas = texto.split("\n").map(l => l.trim()).filter(Boolean);
@@ -2870,7 +2916,7 @@ raid twitch"></textarea>
         debugText += "• 1 vídeo tik tok\n• 1 story Instagram\n• live 1: 4h\n• views youtube: 1200\n";
       } else {
         const grupos = {};
-        novasAtividades.forEach(a => {
+        atividadesValidadas.forEach(a => {
           const key = `${a.categoria}-${a.plataforma}-${a.tipo}`;
           if (!grupos[key]) grupos[key] = [];
           grupos[key].push(a);
@@ -2891,18 +2937,22 @@ raid twitch"></textarea>
         });
       }
       
+      if (raidsIgnoradas > 0) {
+        debugText += `⚠️ ${raidsIgnoradas} raid(s) ignorada(s) por não haver live cadastrada no dia.\n`;
+      }
+
       $("debugOutput").value = debugText;
       
-      if (novasAtividades.length === 0) {
+      if (atividadesValidadas.length === 0) {
         showStorageIndicator("⚠️ Nenhuma atividade reconhecida!", true);
         return;
       }
       
-      state.streamers[streamer].atividades.push(...novasAtividades);
+      state.streamers[streamer].atividades.push(...atividadesValidadas);
       saveStateEnhanced(state);
       $("bulkInput").value = "";
       debouncedRender();
-      showStorageIndicator(`⚡ ${novasAtividades.length} atividades processadas!`);
+      showStorageIndicator(`⚡ ${atividadesValidadas.length} atividades processadas!${raidsIgnoradas ? " (raids sem live ignoradas)" : ""}`);
       calculationCache.clear();
     });
 
