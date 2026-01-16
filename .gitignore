@@ -100,3 +100,5 @@ _site/
 
 # GitHub Pages
 .github/
+!.github/
+!.github/CODEOWNERS
