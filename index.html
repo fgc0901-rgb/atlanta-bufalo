@@ -681,10 +681,9 @@
 
   <div class="wrap">
     <div class="header">
-      <h1>Agente de Pontuação — Streamers Atlanta</h1>
+      <h1>🐃 Sistema de Pontuação Atlanta</h1>
       <p class="sub">
-        Sistema épico de pontuação para streamers com o poder do Búfalo Atlanta. 
-        Cole os lançamentos, escolha streamer e período, e deixe a magia acontecer.
+        Cole os lançamentos do Discord/WhatsApp → Processe → Gere o relatório
       </p>
     </div>
 
@@ -737,33 +736,91 @@
       </div>
 
       <div class="card span8">
-        <h2>🔥 Novos Lançamentos (Poder Bruto)</h2>
+        <h2>� Adicionar Atividades</h2>
 
-        <label for="bulkInput">Cole aqui os lançamentos do streamer (logs do Discord/WhatsApp)</label>
-        <textarea id="bulkInput" class="mono" placeholder="Exemplo épico (como o do Lince):
+        <div class="quick-start">
+          <h3>⚡ Início Rápido</h3>
+          <p><strong>1.</strong> Cole os lançamentos do Discord/WhatsApp abaixo</p>
+          <p><strong>2.</strong> Clique em "Processar"</p>
+          <p><strong>3.</strong> Veja o resultado na tabela e gere o relatório</p>
+        </div>
 
-Lince: https://vt.tiktok.com/ZS53TNw6w/
-[00:29]Lince: 1 vídeo tik tok
-[00:29]Lince: https://vt.tiktok.com/ZSHoreBgvRj7t-xAR4x/
-[00:29]Lince: 1 story tik tok
-[00:30]Lince: 1 story Instagram
-[00:31]Lince: 1 reel Instagram
-[00:31]Lince: 1 POST Instagram
-[00:32]Lince: 1 vídeo YouTube
-[00:32]Lince: 1 short YouTube
-[00:32]Lince: 1 POST YouTube
-[00:33]Lince: 1 vídeo Kwai
-[00:34]Lince: 1 vídeo Kick
+        <label for="bulkInput">📝 Cole aqui os lançamentos</label>
+        <textarea id="bulkInput" class="mono" placeholder="Exemplo:
 
-🔥 PODER ESPECIAL:
+・1 Vídeo no TikTok
+・1 Story Instagram
+・1 Reel Instagram
+・1 Vídeo YouTube
+・1 Short YouTube
+
 live 1: 4h
 views youtube: 1200
-raid twitch x2
-indicação x3"></textarea>
+raid twitch"></textarea>
 
         <div class="row" style="margin-top:20px;">
-          <button id="processBulkBtn">⚡ PROCESSAR TEXTO ⚡</button>
-          <button id="importJsonBtn" class="secondary">📥 IMPORTAR JSON</button>
+          <button id="processBulkBtn">⚡ PROCESSAR</button>
+        </div>
+
+        <div class="collapse-section">
+          <div class="collapse-header" onclick="toggleCollapse('advanced')">
+            <span class="collapse-icon" id="advanced-icon">▶</span>
+            <span><strong>⚙️ Opções Avançadas</strong> (JSON, Manual, RAIDS)</span>
+          </div>
+          <div class="collapse-content" id="advanced-content">
+            <div class="tabs" style="margin-top:15px;">
+              <button class="tab active" onclick="switchTab('json')">📥 JSON</button>
+              <button class="tab" onclick="switchTab('manual')">✋ Manual</button>
+              <button class="tab" onclick="switchTab('raid')">⚡ RAID</button>
+            </div>
+            
+            <div class="tab-content active" id="json-tab">
+              <label>Cole o JSON estruturado</label>
+              <textarea id="jsonInput" class="mono" style="min-height:150px;" placeholder='{"atividades":[{"data":"2026-01-16","categoria":"conteudo","plataforma":"tiktok","tipo":"stories"}]}'></textarea>
+              <button id="importJsonBtn" style="margin-top:10px;">📥 IMPORTAR JSON</button>
+            </div>
+            
+            <div class="tab-content" id="manual-tab">
+              <div class="row" style="gap:10px;">
+                <div style="flex:1;">
+                  <label>🔴 Live (horas)</label>
+                  <input id="manualLiveHours" type="number" min="0" step="0.5" placeholder="4.5" />
+                </div>
+                <div style="flex:1;">
+                  <label>👁️ Views</label>
+                  <input id="manualViews" type="number" min="0" placeholder="1200" />
+                </div>
+                <div style="flex:1;">
+                  <label>Plataforma</label>
+                  <select id="manualPlatform">
+                    <option value="twitch">Twitch</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="kwai">Kwai</option>
+                    <option value="kick">Kick</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" style="margin-top:15px;">
+                <button id="addManualLiveBtn">🔴 Adicionar Live</button>
+                <button id="addManualViewsBtn">👁️ Adicionar Views</button>
+              </div>
+            </div>
+            
+            <div class="tab-content" id="raid-tab">
+              <p style="color:var(--muted); font-size:13px; margin-bottom:10px;">⚠️ Limite: 1 raid por dia</p>
+              <div class="row">
+                <div style="flex:1;">
+                  <label>Data do RAID</label>
+                  <input id="manualRaidDate" type="date" />
+                </div>
+                <div>
+                  <button id="addManualRaidBtn" style="margin-top:23px;">⚡ Adicionar RAID (8pts)</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="manual-section">
@@ -808,44 +865,51 @@ indicação x3"></textarea>
           </div>
         </div>
 
-        <p class="help" style="margin-top:15px;">
-          <strong>🐃 O Búfalo Atlanta reconhece AGORA:</strong><br>
-          <strong>📝 TEXTO:</strong> <code>1 vídeo tik tok</code> • <code>1 story Instagram</code> • <code>live 1: 4h</code> • <code>views youtube: 1200</code> • <code>raid twitch x2</code><br>
-          <strong>📥 JSON:</strong> Cole dados estruturados e clique em "IMPORTAR JSON"<br>
-          <strong>💡 Exemplo JSON:</strong><br>
-          <code style="font-size:11px;">{"atividades":[{"data":"2026-01-15","categoria":"conteudo","plataforma":"tiktok","tipo":"stories"}]}</code><br>
-          <strong>Views:</strong> -100: 2pts | +100: 4pts | +350: 6pts | +500: 8pts | +800: 10pts | +1000: 12pts | +2000: 24pts | +3000: 36pts<br>
-          <strong>⚡ RAIDS:</strong> 8 pontos por raid • <strong>Limite:</strong> Apenas 1 raid por dia será pontuado
-        </p>
+        <div class="collapse-section" style="margin-top:20px;">
+          <div class="collapse-header" onclick="toggleCollapse('help')">
+            <span class="collapse-icon" id="help-icon">▶</span>
+            <span><strong>❓ Ajuda & Formatos</strong></span>
+          </div>
+          <div class="collapse-content" id="help-content">
+            <p class="help">
+              <strong>📝 Formatos aceitos:</strong><br>
+              • <code>1 vídeo tik tok</code> • <code>1 story Instagram</code><br>
+              • <code>live 1: 4h</code> • <code>views youtube: 1200</code><br>
+              • <code>raid twitch</code><br><br>
+              <strong>💰 Pontuação:</strong> 3 pts por conteúdo | Lives: variável | Views: até 36pts | RAID: 8pts (1/dia)
+            </p>
+          </div>
+        </div>
 
-        <div class="manual-section" style="margin-top:20px;">
-          <h3>🔍 Debug - Atividades Reconhecidas</h3>
-          <textarea id="debugOutput" class="mono" style="min-height:120px;" placeholder="Aqui aparecerão as atividades reconhecidas pelo sistema..." readonly></textarea>
+        <div class="collapse-section">
+          <div class="collapse-header" onclick="toggleCollapse('debug')">
+            <span class="collapse-icon" id="debug-icon">▶</span>
+            <span><strong>🔍 Debug</strong></span>
+          </div>
+          <div class="collapse-content" id="debug-content">
+            <textarea id="debugOutput" class="mono" style="min-height:100px;" placeholder="Atividades reconhecidas..." readonly></textarea>
+          </div>
         </div>
       </div>
 
       <div class="card span6">
-        <h2>🛡️ Auditoria de Guerra</h2>
+        <h2>� Atividades</h2>
         <table>
           <thead>
             <tr>
-              <th>📅 Data</th>
-              <th>⚔️ Categoria</th>
-              <th>🌐 Plataforma</th>
-              <th>🎯 Tipo</th>
-              <th>✅ Status</th>
-              <th>💎 Pontos</th>
+              <th>Data</th>
+              <th>Plataforma</th>
+              <th>Tipo</th>
+              <th>Status</th>
+              <th>Pts</th>
             </tr>
           </thead>
           <tbody id="auditBody"></tbody>
         </table>
-        <div class="row" style="margin-top:20px;">
-          <button id="removeSelectedBtn" class="danger">🗑️ Remover Selecionados</button>
+        <div class="row" style="margin-top:15px;">
+          <button id="removeSelectedBtn" class="danger">🗑️ Remover</button>
           <button id="clearAllStreamerBtn" class="danger">💥 Limpar Tudo</button>
         </div>
-        <p class="help">
-          <strong>🐃 Poder do Búfalo:</strong> Selecione itens marcando o checkbox para remover da batalha.
-        </p>
       </div>
 
       <div class="card span6">
@@ -2385,6 +2449,30 @@ indicação x3"></textarea>
       
       showStorageIndicator("🐃 Sistema Atlanta carregado!");
     });
+
+    // Funções para sistema de abas e collapse
+    function toggleCollapse(id) {
+      const content = document.getElementById(id + '-content');
+      const icon = document.getElementById(id + '-icon');
+      
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        icon.classList.remove('open');
+      } else {
+        content.classList.add('open');
+        icon.classList.add('open');
+      }
+    }
+
+    function switchTab(tabName) {
+      // Remove active de todas as abas
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      // Ativa a aba clicada
+      event.target.classList.add('active');
+      document.getElementById(tabName + '-tab').classList.add('active');
+    }
   </script>
 </body>
 </html>
