@@ -58,50 +58,6 @@
       animation: breathe 12s ease-in-out infinite;
     }
 
-    .buffalo-accent-left {
-      position: fixed;
-      bottom: -150px;
-      left: -200px;
-      width: 600px;
-      height: 600px;
-      background: url('https://cdnb.artstation.com/p/assets/images/images/046/242/845/large/lucas-sant-ana-tatonka.jpg?1648488053') center/cover no-repeat;
-      opacity: 0.15;
-      z-index: -2;
-      will-change: transform, opacity;
-      transform: translateZ(0) scaleX(-1);
-      backface-visibility: hidden;
-      filter: 
-        contrast(1.4) 
-        brightness(0.4) 
-        sepia(1) 
-        hue-rotate(320deg) 
-        saturate(1.6)
-        drop-shadow(0 0 15px rgba(255,69,0,.3));
-      animation: float 18s ease-in-out infinite;
-    }
-
-    .buffalo-accent-top {
-      position: fixed;
-      top: 50%;
-      right: -100px;
-      width: 500px;
-      height: 500px;
-      background: url('https://wallpapers.com/images/high/buffalo-skull-art-1d68pwdvaojagn6y.jpg') center/contain no-repeat;
-      opacity: 0.12;
-      z-index: -1;
-      will-change: transform;
-      transform: translateZ(0);
-      backface-visibility: hidden;
-      filter: 
-        contrast(1.8) 
-        brightness(0.35) 
-        sepia(0.8) 
-        hue-rotate(310deg) 
-        saturate(2)
-        drop-shadow(0 0 25px rgba(139,0,0,.3));
-      animation: pulse 10s ease-in-out infinite;
-    }
-
     .buffalo-hero::before {
       content: '';
       position: absolute;
@@ -134,26 +90,6 @@
         hue-rotate(320deg) 
         drop-shadow(0 0 30px rgba(139,0,0,.5));
       animation: float 15s ease-in-out infinite;
-    }
-
-    .buffalo-card-accent {
-      position: absolute;
-      top: -30px;
-      right: -50px;
-      width: 250px;
-      height: 250px;
-      background: url('https://wallpapers.com/images/high/buffalo-skull-art-1d68pwdvaojagn6y.jpg') center/contain no-repeat;
-      opacity: 0.08;
-      pointer-events: none;
-      filter: 
-        contrast(1.8) 
-        brightness(0.4) 
-        sepia(0.8) 
-        hue-rotate(320deg) 
-        saturate(1.5)
-        drop-shadow(0 0 15px rgba(139,0,0,.2));
-      animation: float 12s ease-in-out infinite;
-      z-index: 0;
     }
 
     .particles {
@@ -211,7 +147,7 @@
     .wrap{
       max-width: 1400px;
       margin: 0 auto;
-      padding: 30px 20px 80px;
+      padding: 20px 15px 50px;
       position: relative;
       z-index: 1;
       will-change: transform;
@@ -220,7 +156,7 @@
 
     .header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 25px;
       position: relative;
     }
 
@@ -239,7 +175,7 @@
     }
 
     h1{
-      margin: 20px 0 15px;
+      margin: 15px 0 15px;
       font-size: 32px;
       font-weight: 900;
       letter-spacing: 1px;
@@ -286,7 +222,7 @@
       border: 2px solid transparent;
       background-clip: padding-box;
       border-radius: 20px;
-      padding: 25px;
+      padding: 18px;
       backdrop-filter: blur(20px);
       position: relative;
       box-shadow: 
@@ -323,8 +259,8 @@
     }
 
     .card h2{
-      margin: 0 0 20px;
-      font-size: 18px;
+      margin: 0 0 12px;
+      font-size: 17px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -479,8 +415,8 @@
         0 0 30px rgba(255,71,87,.2);
     }
 
-    .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .row-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+    .row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .row-3{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .span4{ grid-column: span 4; }
     .span6{ grid-column: span 6; }
     .span8{ grid-column: span 8; }
@@ -613,7 +549,7 @@
       font-size: 13px; 
       color: var(--muted); 
       line-height: 1.6;
-      margin-top: 15px;
+      margin-top: 10px;
     }
 
     .mono{ 
@@ -724,12 +660,12 @@
       background: rgba(255,69,0,.05);
       border: 1px solid rgba(255,69,0,.2);
       border-radius: 12px;
-      padding: 15px;
-      margin: 15px 0;
+      padding: 12px;
+      margin: 10px 0;
     }
 
     .manual-section h3 {
-      margin: 0 0 15px;
+      margin: 0 0 10px;
       font-size: 14px;
       color: var(--buffalo-orange);
       text-transform: uppercase;
@@ -739,8 +675,6 @@
 </head>
 <body>
   <div class="buffalo-hero"></div>
-  <div class="buffalo-accent-left"></div>
-  <div class="buffalo-accent-top"></div>
   <div class="buffalo-skull"></div>
   <div class="particles" id="particles"></div>
   <div class="storage-indicator" id="storageIndicator">💾 Dados salvos automaticamente</div>
@@ -771,7 +705,7 @@
           <button id="removeStreamerBtn" class="danger">⚔️ Remover Streamer</button>
         </div>
 
-        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:25px 0;">
+        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:15px 0;">
 
         <div class="row">
           <div>
@@ -883,7 +817,7 @@ raid twitch"></textarea>
           </div>
         </div>
 
-        <div class="collapse-section" style="margin-top:20px;">
+        <div class="collapse-section" style="margin-top:12px;">
           <div class="collapse-header" onclick="toggleCollapse('help')">
             <span class="collapse-icon" id="help-icon">▶</span>
             <span><strong>❓ Ajuda & Formatos</strong></span>
@@ -931,7 +865,6 @@ raid twitch"></textarea>
       </div>
 
       <div class="card span6">
-        <div class="buffalo-card-accent" style="left:-70px; top:-30px; opacity:0.06;"></div>
         <h2>📊 Desempenho Individual</h2>
         
         <div style="margin-top:15px; padding:20px; background:rgba(139,0,0,.05); border-radius:8px;">
@@ -953,7 +886,6 @@ raid twitch"></textarea>
       </div>
 
       <div class="card span12">
-        <div class="buffalo-card-accent"></div>
         <h2>👑 Resumo Épico & Mensagem de Guerra</h2>
         <div class="kpis">
           <div class="kpi">
@@ -987,7 +919,7 @@ raid twitch"></textarea>
           <button id="copyMsgBtn" class="secondary">📋 COPIAR PODER</button>
         </div>
 
-        <div class="collapse-section" style="margin-top:15px;">
+        <div class="collapse-section" style="margin-top:10px;">
           <div class="collapse-header" onclick="toggleCollapse('emoji')">
             <span class="collapse-icon" id="emoji-icon">▶</span>
             <span><strong>🎉 Personalize o Emoji do Relatório</strong></span>
