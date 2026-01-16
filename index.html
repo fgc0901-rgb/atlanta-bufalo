@@ -1108,6 +1108,24 @@
             </div>
           </div>
         </div>
+
+        <hr style="border:none;border-top:2px solid rgba(139,0,0,.3); margin:20px 0;">
+
+        <h3 style="margin:0 0 15px; color:var(--buffalo-orange); font-size:16px;">🎫 Resgates Efetuados</h3>
+        
+        <div style="padding:15px; background:rgba(139,0,0,.08); border-radius:12px; border:1px solid rgba(139,0,0,.2); margin-bottom:15px;">
+          <label>Descrição do Resgate</label>
+          <input id="resgateDesc" type="text" placeholder="Ex.: Resgate de prêmio mensal" style="margin-bottom:10px;" />
+          
+          <label>Pontos a Deduzir</label>
+          <input id="resgatePontos" type="number" min="1" placeholder="Ex.: 50" style="margin-bottom:10px;" />
+          
+          <button id="addResgateBtn" style="width:100%; background: linear-gradient(135deg, #8b0000, #dc143c); color:white; font-weight:700;">🎫 Registrar Resgate</button>
+        </div>
+
+        <div id="resgatesLista" style="max-height:200px; overflow-y:auto; background:rgba(0,0,0,.2); border-radius:8px; padding:10px;">
+          <p style="text-align:center; color:var(--muted); font-size:13px;" id="resgatesEmpty">Nenhum resgate registrado</p>
+        </div>
       </div>
 
       <!-- SEÇÃO 2: ADICIONAR E LISTAR ATIVIDADES -->
@@ -1695,13 +1713,22 @@ raid twitch"></textarea>
         auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Pontuado", pontos:regra.pontos });
       }
 
+      // Calcular dedução por resgates no período
+      const resgatesPeriodo = (s.resgates || []).filter(r => {
+        const rData = parseISODate(r.data);
+        const [ini, fim] = calcularIntervalo(periodo, refDateISO);
+        return rData >= ini && rData <= fim;
+      });
+      
+      const pontosResgates = resgatesPeriodo.reduce((sum, r) => sum + (Number(r.pontos) || 0), 0);
+
       const pontosPeriodo = pontosConteudo + pontosLives + pontosViews + pontosAcoes;
-      const total = (s.pontosAnteriores || 0) + pontosPeriodo;
+      const total = (s.pontosAnteriores || 0) + pontosPeriodo - pontosResgates;
 
       const result = {
         atividadesPeriodo, auditoria,
         pontosConteudo, pontosLives, pontosViews, pontosAcoes,
-        pontosPeriodo, total, conteudosPontuados,
+        pontosPeriodo, pontosResgates, resgatesPeriodo, total, conteudosPontuados,
         gruposConteudo, livesDetalhe, viewsDetalhe, acoesDetalhe
       };
       
@@ -2354,6 +2381,9 @@ raid twitch"></textarea>
 
       // Update performance stats
       updatePerformanceStats();
+      
+      // Atualizar lista de resgates
+      renderResgates();
 
       const tb = $("auditBody");
       tb.innerHTML = "";
@@ -2388,7 +2418,7 @@ raid twitch"></textarea>
         showStorageIndicator("⚠️ Streamer já existe!", true);
         return;
       }
-      state.streamers[name] = { pontosAnteriores: 0, atividades: [] };
+      state.streamers[name] = { pontosAnteriores: 0, atividades: [], resgates: [] };
       saveStateEnhanced(state);
       $("newStreamer").value = "";
       refreshStreamerSelect();
@@ -2423,6 +2453,95 @@ raid twitch"></textarea>
       showStorageIndicator(`💎 Pontos anteriores atualizados: ${pontos}`);
       calculationCache.clear();
     });
+
+    $("addResgateBtn").addEventListener("click", () => {
+      const streamer = currentStreamer();
+      const descricao = $("resgateDesc").value.trim();
+      const pontos = parseInt($("resgatePontos").value);
+      const dataISO = $("refDate").value;
+      
+      if (!descricao) {
+        showStorageIndicator("⚠️ Preencha a descrição do resgate!", true);
+        return;
+      }
+      
+      if (!pontos || pontos <= 0) {
+        showStorageIndicator("⚠️ Insira o valor de pontos a deduzir!", true);
+        return;
+      }
+      
+      const novoResgate = {
+        id: uuid(),
+        data: dataISO,
+        descricao: descricao,
+        pontos: pontos
+      };
+      
+      if (!state.streamers[streamer].resgates) {
+        state.streamers[streamer].resgates = [];
+      }
+      
+      state.streamers[streamer].resgates.push(novoResgate);
+      saveStateEnhanced(state);
+      $("resgateDesc").value = "";
+      $("resgatePontos").value = "";
+      renderResgates();
+      debouncedRender();
+      showStorageIndicator(`🎫 Resgate registrado: -${pontos} pontos`);
+      calculationCache.clear();
+    });
+
+    function renderResgates() {
+      const streamer = currentStreamer();
+      const s = state.streamers[streamer];
+      const resgatesContainer = $("resgatesLista");
+      const emptyMsg = $("resgatesEmpty");
+      
+      if (!s || !s.resgates || s.resgates.length === 0) {
+        emptyMsg.style.display = "block";
+        // Limpar lista
+        const items = resgatesContainer.querySelectorAll('.resgate-item');
+        items.forEach(item => item.remove());
+        return;
+      }
+      
+      emptyMsg.style.display = "none";
+      
+      // Limpar lista anterior
+      const items = resgatesContainer.querySelectorAll('.resgate-item');
+      items.forEach(item => item.remove());
+      
+      // Ordenar por data (mais recente primeiro)
+      const resgatesOrdenados = [...s.resgates].sort((a, b) => b.data.localeCompare(a.data));
+      
+      resgatesOrdenados.forEach(resgate => {
+        const div = document.createElement('div');
+        div.className = 'resgate-item';
+        div.style.cssText = 'padding:8px; margin-bottom:8px; background:rgba(139,0,0,.15); border-left:3px solid var(--buffalo-red); border-radius:6px; display:flex; justify-content:space-between; align-items:center;';
+        
+        div.innerHTML = `
+          <div style="flex:1;">
+            <div style="font-weight:700; color:var(--buffalo-orange); font-size:13px;">${resgate.descricao}</div>
+            <div style="font-size:11px; color:var(--muted); margin-top:2px;">${resgate.data} | -${resgate.pontos} pontos</div>
+          </div>
+          <button class="danger" style="padding:6px 12px; font-size:11px;" onclick="removerResgate('${resgate.id}')">🗑️</button>
+        `;
+        
+        resgatesContainer.appendChild(div);
+      });
+    }
+    
+    window.removerResgate = function(resgateId) {
+      const streamer = currentStreamer();
+      if (!confirm('🗑️ Remover este resgate?')) return;
+      
+      state.streamers[streamer].resgates = state.streamers[streamer].resgates.filter(r => r.id !== resgateId);
+      saveStateEnhanced(state);
+      renderResgates();
+      debouncedRender();
+      showStorageIndicator("🗑️ Resgate removido!");
+      calculationCache.clear();
+    };
 
     $("addManualLiveViewsBtn").addEventListener("click", () => {
       const streamer = currentStreamer();
