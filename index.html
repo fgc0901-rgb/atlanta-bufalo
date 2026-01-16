@@ -427,6 +427,7 @@
       box-shadow: 
         0 8px 25px rgba(255,69,0,.3),
         0 0 30px rgba(255,215,0,.2);
+      animation: button-pulse 1.5s ease-in-out infinite;
     }
 
     button.secondary{
@@ -543,6 +544,154 @@
       text-shadow: 0 0 20px rgba(255,69,0,.3);
     }
 
+    /* Performance Metrics - Enhanced KPI Design */
+    .perf-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .perf-kpi {
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.03) 100%);
+      border: 2px solid rgba(139,0,0,.25);
+      border-radius: 16px;
+      padding: 20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        0 4px 15px rgba(0,0,0,.2),
+        inset 0 1px 0 rgba(255,255,255,.08);
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .perf-kpi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--buffalo-red), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .perf-kpi::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,69,0,.2), transparent);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .perf-kpi:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--buffalo-orange);
+      box-shadow: 
+        0 12px 35px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 0 30px rgba(255,69,0,.25);
+    }
+
+    .perf-kpi:hover::before {
+      opacity: 1;
+    }
+
+    .perf-kpi:hover::after {
+      width: 200%;
+      height: 200%;
+    }
+
+    .perf-week { border-color: rgba(139,0,0,.3); }
+    .perf-week:hover { border-color: var(--buffalo-red); }
+
+    .perf-month { border-color: rgba(255,215,0,.3); }
+    .perf-month:hover { border-color: var(--buffalo-gold); }
+
+    .perf-avg { border-color: rgba(76,175,80,.3); }
+    .perf-avg:hover { border-color: #4CAF50; }
+
+    .perf-icon {
+      font-size: 36px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+
+    .perf-kpi:hover .perf-icon {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    .perf-content {
+      flex: 1;
+      z-index: 2;
+    }
+
+    .perf-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .perf-value {
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--buffalo-gold), var(--buffalo-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .perf-kpi:hover .perf-value {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px rgba(255,69,0,.4));
+    }
+
+    .perf-week .perf-value {
+      background: linear-gradient(135deg, var(--buffalo-red), var(--buffalo-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .perf-month .perf-value {
+      background: linear-gradient(135deg, var(--buffalo-gold), #ffed4e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .perf-avg .perf-value {
+      background: linear-gradient(135deg, #4CAF50, #81C784);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .perf-sublabel {
+      font-size: 10px;
+      color: var(--muted);
+      opacity: 0.7;
+      font-weight: 500;
+    }
+
     table{ 
       width: 100%; 
       border-collapse: collapse; 
@@ -556,18 +705,34 @@
     th, td{ 
       padding: 15px 12px; 
       border-bottom: 1px solid rgba(139,0,0,.2); 
-      vertical-align: top; 
+      vertical-align: middle;
+      transition: background 0.2s ease;
+    }
+
+    tr:hover td {
+      background: rgba(255,69,0,.05);
     }
 
     th{ 
-      color: var(--buffalo-orange); 
-      text-align: left; 
-      font-weight: 900;
+      background: linear-gradient(135deg, rgba(139,0,0,.35) 0%, rgba(139,0,0,.25) 100%);
+      text-align: left;
+      font-weight: 700;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      background: 
-        linear-gradient(135deg, rgba(139,0,0,.2) 0%, rgba(255,69,0,.1) 100%);
-      font-size: 12px;
+      color: var(--buffalo-orange);
+      letter-spacing: 0.8px;
+      position: relative;
+    }
+
+    th::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--buffalo-orange), transparent);
+      opacity: 0.5;
     }
 
     tr:hover {
@@ -575,15 +740,45 @@
     }
 
     .tag-ok{ 
-      color: var(--ok);
+      color: #2ecc71;
+      background: linear-gradient(135deg, rgba(46,204,113,.25) 0%, rgba(72,213,151,.15) 100%);
+      padding: 6px 12px; 
+      border-radius: 8px;
+      display: inline-block;
+      font-size: 11px;
       font-weight: 700;
-      text-shadow: 0 0 8px rgba(72,213,151,.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(46,204,113,.3);
+      box-shadow: 0 2px 8px rgba(46,204,113,.2);
+      transition: all 0.2s ease;
+    }
+
+    .tag-ok:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(46,204,113,.3);
+      border-color: #2ecc71;
     }
 
     .tag-no{ 
-      color: var(--bad);
+      color: #e74c3c;
+      background: linear-gradient(135deg, rgba(231,76,60,.25) 0%, rgba(255,107,107,.15) 100%);
+      padding: 6px 12px; 
+      border-radius: 8px;
+      display: inline-block;
+      font-size: 11px;
       font-weight: 700;
-      text-shadow: 0 0 8px rgba(255,107,107,.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(231,76,60,.3);
+      box-shadow: 0 2px 8px rgba(231,76,60,.2);
+      transition: all 0.2s ease;
+    }
+
+    .tag-no:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(231,76,60,.3);
+      border-color: #e74c3c;
     }
 
     .help{ 
@@ -620,6 +815,11 @@
     @keyframes pulse {
       0%, 100% { transform: translateY(-50%) scale(1) translateZ(0); }
       50% { transform: translateY(-50%) scale(1.15) translateZ(0); }
+    }
+
+    @keyframes button-pulse {
+      0%, 100% { box-shadow: 0 8px 25px rgba(255,69,0,.4); }
+      50% { box-shadow: 0 8px 35px rgba(255,69,0,.6), 0 0 20px rgba(255,69,0,.3); }
     }
 
     @media (max-width: 1200px){
@@ -908,19 +1108,31 @@ raid twitch"></textarea>
       <div class="card span6">
         <h2>📊 Desempenho Individual</h2>
         
-        <div style="margin-top:10px; padding:20px; background:rgba(139,0,0,.05); border-radius:8px;">
-          <div style="display:flex; justify-content:space-around; text-align:center;">
-            <div>
-              <div style="font-size:32px; font-weight:bold; color:var(--buffalo-red);" id="perfWeekPoints">—</div>
-              <div style="font-size:11px; color:var(--muted);">Pts Esta Semana</div>
+        <div class="perf-metrics">
+          <div class="perf-kpi perf-week">
+            <div class="perf-icon">📅</div>
+            <div class="perf-content">
+              <div class="perf-label">Semana</div>
+              <div class="perf-value" id="perfWeekPoints">—</div>
+              <div class="perf-sublabel">pontos</div>
             </div>
-            <div>
-              <div style="font-size:32px; font-weight:bold; color:var(--buffalo-gold);" id="perfMonthPoints">—</div>
-              <div style="font-size:11px; color:var(--muted);">Pts Este Mês</div>
+          </div>
+          
+          <div class="perf-kpi perf-month">
+            <div class="perf-icon">📆</div>
+            <div class="perf-content">
+              <div class="perf-label">Mês</div>
+              <div class="perf-value" id="perfMonthPoints">—</div>
+              <div class="perf-sublabel">pontos</div>
             </div>
-            <div>
-              <div style="font-size:32px; font-weight:bold; color:#4CAF50;" id="perfAvgDaily">—</div>
-              <div style="font-size:11px; color:var(--muted);">Média Diária</div>
+          </div>
+          
+          <div class="perf-kpi perf-avg">
+            <div class="perf-icon">📈</div>
+            <div class="perf-content">
+              <div class="perf-label">Média/Dia</div>
+              <div class="perf-value" id="perfAvgDaily">—</div>
+              <div class="perf-sublabel">pontos</div>
             </div>
           </div>
         </div>
