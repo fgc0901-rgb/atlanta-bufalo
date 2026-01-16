@@ -1795,7 +1795,17 @@ raid twitch"></textarea>
           continue;
         }
 
-        // Removido limite diário - conta todas as publicações
+        // Limite especial: Stories no Twitch pontua apenas 1 por dia
+        if (plataforma === "twitch" && tipo === "stories") {
+          const keyTs = `tw_stories_${data}`;
+          if (controleDiarioConteudo[keyTs]) {
+            auditoria.push({ id:a.id, data, categoria, plataforma, tipo:tipoOriginal, status:"Ignorado (limite 1/dia)", pontos:0, regra:"Stories no Twitch: 3 pontos; (pontua apenas um por dia)" });
+            continue;
+          }
+          controleDiarioConteudo[keyTs] = true;
+        }
+
+        // Conta todas as publicações (sem limite diário geral)
         pontosConteudo += regra.pontos;
         conteudosPontuados += 1;
 
@@ -2348,7 +2358,15 @@ raid twitch"></textarea>
           } else {
             const regra = REGRAS_PONTOS[plataforma]?.[tipo];
             if (regra) {
-              // Removido limite diário - conta todas as publicações
+              // Limite especial: Stories no Twitch pontua apenas 1 por dia
+              if (plataforma === "twitch" && tipo === "stories") {
+                const keyTs = `tw_stories_${a.data}`;
+                if (controleDiarioConteudo[keyTs]) {
+                  // ignorar excedentes
+                  continue;
+                }
+                controleDiarioConteudo[keyTs] = true;
+              }
               pontosConteudo += regra.pontos;
             }
           }
