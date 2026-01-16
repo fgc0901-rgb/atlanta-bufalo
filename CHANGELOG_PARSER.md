@@ -1,5 +1,14 @@
 # 🐃 RESUMO DAS ALTERAÇÕES - SISTEMA ATLANTA BÚFALO
 
+## 🆕 Atualização 2026-01-16
+
+- Parser reforçado para Kwai:
+  - Detecção explícita de domínios: `kwai.com`, `k.kwai.com`, `kw.ai` (e fallback para `kwai`).
+  - Inferência de plataforma por texto quando a URL não basta (ex.: "Kwai vídeo ...").
+  - Ignora ruídos gerados pelo app: `kwai-nuxt-pwa-pc`, `Make Everyone Shine`.
+- Teste adicionado: [test_user_sample_kwai.js](test_user_sample_kwai.js) cobrindo dataset real do usuário.
+- Arquivo alterado: [index.html](index.html) — melhorias em `parseBulkInput()`.
+
 ## ✅ PROBLEMAS IDENTIFICADOS E CORRIGIDOS
 
 ### 1. **Parser de Texto Não Reconhecia URLs**
