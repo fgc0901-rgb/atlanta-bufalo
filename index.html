@@ -2767,7 +2767,7 @@ raid twitch"></textarea>
         const r = calcularPeriodoStreamer(streamer, "dia", selectedDate);
         const relatorio = gerarMensagemDiscord(streamer, "dia", selectedDate, r);
         
-        showReportModal(relatorio, selectedDate);
+        showReportModal(relatorio, selectedDate, r);
         
         // Voltar a data para hoje
         $("refDate").value = todayISO;
@@ -2976,17 +2976,29 @@ raid twitch"></textarea>
     }
 
     // Funções do modal de relatório histórico
-    function showReportModal(relatorio, data) {
+    function showReportModal(relatorio, data, resultado) {
       const modal = $("reportModal");
       const body = $("reportModalBody");
-      
-      body.innerHTML = `
+
+      // Filtrar apenas lançamentos do dia selecionado (apenas visualização)
+      const auditoriaDia = (resultado?.auditoria || []).filter(a => a.data === data);
+      const itens = auditoriaDia.map(a => `
+        <li style="margin-bottom:6px;">
+          <strong>${a.categoria.toUpperCase()}</strong> — ${nomePlataforma(a.plataforma)} • ${a.tipo} • ${a.status} • <span style="color:var(--buffalo-orange); font-weight:700;">${a.pontos} pts</span>
+        </li>
+      `).join("") || '<li style="color:var(--muted);">Nenhum lançamento registrado neste dia.</li>';
+
+      const resumoHTML = `
         <div style="background:rgba(139,0,0,.1); padding:15px; border-radius:8px; margin-bottom:15px; border-left:4px solid var(--buffalo-red);">
           <p style="margin:0; color:var(--buffalo-orange); font-weight:700;">📅 Data selecionada: ${data}</p>
-          <p style="margin:5px 0 0; font-size:13px; color:var(--muted);">Este é um relatório histórico. Para adicionar atividades, use a data de hoje.</p>
+          <p style="margin:5px 0 0; font-size:13px; color:var(--muted);">Visualização histórica. Para lançar atividades, use a data de hoje.</p>
         </div>
-        <pre style="font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif; font-size:14px; line-height:1.6;">${relatorio}</pre>
-        <button onclick="copyReportToClipboard()" style="width:100%; padding:12px; background: linear-gradient(135deg, var(--buffalo-red), var(--buffalo-orange)); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-top:15px;">📋 Copiar Relatório</button>
+        <div style="margin-bottom:10px; font-weight:700;">Pontos do dia: <span style="color:var(--buffalo-orange);">${resultado?.pontosPeriodo || 0} pts</span></div>
+        <ul style="padding-left:18px; margin:0 0 10px;">${itens}</ul>
+      `;
+
+      body.innerHTML = `${resumoHTML}
+        <button onclick="copyReportToClipboard()" style="width:100%; padding:12px; background: linear-gradient(135deg, var(--buffalo-red), var(--buffalo-orange)); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-top:15px;">📋 Copiar Relatório Completo</button>
       `;
       
       modal.classList.add('show');
