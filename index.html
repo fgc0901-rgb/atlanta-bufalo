@@ -886,7 +886,7 @@ raid twitch"></textarea>
       </div>
 
       <div class="card span6">
-        <h2>� Atividades</h2>
+        <h2>🗂️ Atividades</h2>
         <table>
           <thead>
             <tr>
@@ -2315,14 +2315,33 @@ raid twitch"></textarea>
     // Automatic performance stats update
     function updatePerformanceStats() {
       const streamer = currentStreamer();
-      const weekResults = calcularDesempenhoIndividual(streamer, "semanal");
-      const monthResults = calcularDesempenhoIndividual(streamer, "mensal");
-      
-      $("perfWeekPoints").textContent = weekResults.pontos || 0;
-      $("perfMonthPoints").textContent = monthResults.pontos || 0;
-      
-      const avgDaily = monthResults.dias > 0 ? Math.round(monthResults.pontos / monthResults.dias) : 0;
-      $("perfAvgDaily").textContent = avgDaily;
+      const refDateISO = $("refDate").value;
+
+      // Usar a mesma função de cálculo do painel principal para garantir consistência
+      const rWeek = calcularPeriodoStreamer(streamer, "semanal", refDateISO);
+      const rMonth = calcularPeriodoStreamer(streamer, "mensal", refDateISO);
+
+      const weekPts = rWeek.pontosPeriodo || 0;
+      const monthPts = rMonth.pontosPeriodo || 0;
+
+      // Média diária baseada em dias com atividade no mês
+      const diasUteis = new Set((rMonth.atividadesPeriodo || []).map(a => a.data)).size;
+      const avgDaily = diasUteis > 0 ? Math.round(monthPts / diasUteis) : 0;
+
+      const elWeek = $("perfWeekPoints");
+      const elMonth = $("perfMonthPoints");
+      const elAvg = $("perfAvgDaily");
+
+      elWeek.textContent = weekPts;
+      elMonth.textContent = monthPts;
+      elAvg.textContent = avgDaily;
+
+      // Dicas para UX ao passar o mouse
+      const weekLabel = labelPeriodo("semanal", refDateISO);
+      const monthLabel = labelPeriodo("mensal", refDateISO);
+      elWeek.title = `Pontos da semana (${weekLabel})`;
+      elMonth.title = `Pontos do mês (${monthLabel})`;
+      elAvg.title = diasUteis > 0 ? `Média por dia com atividade (${diasUteis} dia(s))` : `Sem dias com atividade no mês`;
     }
 
     // Inicialização
