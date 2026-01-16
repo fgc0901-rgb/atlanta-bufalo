@@ -1391,18 +1391,38 @@ raid twitch"></textarea>
           <button id="copyMsgBtn" class="secondary">📋 COPIAR PODER</button>
         </div>
 
-        <div class="collapse-section" style="margin-top:10px;">
-          <div class="collapse-header" onclick="toggleCollapse('emoji')">
-            <span class="collapse-icon" id="emoji-icon">▶</span>
-            <span><strong>🎉 Personalize o Emoji do Relatório</strong></span>
-          </div>
-          <div class="collapse-content" id="emoji-content">
-            <label>Digite o emoji desejado:</label>
-            <div class="row" style="margin-top:10px; gap:10px;">
-              <input id="emojiInput" type="text" maxlength="5" placeholder="🐃" style="flex:1; font-size:18px; text-align:center;" />
-              <button id="emojiResetBtn" class="secondary" style="flex:0 0 auto;">↻ Padrão</button>
+        <div class="row" style="margin-top:10px; gap:12px; align-items:flex-start;">
+          <div class="collapse-section" style="flex:1;">
+            <div class="collapse-header" onclick="toggleCollapse('emoji')">
+              <span class="collapse-icon" id="emoji-icon">▶</span>
+              <span><strong>🎉 Personalize o Emoji do Relatório</strong></span>
             </div>
-            <p style="font-size:11px; color:var(--muted); margin-top:8px;">💡 Cole ou digite qualquer emoji para personalizar seus relatórios</p>
+            <div class="collapse-content" id="emoji-content">
+              <label>Digite o emoji desejado:</label>
+              <div class="row" style="margin-top:10px; gap:10px;">
+                <input id="emojiInput" type="text" maxlength="5" placeholder="🐃" style="flex:1; font-size:18px; text-align:center;" />
+                <button id="emojiResetBtn" class="secondary" style="flex:0 0 auto;">↻ Padrão</button>
+              </div>
+              <p style="font-size:11px; color:var(--muted); margin-top:8px;">💡 Cole ou digite qualquer emoji para personalizar seus relatórios</p>
+            </div>
+          </div>
+          <div class="collapse-section" style="flex:1;">
+            <div class="collapse-header" onclick="toggleCollapse('epicimg')">
+              <span class="collapse-icon" id="epicimg-icon">▶</span>
+              <span><strong>🖼️ Imagem da Mensagem Épica</strong></span>
+            </div>
+            <div class="collapse-content" id="epicimg-content">
+              <label>Selecione uma imagem ou informe URL:</label>
+              <div class="row" style="margin-top:10px; gap:10px; align-items:center;">
+                <input id="epicImageFile" type="file" accept="image/*" style="flex:1;" />
+                <input id="epicImageUrl" type="url" placeholder="https://exemplo.com/banner.png" style="flex:1;" />
+                <button id="epicImageResetBtn" class="secondary" style="flex:0 0 auto;">✖ Remover</button>
+              </div>
+              <div id="epicImagePreviewWrap" style="margin-top:10px; display:none;">
+                <img id="epicImagePreview" alt="Prévia da mensagem épica" style="width:100%; max-height:120px; object-fit:contain; border-radius:8px; border:1px solid rgba(255,255,255,.2);" />
+                <p style="font-size:11px; color:var(--muted); margin-top:6px;">A imagem será adicionada ao topo da mensagem épica.</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1690,11 +1710,24 @@ raid twitch"></textarea>
     // Estado principal
     let state = loadStateEnhanced();
 
-    // Carregar emoji customizado do localStorage
+    // Carregar emoji e imagem épica do localStorage
     window.addEventListener('DOMContentLoaded', () => {
       const savedEmoji = localStorage.getItem("customReportEmoji");
       if (savedEmoji) {
         document.getElementById("emojiInput").value = savedEmoji;
+      }
+      const savedEpicImg = localStorage.getItem("customEpicImage");
+      if (savedEpicImg) {
+        const epicUrlInput = document.getElementById("epicImageUrl");
+        if (epicUrlInput && savedEpicImg.startsWith("http")) {
+          epicUrlInput.value = savedEpicImg;
+        }
+        const wrap = document.getElementById("epicImagePreviewWrap");
+        const img = document.getElementById("epicImagePreview");
+        if (img && wrap) {
+          img.src = savedEpicImg;
+          wrap.style.display = "block";
+        }
       }
     });
 
@@ -2248,6 +2281,18 @@ raid twitch"></textarea>
       
       // Pegar emoji customizado ou usar padrão
       const emojiCustomizado = document.getElementById('emojiInput').value || '🐃';
+      const epicImage = localStorage.getItem("customEpicImage") || "";
+
+      // Imagem da Mensagem Épica (opcional)
+      if (epicImage) {
+        if (epicImage.startsWith("http")) {
+          linhas.push(`![Mensagem Épica](${epicImage})`);
+          linhas.push(epicImage);
+        } else {
+          linhas.push(`![Mensagem Épica](${epicImage})`);
+        }
+        linhas.push("");
+      }
 
       linhas.push(`# <a:trofeu1:1432593868439949343> **Relatório de Pontuação Streamers Atlanta** <a:trofeu1:1432593868439949343> ${emojiCustomizado}`);
       linhas.push(`### 📦 Pontos por Conteúdo e Ação`);
@@ -2899,6 +2944,79 @@ raid twitch"></textarea>
       localStorage.setItem("customReportEmoji", emoji);
       showStorageIndicator("🎉 Emoji personalizado salvo!");
     });
+
+    // Imagem da Mensagem Épica — preview e persistência
+    function updateEpicImagePreview(src) {
+      const wrap = document.getElementById("epicImagePreviewWrap");
+      const img = document.getElementById("epicImagePreview");
+      if (src) {
+        img.src = src;
+        wrap.style.display = "block";
+      } else {
+        if (img) img.removeAttribute("src");
+        if (wrap) wrap.style.display = "none";
+      }
+    }
+
+    function setEpicImage(src) {
+      if (!src) {
+        localStorage.removeItem("customEpicImage");
+        updateEpicImagePreview("");
+        return;
+      }
+      localStorage.setItem("customEpicImage", src);
+      updateEpicImagePreview(src);
+    }
+
+    const epicFile = document.getElementById("epicImageFile");
+    const epicUrl = document.getElementById("epicImageUrl");
+    const epicReset = document.getElementById("epicImageResetBtn");
+
+    if (epicFile) {
+      epicFile.addEventListener("change", () => {
+        const file = epicFile.files && epicFile.files[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+          showStorageIndicator("⚠️ Imagem muito grande (max 2MB)", true);
+          epicFile.value = "";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          setEpicImage(dataUrl);
+          if (epicUrl) epicUrl.value = "";
+          showStorageIndicator("🖼️ Imagem épica adicionada!");
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (epicUrl) {
+      epicUrl.addEventListener("change", () => {
+        const url = epicUrl.value.trim();
+        if (!url) {
+          setEpicImage("");
+          showStorageIndicator("✖ Imagem removida!");
+          return;
+        }
+        if (!/^https?:\/\//i.test(url)) {
+          showStorageIndicator("⚠️ URL inválida (use http/https)", true);
+          return;
+        }
+        setEpicImage(url);
+        showStorageIndicator("🖼️ Imagem épica definida por URL!");
+      });
+    }
+
+    if (epicReset) {
+      epicReset.addEventListener("click", () => {
+        setEpicImage("");
+        if (epicFile) epicFile.value = "";
+        if (epicUrl) epicUrl.value = "";
+        showStorageIndicator("✖ Imagem épica removida!");
+      });
+    }
 
     $("removeSelectedBtn").addEventListener("click", () => {
       const streamer = currentStreamer();
